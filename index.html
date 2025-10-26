@@ -34,7 +34,38 @@
     <!-- Custom Styles -->
     <style>
         ::-webkit-scrollbar { display: none; }
-        body { font-family: 'Inter', sans-serif; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        #main-area {
+            width: 100%;
+            background: #FFFFFF;
+            flex-grow: 1;
+            overflow: hidden;
+            height: calc(100vh - 140px);
+        }
+        
+        @media (min-width: 1024px) {
+            #main-area {
+                height: calc(100vh - 80px);
+            }
+        }
         .glass-effect { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95); }
         .shadow-apple { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
         .border-apple { border: 1px solid rgba(0, 0, 0, 0.08); }
@@ -69,9 +100,10 @@
 <body class="bg-apple-gray text-apple-gray overflow-hidden">
     
     <!-- Top Banner -->
-    <div id="top-banner" class="w-full bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white py-3 px-6">
+    <div id="top-banner" class="w-full bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white py-2 px-4 lg:py-3 lg:px-6">
         <div class="text-center">
-            <p class="text-sm font-medium tracking-wide">Boss Arms M4 Rifle Builder - Professional Military Configuration System</p>
+            <p class="text-sm font-medium tracking-wide hidden lg:block">Boss Arms M4 Rifle Builder - Professional Military Configuration System</p>
+            <p class="text-xs font-medium tracking-wide lg:hidden">Boss Arms M4 Rifle Builder</p>
         </div>
     </div>
 
@@ -87,7 +119,7 @@
             
             <!-- Center Area - Brand Title -->
             <div id="nav-center" class="flex-1 text-center">
-                <h1 class="text-2xl font-bold tracking-tight text-apple-gray">M4 Custom Builder</h1>
+                <!-- Title removed as requested -->
             </div>
             
             <!-- Right Area - Action Buttons (Desktop) -->
@@ -134,7 +166,7 @@
     </div>
 
     <!-- Main Application Area -->
-    <div id="main-area" class="flex flex-col lg:flex-row h-[calc(100vh-140px)]">
+    <div id="main-area" class="flex flex-col lg:flex-row">
         
         <!-- 3D Viewer Area -->
         <div id="3d-viewer" class="flex-1 bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
@@ -1723,23 +1755,12 @@
     </div>
 
     <!-- Footer -->
-    <footer id="footer" class="w-full bg-white border-t border-apple py-4">
+    <footer id="footer" class="w-full bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white py-2 px-4 lg:py-4 lg:px-6">
         <div class="text-center">
-            <p class="text-sm text-slate-500">© 2024 Boss Arms. All rights reserved. Professional firearms configuration system.</p>
+            <p class="text-sm font-medium tracking-wide hidden lg:block">© 2025 Boss Arms. All rights reserved. Professional firearms configuration system.</p>
+            <p class="text-xs font-medium tracking-wide lg:hidden">© 2025 Boss Arms</p>
         </div>
     </footer>
-
-    <!-- Menu Navigation JavaScript -->
-                    <p class="text-xs text-slate-500">*Excluding shipping and tax</p>
-                </div>
-                <div class="flex justify-center">
-                    <button class="w-full py-4 text-lg font-medium text-white bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 rounded-xl shadow-apple hover-lift transition-all duration-200">
-                        Summary
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Menu Navigation JavaScript -->
     <script src="assets/js/menuNavigation/menuNavigation.js"></script>
