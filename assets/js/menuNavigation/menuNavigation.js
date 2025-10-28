@@ -44,7 +44,12 @@ const mainMenuID = {
     menuVariant_stock002001: "menuVariant_stock002001",
     menuTakedownPinSetProductMenu: "menuTakedownPinSetProductMenu",
     menuVariant_takedownPinSet001001: "menuVariant_takedownPinSet001001",
-    menuVariant_takedownPinSet002001: "menuVariant_takedownPinSet002001"
+    menuVariant_takedownPinSet002001: "menuVariant_takedownPinSet002001",
+    menuTriggerProductMenu: "menuTriggerProductMenu",
+    menuVariant_trigger002001: "menuVariant_trigger002001",
+    menuTriggerGuardProductMenu: "menuTriggerGuardProductMenu",
+    menuVariant_triggerGuard001001: "menuVariant_triggerGuard001001",
+    menuVariant_triggerGuard002001: "menuVariant_triggerGuard002001"
 };
 
 // Function to set menu opened ID
@@ -377,6 +382,18 @@ function goBackToTakedownPinSetProductMenu() {
     updatePartMenuVisibility();
 }
 
+// Navigate to trigger product menu
+function goBackToTriggerProductMenu() {
+    navigateToMenu('menuTriggerProductMenu');
+    updatePartMenuVisibility();
+}
+
+// Navigate to trigger guard product menu
+function goBackToTriggerGuardProductMenu() {
+    navigateToMenu('menuTriggerGuardProductMenu');
+    updatePartMenuVisibility();
+}
+
 // Navigate to magazine release variant menu (Timber Creek)
 function goBackToMagazineReleaseVariantMenu002001() {
     navigateToMenu('menuVariant_magazineRelease002001');
@@ -477,7 +494,12 @@ function initializeMenuNavigation() {
         'backButton_StockVariantMenu002001',
         'backButton_TakedownPinSetProductMenu',
         'backButton_TakedownPinSetVariantMenu001001',
-        'backButton_TakedownPinSetVariantMenu002001'
+        'backButton_TakedownPinSetVariantMenu002001',
+        'backButton_TriggerProductMenu',
+        'backButton_TriggerVariantMenu002001',
+        'backButton_TriggerGuardProductMenu',
+        'backButton_TriggerGuardVariantMenu001001',
+        'backButton_TriggerGuardVariantMenu002001'
     ];
 
     backButtons.forEach(buttonId => {
@@ -559,6 +581,16 @@ function initializeMenuNavigation() {
                     goBackToTakedownPinSetProductMenu();
                 } else if (buttonId === 'backButton_TakedownPinSetVariantMenu002001') {
                     goBackToTakedownPinSetProductMenu();
+                } else if (buttonId === 'backButton_TriggerProductMenu') {
+                    goBackToLowerGroupMenu();
+                } else if (buttonId === 'backButton_TriggerVariantMenu002001') {
+                    goBackToTriggerProductMenu();
+                } else if (buttonId === 'backButton_TriggerGuardProductMenu') {
+                    goBackToLowerGroupMenu();
+                } else if (buttonId === 'backButton_TriggerGuardVariantMenu001001') {
+                    goBackToTriggerGuardProductMenu();
+                } else if (buttonId === 'backButton_TriggerGuardVariantMenu002001') {
+                    goBackToTriggerGuardProductMenu();
                 } else {
                     goBackToMenu();
                 }
@@ -742,5 +774,7 @@ window.goBackToPistolGripProductMenu = goBackToPistolGripProductMenu;
 window.goBackToSafetyProductMenu = goBackToSafetyProductMenu;
 window.goBackToStockProductMenu = goBackToStockProductMenu;
 window.goBackToTakedownPinSetProductMenu = goBackToTakedownPinSetProductMenu;
+window.goBackToTriggerProductMenu = goBackToTriggerProductMenu;
+window.goBackToTriggerGuardProductMenu = goBackToTriggerGuardProductMenu;
 window.selectProduct = selectProduct;
 window.selectVariant = selectVariant;

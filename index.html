@@ -507,7 +507,7 @@
                         </div>
                         
                         <!-- Trigger -->
-                        <div id="partCard_trigger" class="p-4 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white">
+                        <div id="partCard_trigger" class="p-4 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="navigateToMenu('menuTriggerProductMenu')">
                             <div class="flex items-center space-x-4">
                                 <div class="w-16 h-16 bg-slate-200 rounded-lg flex items-center justify-center overflow-hidden aspect-square">
                                     <img id="partCardImg_trigger00100101" src="assets/img/productCatImage/lowerImg/trigger001001/imageID_trigger00100101.png" style="width: 80%;height: auto;" />
@@ -524,7 +524,7 @@
                         </div>
                         
                         <!-- Trigger Guard -->
-                        <div id="partCard_triggerGuard" class="p-4 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white">
+                        <div id="partCard_triggerGuard" class="p-4 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="navigateToMenu('menuTriggerGuardProductMenu')">
                             <div class="flex items-center space-x-4">
                                 <div class="w-16 h-16 bg-slate-200 rounded-lg flex items-center justify-center overflow-hidden aspect-square">
                                     <img id="partCardImg_triggerGuard00100101" src="assets/img/productCatImage/lowerImg/triggerGuard001001/imageID_triggerGuard00100101.png" style="width: 80%;height: auto;" />
@@ -1243,6 +1243,102 @@
                     </div>
                 </div>
 
+                <!-- Trigger Product Menu -->
+                <div id="menuTriggerProductMenu" class="menu-group-container hidden">
+                    <!-- Back Button -->
+                    <div class="mb-6">
+                        <button id="backButton_TriggerProductMenu" class="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all duration-200">
+                            <i class="fas fa-arrow-left text-sm"></i>
+                            <span>Back to Lower Parts</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Products Section -->
+                    <div class="space-y-3">
+                        <!-- Elfmant Tactical Legacy Match Trigger No Knob (No Variants) -->
+                        <div id="productCard_trigger_001001" class="p-4 border border-apple rounded-xl hover:border-blue-300 hover:bg-blue-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectProduct('trigger_00100101', 'Legacy Match Trigger No Knob', 'Elfmant Tactical', '---')">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 h-16 bg-slate-200 rounded-lg flex items-center justify-center overflow-hidden aspect-square">
+                                    <img id="productCardImg_trigger00100101" src="assets/img/productCatImage/lowerImg/trigger001001/imageID_trigger00100101.png" style="width: 80%;height: auto;" />
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-xs text-slate-500 mb-1">Elfmant Tactical</div>
+                                    <h4 id="productCardName_trigger_001001" class="font-medium text-sm mb-1">Legacy Match Trigger No Knob</h4>
+                                    <p id="productCardPrice_trigger_001001" class="text-sm font-semibold text-slate-700">$--- USD</p>
+                                </div>
+                                <div class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white cursor-pointer transition-all duration-200 group">
+                                    <i class="fas fa-check text-slate-400 group-hover:text-white text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rise Armament RA 434 HPT -->
+                        <div id="productCard_trigger_002001" class="p-4 border border-apple rounded-xl hover:border-blue-300 hover:bg-blue-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="navigateToVariantMenu('menuVariant_trigger002001')">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 h-16 bg-slate-200 rounded-lg flex items-center justify-center overflow-hidden aspect-square">
+                                    <img id="productCardImg_trigger00200101" src="assets/img/productCatImage/lowerImg/trigger002001/imageID_trigger00200101.png" style="width: 80%;height: auto;" />
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-xs text-slate-500 mb-1">Rise Armament</div>
+                                    <h4 id="productCardName_trigger_002001" class="font-medium text-sm mb-1">RA 434 HPT</h4>
+                                    <p id="productCardPrice_trigger_002001" class="text-sm font-semibold text-slate-700">$--- USD</p>
+                                </div>
+                                <div class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white cursor-pointer transition-all duration-200 group">
+                                    <i class="fas fa-check text-slate-400 group-hover:text-white text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trigger Guard Product Menu -->
+                <div id="menuTriggerGuardProductMenu" class="menu-group-container hidden">
+                    <!-- Back Button -->
+                    <div class="mb-6">
+                        <button id="backButton_TriggerGuardProductMenu" class="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all duration-200">
+                            <i class="fas fa-arrow-left text-sm"></i>
+                            <span>Back to Lower Parts</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Products Section -->
+                    <div class="space-y-3">
+                        <!-- Seekins Precision Billet AR Trigger Guard -->
+                        <div id="productCard_triggerGuard_001001" class="p-4 border border-apple rounded-xl hover:border-blue-300 hover:bg-blue-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="navigateToVariantMenu('menuVariant_triggerGuard001001')">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 h-16 bg-slate-200 rounded-lg flex items-center justify-center overflow-hidden aspect-square">
+                                    <img id="productCardImg_triggerGuard00100101" src="assets/img/productCatImage/lowerImg/triggerGuard001001/imageID_triggerGuard00100101.png" style="width: 80%;height: auto;" />
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-xs text-slate-500 mb-1">Seekins Precision</div>
+                                    <h4 id="productCardName_triggerGuard_001001" class="font-medium text-sm mb-1">Billet AR Trigger Guard</h4>
+                                    <p id="productCardPrice_triggerGuard_001001" class="text-sm font-semibold text-slate-700">$--- USD</p>
+                                </div>
+                                <div class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white cursor-pointer transition-all duration-200 group">
+                                    <i class="fas fa-check text-slate-400 group-hover:text-white text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timber Creek Trigger Guard -->
+                        <div id="productCard_triggerGuard_002001" class="p-4 border border-apple rounded-xl hover:border-blue-300 hover:bg-blue-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="navigateToVariantMenu('menuVariant_triggerGuard002001')">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 h-16 bg-slate-200 rounded-lg flex items-center justify-center overflow-hidden aspect-square">
+                                    <img id="productCardImg_triggerGuard00200101" src="assets/img/productCatImage/lowerImg/triggerGuard002001/imageID_triggerGuard00200101.png" style="width: 80%;height: auto;" />
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-xs text-slate-500 mb-1">Timber Creek</div>
+                                    <h4 id="productCardName_triggerGuard_002001" class="font-medium text-sm mb-1">Trigger Guard</h4>
+                                    <p id="productCardPrice_triggerGuard_002001" class="text-sm font-semibold text-slate-700">$--- USD</p>
+                                </div>
+                                <div class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white cursor-pointer transition-all duration-200 group">
+                                    <i class="fas fa-check text-slate-400 group-hover:text-white text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Magazine Release Variant Menu (Seekins Precision) -->
                 <div id="menuVariant_magazineRelease001001" class="menu-group-container hidden">
                     <!-- Back Button -->
@@ -1823,6 +1919,208 @@
 
                         <!-- Tungsten -->
                         <div id="variantCard_takedownPinSet00200110" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('takedownPinSet_00200110', 'Tungsten')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #2F4F4F;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Tungsten</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trigger Variant Menu (Rise Armament) -->
+                <div id="menuVariant_trigger002001" class="menu-group-container hidden">
+                    <!-- Back Button -->
+                    <div class="mb-6">
+                        <button id="backButton_TriggerVariantMenu002001" class="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all duration-200">
+                            <i class="fas fa-arrow-left text-sm"></i>
+                            <span>Back to Trigger</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Color Variants Grid -->
+                    <div class="grid grid-cols-4 gap-4">
+                        <!-- Blade Black -->
+                        <div id="variantCard_trigger00200101" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('trigger_00200101', 'Blade Black')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #000000;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Blade Black</p>
+                            </div>
+                        </div>
+
+                        <!-- Blade Red -->
+                        <div id="variantCard_trigger00200102" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('trigger_00200102', 'Blade Red')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #DC143C;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Blade Red</p>
+                            </div>
+                        </div>
+
+                        <!-- Blade Silver -->
+                        <div id="variantCard_trigger00200103" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('trigger_00200103', 'Blade Silver')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #C0C0C0;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Blade Silver</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trigger Guard Variant Menu (Seekins Precision) -->
+                <div id="menuVariant_triggerGuard001001" class="menu-group-container hidden">
+                    <!-- Back Button -->
+                    <div class="mb-6">
+                        <button id="backButton_TriggerGuardVariantMenu001001" class="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all duration-200">
+                            <i class="fas fa-arrow-left text-sm"></i>
+                            <span>Back to Trigger Guard</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Color Variants Grid -->
+                    <div class="grid grid-cols-4 gap-4">
+                        <!-- Black -->
+                        <div id="variantCard_triggerGuard00100101" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00100101', 'Black')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #000000;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Black</p>
+                            </div>
+                        </div>
+
+                        <!-- Blue -->
+                        <div id="variantCard_triggerGuard00100102" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00100102', 'Blue')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #0000FF;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Blue</p>
+                            </div>
+                        </div>
+
+                        <!-- FDE (Flat Dark Earth) -->
+                        <div id="variantCard_triggerGuard00100103" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00100103', 'FDE')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #8B7355;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">FDE</p>
+                            </div>
+                        </div>
+
+                        <!-- Green -->
+                        <div id="variantCard_triggerGuard00100104" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00100104', 'Green')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #008000;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Green</p>
+                            </div>
+                        </div>
+
+                        <!-- OD Green -->
+                        <div id="variantCard_triggerGuard00100105" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00100105', 'OD Green')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #556B2F;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">OD Green</p>
+                            </div>
+                        </div>
+
+                        <!-- Red -->
+                        <div id="variantCard_triggerGuard00100106" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00100106', 'Red')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #DC143C;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Red</p>
+                            </div>
+                        </div>
+
+                        <!-- White -->
+                        <div id="variantCard_triggerGuard00100107" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00100107', 'White')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #FFFFFF;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">White</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trigger Guard Variant Menu (Timber Creek) -->
+                <div id="menuVariant_triggerGuard002001" class="menu-group-container hidden">
+                    <!-- Back Button -->
+                    <div class="mb-6">
+                        <button id="backButton_TriggerGuardVariantMenu002001" class="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all duration-200">
+                            <i class="fas fa-arrow-left text-sm"></i>
+                            <span>Back to Trigger Guard</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Color Variants Grid -->
+                    <div class="grid grid-cols-4 gap-4">
+                        <!-- Black -->
+                        <div id="variantCard_triggerGuard00200101" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00200101', 'Black')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #000000;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Black</p>
+                            </div>
+                        </div>
+
+                        <!-- Blue -->
+                        <div id="variantCard_triggerGuard00200102" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00200102', 'Blue')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #0000FF;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Blue</p>
+                            </div>
+                        </div>
+
+                        <!-- Burnt Bronze -->
+                        <div id="variantCard_triggerGuard00200103" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00200103', 'Burnt Bronze')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #CD7F32;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Burnt Bronze</p>
+                            </div>
+                        </div>
+
+                        <!-- FDE (Flat Dark Earth) -->
+                        <div id="variantCard_triggerGuard00200104" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00200104', 'FDE')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #8B7355;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">FDE</p>
+                            </div>
+                        </div>
+
+                        <!-- OD Green -->
+                        <div id="variantCard_triggerGuard00200105" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00200105', 'OD Green')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #556B2F;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">OD Green</p>
+                            </div>
+                        </div>
+
+                        <!-- Orange Anodized -->
+                        <div id="variantCard_triggerGuard00200106" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00200106', 'Orange Anodized')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #FFA500;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Orange Anodized</p>
+                            </div>
+                        </div>
+
+                        <!-- Purple Anodized -->
+                        <div id="variantCard_triggerGuard00200107" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00200107', 'Purple Anodized')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #800080;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Purple Anodized</p>
+                            </div>
+                        </div>
+
+                        <!-- Red -->
+                        <div id="variantCard_triggerGuard00200108" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00200108', 'Red')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #DC143C;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Red</p>
+                            </div>
+                        </div>
+
+                        <!-- Robbins Egg Blue -->
+                        <div id="variantCard_triggerGuard00200109" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00200109', 'Robbins Egg Blue')">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #00CED1;"></div>
+                                <p class="text-xs font-medium text-center text-apple-gray">Robbins Egg Blue</p>
+                            </div>
+                        </div>
+
+                        <!-- Tungsten -->
+                        <div id="variantCard_triggerGuard00200110" class="p-3 border border-apple rounded-xl hover:border-slate-300 hover:bg-slate-50 cursor-pointer hover-lift transition-all duration-200 bg-white" onclick="selectVariant('triggerGuard_00200110', 'Tungsten')">
                             <div class="flex flex-col items-center space-y-2">
                                 <div class="w-12 h-12 rounded-lg border border-slate-200" style="background-color: #2F4F4F;"></div>
                                 <p class="text-xs font-medium text-center text-apple-gray">Tungsten</p>
