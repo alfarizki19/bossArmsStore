@@ -49,7 +49,13 @@ const mainMenuID = {
     menuVariant_trigger002001: "menuVariant_trigger002001",
     menuTriggerGuardProductMenu: "menuTriggerGuardProductMenu",
     menuVariant_triggerGuard001001: "menuVariant_triggerGuard001001",
-    menuVariant_triggerGuard002001: "menuVariant_triggerGuard002001"
+    menuVariant_triggerGuard002001: "menuVariant_triggerGuard002001",
+    menuBipodProductMenu: "menuBipodProductMenu",
+    menuFrontSightProductMenu: "menuFrontSightProductMenu",
+    menuLaserSightProductMenu: "menuLaserSightProductMenu",
+    menuMLOKAndKeymodRailProductMenu: "menuMLOKAndKeymodRailProductMenu",
+    menuOpticSightProductMenu: "menuOpticSightProductMenu",
+    menuRearSightProductMenu: "menuRearSightProductMenu"
 };
 
 // Function to set menu opened ID
@@ -394,6 +400,12 @@ function goBackToTriggerGuardProductMenu() {
     updatePartMenuVisibility();
 }
 
+// Navigate to gear menu
+function goBackToGearMenu() {
+    navigateToMenu('menuGearAndAccecoriesMenu');
+    updatePartMenuVisibility();
+}
+
 // Navigate to magazine release variant menu (Timber Creek)
 function goBackToMagazineReleaseVariantMenu002001() {
     navigateToMenu('menuVariant_magazineRelease002001');
@@ -416,24 +428,24 @@ function selectProduct(productId, productName, productBrand, productPrice) {
 // Initialize menu navigation
 function initializeMenuNavigation() {
     // Set up main menu navigation buttons
-    const buttonKeMenuUpperGroup = document.getElementById('buttonKeMenuUpperGroup');
-    const buttonKeMenuLowerGroup = document.getElementById('buttonKeMenuLowerGroup');
-    const buttonKeMenuGearAndAccecories = document.getElementById('buttonKeMenuGearAndAccecories');
+    const categoryCard_upperReceiver = document.getElementById('categoryCard_upperReceiver');
+    const categoryCard_lowerReceiver = document.getElementById('categoryCard_lowerReceiver');
+    const categoryCard_tacticalGear = document.getElementById('categoryCard_tacticalGear');
 
-    if (buttonKeMenuUpperGroup) {
-        buttonKeMenuUpperGroup.addEventListener('click', function() {
+    if (categoryCard_upperReceiver) {
+        categoryCard_upperReceiver.addEventListener('click', function() {
             navigateToMenu('menuUpperGroupMenu');
         });
     }
 
-    if (buttonKeMenuLowerGroup) {
-        buttonKeMenuLowerGroup.addEventListener('click', function() {
+    if (categoryCard_lowerReceiver) {
+        categoryCard_lowerReceiver.addEventListener('click', function() {
             navigateToMenu('menuLowerGroupMenu');
         });
     }
 
-    if (buttonKeMenuGearAndAccecories) {
-        buttonKeMenuGearAndAccecories.addEventListener('click', function() {
+    if (categoryCard_tacticalGear) {
+        categoryCard_tacticalGear.addEventListener('click', function() {
             navigateToMenu('menuGearAndAccecoriesMenu');
         });
     }
@@ -499,7 +511,13 @@ function initializeMenuNavigation() {
         'backButton_TriggerVariantMenu002001',
         'backButton_TriggerGuardProductMenu',
         'backButton_TriggerGuardVariantMenu001001',
-        'backButton_TriggerGuardVariantMenu002001'
+        'backButton_TriggerGuardVariantMenu002001',
+        'backButton_BipodProductMenu',
+        'backButton_FrontSightProductMenu',
+        'backButton_LaserSightProductMenu',
+        'backButton_MLOKAndKeymodRailProductMenu',
+        'backButton_OpticSightProductMenu',
+        'backButton_RearSightProductMenu'
     ];
 
     backButtons.forEach(buttonId => {
@@ -529,6 +547,8 @@ function initializeMenuNavigation() {
                     goBackToUpperGroupMenu();
                 } else if (buttonId === 'backButton_MuzzleDeviceVariantMenu002002') {
                     goBackToMuzzleDeviceProductMenu();
+                } else if (buttonId === 'backButton_UpperReceiverMenu') {
+                    goBackToUpperGroupMenu();
                 } else if (buttonId === 'backButton_UpperReceiverVariantMenu001001') {
                     goBackToUpperReceiverProductMenu();
                 } else if (buttonId === 'backButton_BoltCatchProductMenu') {
@@ -591,6 +611,18 @@ function initializeMenuNavigation() {
                     goBackToTriggerGuardProductMenu();
                 } else if (buttonId === 'backButton_TriggerGuardVariantMenu002001') {
                     goBackToTriggerGuardProductMenu();
+                } else if (buttonId === 'backButton_BipodProductMenu') {
+                    goBackToGearMenu();
+                } else if (buttonId === 'backButton_FrontSightProductMenu') {
+                    goBackToGearMenu();
+                } else if (buttonId === 'backButton_LaserSightProductMenu') {
+                    goBackToGearMenu();
+                } else if (buttonId === 'backButton_MLOKAndKeymodRailProductMenu') {
+                    goBackToGearMenu();
+                } else if (buttonId === 'backButton_OpticSightProductMenu') {
+                    goBackToGearMenu();
+                } else if (buttonId === 'backButton_RearSightProductMenu') {
+                    goBackToGearMenu();
                 } else {
                     goBackToMenu();
                 }
@@ -776,5 +808,6 @@ window.goBackToStockProductMenu = goBackToStockProductMenu;
 window.goBackToTakedownPinSetProductMenu = goBackToTakedownPinSetProductMenu;
 window.goBackToTriggerProductMenu = goBackToTriggerProductMenu;
 window.goBackToTriggerGuardProductMenu = goBackToTriggerGuardProductMenu;
+window.goBackToGearMenu = goBackToGearMenu;
 window.selectProduct = selectProduct;
 window.selectVariant = selectVariant;
