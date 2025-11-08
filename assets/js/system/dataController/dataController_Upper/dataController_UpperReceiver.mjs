@@ -1,7 +1,13 @@
 // === dataController_UpperReceiver.mjs ===
 // Upper Receiver UI Controller (Upper Category) — one product with variants
+
+console.log("📦 Loading dataController_UpperReceiver.mjs...");
+
 // Import model controller functions
 import { updateModel_UpperReceiver, handleUpperReceiverSelection } from '../../modelController/modelController_Upper/modelController_UpperReceiver.mjs';
+
+console.log("✅ dataController_UpperReceiver.mjs loaded");
+
 function ur_setText(id, text) {
 	const el = document.getElementById(id);
 	if (el) el.textContent = text;
@@ -135,7 +141,9 @@ export function uiData_UpperReceiver() {
 	const productCard = document.getElementById(productCardId);
 	if (productCard) {
 		ur_addClass(productCardId, "active");
+		console.log("✅ Upper Receiver: Added active class to", productCardId);
 	} else {
+		console.warn("⚠️ Upper Receiver: productCard not found:", productCardId);
 	}
 	
 	// Show selected variant image, hide others
@@ -232,8 +240,11 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
+			console.log("🎯 Upper Receiver: Start button clicked");
+			
 			// Check if data is available
 			if (!window.part || !window.part.upperReceiver) {
+				console.error("❌ Upper Receiver data not loaded yet");
 				return;
 			}
 			
@@ -258,8 +269,13 @@ function setupStartButtonListener() {
 					window.renderTotals();
 				}, 100);
 			}
+			
+			console.log("✅ Upper Receiver: Initialized with default 00100101");
 		}, true); // Use capture phase
+		
+		console.log("✅ Upper Receiver: Start button listener attached");
 	} else {
+		console.warn("⚠️ Upper Receiver: loader-start-button not found");
 	}
 }
 
@@ -294,6 +310,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "upperReceiver001001" + k;
+				console.log(`🎯 Variant card clicked: ${itemsID}`);
 				handleUpperReceiverSelection(itemsID);
 				
 				// Update total cost
@@ -305,6 +322,8 @@ function setupVariantCardListeners() {
 			}, true); // Use capture phase
 		}
 	}
+	
+	console.log("✅ Upper Receiver: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -322,8 +341,11 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_UpperReceiver();
+			console.log("✅ Upper Receiver: Summary cards updated");
 		});
+		console.log("✅ Upper Receiver: Summary chart button listener attached");
 	} else {
+		console.warn("⚠️ Upper Receiver: summaryChartButton not found");
 	}
 }
 

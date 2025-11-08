@@ -1,5 +1,8 @@
 // === dataController_Bipod.mjs ===
 // Gear & Acc: Bipod controller (with MLOK-for-Bipod linkage)
+
+console.log("📦 Loading dataController_Bipod.mjs...");
+
 // Import model controller functions (if exists)
 let updateModel_Bipod = () => {};
 let handleBipodSelection = () => {};
@@ -11,7 +14,11 @@ try {
 	handleBipodSelection = modelModule.handleBipodSelection || handleBipodSelection;
 	handleBipodToggle = modelModule.handleBipodToggle || handleBipodToggle;
 } catch(e) {
+	console.log("ℹ️ Bipod: Model controller not found, using empty functions");
 }
+
+console.log("✅ dataController_Bipod.mjs loaded");
+
 // Helper functions
 function bp_get(id){ return document.getElementById(id); }
 function bp_setText(id, text){ const el=bp_get(id); if(el) el.textContent=text; }
@@ -144,6 +151,8 @@ if (document.readyState === 'loading') {
 }
 
 function setupProductCardListeners() {
+	console.log("🔧 Bipod: Setting up product card listeners...");
+	
 	// No bipod
 	const noBtn = bp_get('productCard_NoSelected_bipod');
 	if(noBtn){ 
@@ -246,9 +255,12 @@ function setupProductCardListeners() {
 			
 			// Update 3D model
 			const itemsID = "bipod00100101";
+			console.log(`🎯 Part button clicked: ${itemsID}`);
 			handleBipodSelection(itemsID);
 		}, true);
 	}
+	
+	console.log("✅ Bipod: Product card listeners attached");
 }
 
 // ===== Start Button Listener =====
@@ -265,8 +277,11 @@ function setupStartButtonListener() {
 	const btn = document.getElementById("loader-start-button");
 	if (btn) {
 		btn.addEventListener("click", function (e) {
+			console.log("🎯 Bipod: Start button clicked - Resetting variables");
+			
 			// Check if data is available
 			if (!window.part || !window.part.bipod) {
+				console.error("❌ Bipod data not loaded yet");
 				return;
 			}
 			
@@ -293,7 +308,11 @@ function setupStartButtonListener() {
 			if (window.uiData_mlokForBipod) {
 				window.uiData_mlokForBipod();
 			}
+			
+			console.log("✅ Bipod: Variables reset");
 		}, true);
+		
+		console.log("✅ Bipod: Start button listener attached");
 	}
 }
 

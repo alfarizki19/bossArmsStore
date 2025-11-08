@@ -1,7 +1,13 @@
 // === dataController_EndPlate.mjs ===
 // End Plate UI Controller (Lower Category) — two products with many variants
+
+console.log("📦 Loading dataController_EndPlate.mjs...");
+
 // Import model controller functions
 import { updateModel_EndPlate, handleEndPlateSelection } from '../../modelController/modelController_Lower/modelController_EndPlate.mjs';
+
+console.log("✅ dataController_EndPlate.mjs loaded");
+
 function ep_setText(id, text) {
 	const el = document.getElementById(id);
 	if (el) el.textContent = text;
@@ -323,13 +329,17 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
+			console.log("🎯 End Plate: Start button clicked");
+			
 			// Validate viewer is ready before configuration
 			if (!window.sketchfabViewerReady) {
+				console.warn("❌ End Plate: Cannot configure - Sketchfab viewer is not ready yet");
 				return;
 			}
 			
 			// Check if data is available
 			if (!window.part || !window.part.endPlate) {
+				console.error("❌ End Plate data not loaded yet");
 				return;
 			}
 			
@@ -355,8 +365,13 @@ function setupStartButtonListener() {
 					window.renderTotals();
 				}, 100);
 			}
+			
+			console.log("✅ End Plate: Initialized with default 00100101");
 		}, true); // Use capture phase
+		
+		console.log("✅ End Plate: Start button listener attached");
 	} else {
+		console.warn("⚠️ End Plate: loader-start-button not found");
 	}
 }
 
@@ -390,6 +405,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "endPlate001001" + k;
+				console.log(`🎯 Variant card clicked: ${itemsID}`);
 				handleEndPlateSelection(itemsID);
 				
 				// Update total cost
@@ -422,6 +438,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "endPlate002001" + k;
+				console.log(`🎯 Variant card clicked: ${itemsID}`);
 				handleEndPlateSelection(itemsID);
 				
 				// Update total cost
@@ -433,6 +450,8 @@ function setupVariantCardListeners() {
 			}, true); // Use capture phase
 		}
 	}
+	
+	console.log("✅ End Plate: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -450,8 +469,11 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_EndPlate();
+			console.log("✅ End Plate: Summary cards updated");
 		});
+		console.log("✅ End Plate: Summary chart button listener attached");
 	} else {
+		console.warn("⚠️ End Plate: summaryChartButton not found");
 	}
 }
 

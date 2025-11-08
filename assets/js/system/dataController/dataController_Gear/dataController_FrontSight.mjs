@@ -1,5 +1,8 @@
 // === dataController_FrontSight.mjs ===
 // Front Sight UI Controller (Gear Category) — 2 products with "No Selected" option
+
+console.log("📦 Loading dataController_FrontSight.mjs...");
+
 // Import model controller functions (if exists)
 let updateModel_FrontSight = () => {};
 let handleFrontSightSelection = () => {};
@@ -9,7 +12,11 @@ try {
 	updateModel_FrontSight = modelModule.updateModel_FrontSight || updateModel_FrontSight;
 	handleFrontSightSelection = modelModule.handleFrontSightSelection || handleFrontSightSelection;
 } catch(e) {
+	console.log("ℹ️ Front Sight: Model controller not found, using empty functions");
 }
+
+console.log("✅ dataController_FrontSight.mjs loaded");
+
 function fs_setText(id, text) {
 	const el = document.getElementById(id);
 	if (el) el.textContent = text;
@@ -57,6 +64,7 @@ function fs_zeroFrontSightQuantities() {
 			if (product002.variants["01"]) product002.variants["01"].quantity = 0;
 		}
 	} catch(e) {
+		console.warn("⚠️ Front Sight: Error zeroing quantities", e);
 	}
 }
 
@@ -99,6 +107,8 @@ export function uiReset_frontSight() {
 
 // Update UI based on selected FrontSight
 export function uiData_FrontSight() {
+	console.log("🔧 Front Sight: uiData_FrontSight called");
+	
 	let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
 
 	// Check 00100101
@@ -111,6 +121,7 @@ export function uiData_FrontSight() {
 			productTitle = product.productTitle;
 			brand = group.brand;
 			variantTitle = selected.variantTitle;
+			console.log("✅ Front Sight: Found selected 00100101");
 		}
 	}
 	
@@ -124,10 +135,12 @@ export function uiData_FrontSight() {
 			productTitle = product.productTitle;
 			brand = group.brand;
 			variantTitle = selected.variantTitle;
+			console.log("✅ Front Sight: Found selected 00200101");
 		}
 	}
 
 	if (!selected || !cardSuffix) {
+		console.warn("⚠️ Front Sight: No selected item found - setting NoSelected active");
 		// Reset all product cards
 		fs_resetAllProductCards();
 		// Set NoSelected active
@@ -142,6 +155,9 @@ export function uiData_FrontSight() {
 		fs_hideElement("summaryItemsCard_frontSight_00200101");
 		return;
 	}
+	
+	console.log(`✅ Front Sight: Processing selected item ${cardSuffix}`);
+
 	const productGroup = cardSuffix.substring(0, 6); // "001001" or "002001"
 
 	// Update selected product card - active
@@ -149,6 +165,8 @@ export function uiData_FrontSight() {
 	fs_resetAllProductCards();
 	
 	fs_addClass("productCard_frontSight_" + productGroup, "active");
+	console.log(`✅ Front Sight: Set productCard_frontSight_${productGroup} active`);
+	
 	// Update product card name and price
 	const group = window.part.frontSight[productGroup.substring(0, 3)];
 	const product = group.products[productGroup.substring(3, 6)];
@@ -176,7 +194,9 @@ export function uiData_FrontSight() {
 	const partCardImg = document.getElementById(partCardImgId);
 	if (partCardImg) {
 		partCardImg.style.display = "block";
+		console.log(`✅ Front Sight: Showing part card image ${partCardImgId}`);
 	} else {
+		console.warn(`⚠️ Front Sight: partCardImg ${partCardImgId} not found`);
 	}
 
 	// Update part card - format: brand + productTitle
@@ -199,6 +219,8 @@ export function uiData_FrontSight() {
 
 // Update summary cards based on quantity (called by summaryChartButton)
 export function updateSummaryCards_FrontSight() {
+	console.log("🔧 Front Sight: updateSummaryCards_FrontSight called");
+	
 	// 00100101
 	{
 		const product = window.part.frontSight["001"].products["001"];
@@ -236,8 +258,11 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
+			console.log("🎯 Front Sight: Start button clicked");
+			
 			// Check if data is available
 			if (!window.part || !window.part.frontSight) {
+				console.error("❌ Front Sight data not loaded yet");
 				return;
 			}
 			
@@ -259,8 +284,13 @@ function setupStartButtonListener() {
 					window.renderTotals();
 				}, 100);
 			}
+			
+			console.log("✅ Front Sight: Initialized with default No Selected");
 		}, true); // Use capture phase
+		
+		console.log("✅ Front Sight: Start button listener attached");
 	} else {
+		console.warn("⚠️ Front Sight: loader-start-button not found");
 	}
 }
 
@@ -276,11 +306,16 @@ if (document.readyState === 'loading') {
 }
 
 function setupProductCardListeners() {
+	console.log("🔧 Front Sight: Setting up product card listeners...");
+	
 	// No Selected - reset all FrontSight quantities
 	const cardNoSelected = document.getElementById("productCard_NoSelected_frontSight");
 	if (cardNoSelected) {
+		console.log("✅ Front Sight: Found productCard_NoSelected_frontSight");
 		// Use capture phase to run before onclick
 		cardNoSelected.addEventListener("click", function (e) {
+			console.log("🎯 Front Sight: productCard_NoSelected_frontSight clicked");
+			
 			// Reset all FrontSight quantities
 			fs_zeroFrontSightQuantities();
 			
@@ -306,13 +341,17 @@ function setupProductCardListeners() {
 			}
 		}, true); // Use capture phase
 	} else {
+		console.warn("⚠️ Front Sight: productCard_NoSelected_frontSight not found");
 	}
 	
 	// 00100101 - Front Folding BattleSight
 	const card001001 = document.getElementById("productCard_frontSight_001001");
 	if (card001001) {
+		console.log("✅ Front Sight: Found productCard_frontSight_001001");
 		// Use capture phase to run before onclick
 		card001001.addEventListener("click", function (e) {
+			console.log("🎯 Front Sight: productCard_frontSight_001001 clicked");
+			
 			// Reset all FrontSight quantities
 			fs_zeroFrontSightQuantities();
 			
@@ -324,6 +363,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "frontSight00100101";
+			console.log(`🎯 Product card clicked: ${itemsID}`);
 			handleFrontSightSelection(itemsID);
 			
 			// Update total cost
@@ -334,13 +374,17 @@ function setupProductCardListeners() {
 			}
 		}, true); // Use capture phase
 	} else {
+		console.warn("⚠️ Front Sight: productCard_frontSight_001001 not found");
 	}
 	
 	// 00200101 - QDS Same Plane Front Sight YHM 5030
 	const card002001 = document.getElementById("productCard_frontSight_002001");
 	if (card002001) {
+		console.log("✅ Front Sight: Found productCard_frontSight_002001");
 		// Use capture phase to run before onclick
 		card002001.addEventListener("click", function (e) {
+			console.log("🎯 Front Sight: productCard_frontSight_002001 clicked");
+			
 			// Reset all FrontSight quantities
 			fs_zeroFrontSightQuantities();
 			
@@ -352,6 +396,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "frontSight00200101";
+			console.log(`🎯 Product card clicked: ${itemsID}`);
 			handleFrontSightSelection(itemsID);
 			
 			// Update total cost
@@ -362,7 +407,10 @@ function setupProductCardListeners() {
 			}
 		}, true); // Use capture phase
 	} else {
+		console.warn("⚠️ Front Sight: productCard_frontSight_002001 not found");
 	}
+	
+	console.log("✅ Front Sight: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -382,8 +430,11 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_FrontSight();
+			console.log("✅ Front Sight: Summary cards updated");
 		});
+		console.log("✅ Front Sight: Summary chart button listener attached");
 	} else {
+		console.warn("⚠️ Front Sight: summaryChartButton not found");
 	}
 }
 
@@ -409,3 +460,5 @@ export function getFrontSightTotalPrice() {
 	const v = getSelectedFrontSight();
 	return v ? v.price : 0;
 }
+
+console.log("✅ dataController_FrontSight.mjs: All functions defined, event listeners will be attached");

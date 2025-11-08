@@ -3,10 +3,12 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-');
+console.log('📋 Safety model controller loaded (implemented version)');
 
 // Update Safety model based on current selection
 export function updateModel_Safety() {
+  console.log('🔧 Safety model update - checking current selection');
+  
   // Get current selected safety from dataController
   const selected = getSelectedSafety();
   if (selected) {
@@ -17,15 +19,19 @@ export function updateModel_Safety() {
       
       // Show selected variant
       showModel(modelID);
+      console.log(`✅ Showing Safety: ${selected.id} -> ${modelID}`);
     }
   } else {
     // No selection, hide all variants
     hideAllSafetyVariants();
+    console.log('👁️‍🗨️ No Safety selected - hiding all variants');
   }
 }
 
 // Handle Safety selection from UI
 export function handleSafetySelection(itemsID) {
+  console.log(`🎯 Safety selection: ${itemsID}`);
+  
   // Hide all safety variants first
   hideAllSafetyVariants();
   
@@ -33,7 +39,9 @@ export function handleSafetySelection(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
+    console.log(`✅ Showing Safety: ${itemsID} -> ${modelID}`);
   } else {
+    console.warn(`⚠️ Model ID not found for Safety: ${itemsID}`);
   }
 }
 

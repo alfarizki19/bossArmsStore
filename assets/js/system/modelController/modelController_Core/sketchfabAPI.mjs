@@ -13,12 +13,18 @@ window.modelState = modelState;
 export function initSketchfab(api) {
     apiGlobal = api;
     window.sketchfabAPIReady = true;
+    console.log('✅ Sketchfab API initialized for M4_v6');
+    console.log('✅ window.sketchfabAPIReady set to true');
+    
     // Debug: Get list of all models in scene
     api.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Failed to get node map:', err);
             return;
         }
+        console.log('📋 Available models in M4_v6 scene:');
         Object.values(nodes).forEach(node => {
+            console.log(`- Name: ${node.name}, InstanceID: ${node.instanceID}`);
         });
     });
 }
@@ -26,6 +32,7 @@ export function initSketchfab(api) {
 // Get Sketchfab API instance (for use by other modules)
 export function getSketchfabAPI() {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return null;
     }
     return apiGlobal;
@@ -34,24 +41,28 @@ export function getSketchfabAPI() {
 // Basic function to show specific model
 export function showModel(modelID) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return false;
     }
     
     // Update model state
     modelState[modelID] = 1;
-    `);
+    console.log(`📝 Model state updated: ${modelID} = 1 (visible)`);
     
     // Apply to 3D scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return false;
         }
         
         const node = Object.values(nodes).find((n) => n.name === modelID);
         if (node) {
             apiGlobal.show(node.instanceID);
+            console.log(`✅ ${modelID} shown`);
             return true;
         } else {
+            console.warn(`⚠️ ${modelID} not found in scene`);
             return false;
         }
     });
@@ -60,24 +71,28 @@ export function showModel(modelID) {
 // Basic function to hide specific model
 export function hideModel(modelID) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return false;
     }
     
     // Update model state
     modelState[modelID] = 0;
-    `);
+    console.log(`📝 Model state updated: ${modelID} = 0 (hidden)`);
     
     // Apply to 3D scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return false;
         }
         
         const node = Object.values(nodes).find((n) => n.name === modelID);
         if (node) {
             apiGlobal.hide(node.instanceID);
+            console.log(`👁️‍🗨️ ${modelID} hidden`);
             return true;
         } else {
+            console.warn(`⚠️ ${modelID} not found in scene`);
             return false;
         }
     });
@@ -96,11 +111,13 @@ export function toggleModel(modelID) {
 // Basic function to hide all models
 export function hideAllModels() {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
     
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
@@ -108,31 +125,44 @@ export function hideAllModels() {
             apiGlobal.hide(node.instanceID);
             modelState[node.name] = 0;
         });
+        
+        console.log('👁️‍🗨️ All models hidden');
     });
 }
 
 // Show/Hide objects in 3D scene (like the working project)
 export function objectShowHideSystem() {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized for show/hide system');
         return;
     }
+    
+    console.log('🔄 Updating show/hide system...');
+    console.log('📊 Current model state:', modelState);
+    
     // Debug: Count visible vs hidden models
     const visibleModels = Object.entries(modelState).filter(([key, value]) => value === 1);
     const hiddenModels = Object.entries(modelState).filter(([key, value]) => value === 0);
+    
+    console.log(`📊 Visible models: ${visibleModels.length}, Hidden models: ${hiddenModels.length}`);
+    
     if (visibleModels.length > 0) {
-        => key));
+        console.log('👁️ Visible models:', visibleModels.map(([key]) => key));
     }
     
     // Get all nodes in scene and apply model state
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
-        .length} nodes in scene`);
+        console.log(`📋 Found ${Object.keys(nodes).length} nodes in scene`);
         
         // Debug: List all available node names
         const nodeNames = Object.values(nodes).map(node => node.name);
+        console.log('📋 Available node names:', nodeNames);
+        
         let successCount = 0;
         let errorCount = 0;
         
@@ -146,28 +176,34 @@ export function objectShowHideSystem() {
                     if (visibility === 1) {
                         // Show model
                         apiGlobal.show(node.instanceID);
-                        `);
+                        console.log(`✅ Showing: ${modelID} (InstanceID: ${node.instanceID})`);
                         successCount++;
                     } else {
                         // Hide model
                         apiGlobal.hide(node.instanceID);
-                        `);
+                        console.log(`👁️‍🗨️ Hiding: ${modelID} (InstanceID: ${node.instanceID})`);
                         successCount++;
                     }
                 } catch (error) {
+                    console.error(`❌ Error updating ${modelID}:`, error);
                     errorCount++;
                 }
             } else {
+                console.warn(`⚠️ Model ${modelID} not found in scene`);
                 errorCount++;
             }
         }
+        
+        console.log(`✅ Show/Hide system updated: ${successCount} success, ${errorCount} errors`);
+        
         // Debug: Check if models are actually visible
         setTimeout(() => {
+            console.log('🔍 Debug: Checking model visibility after 1 second...');
             Object.entries(modelState).forEach(([modelID, visibility]) => {
                 if (visibility === 1) {
                     const node = Object.values(nodes).find((n) => n.name === modelID);
                     if (node) {
-                        `);
+                        console.log(`🔍 Model ${modelID} should be visible (InstanceID: ${node.instanceID})`);
                     }
                 }
             });
@@ -178,35 +214,48 @@ export function objectShowHideSystem() {
 // Debug function to show all available Sketchfab resources
 export function debugSketchfabResources() {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
+    
+    console.log('🔍 DEBUG: Sketchfab Resources Check');
+    
     // Get all nodes
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
+        
+        console.log('📋 Available models in scene:');
         Object.values(nodes).forEach(node => {
-            `);
+            console.log(`- ${node.name} (InstanceID: ${node.instanceID})`);
         });
     });
     
     // Get all textures
     apiGlobal.getTextureList(function (err, textures) {
         if (err) {
+            console.error('❌ Error getting texture list:', err);
             return;
         }
+        
+        console.log('🎨 Available textures:');
         textures.forEach(texture => {
-            `);
+            console.log(`- ${texture.name} (UID: ${texture.uid})`);
         });
     });
     
     // Get all materials
     apiGlobal.getMaterialList(function (err, materials) {
         if (err) {
+            console.error('❌ Error getting material list:', err);
             return;
         }
+        
+        console.log('🔧 Available materials:');
         materials.forEach(material => {
-            .join(', ')})`);
+            console.log(`- ${material.name} (Channels: ${Object.keys(material.channels || {}).join(', ')})`);
         });
     });
 }
@@ -436,6 +485,7 @@ export function getModelIDFromItemsID(itemsID) {
     };
     
     const result = modelIDMap[itemsID] || null;
+    console.log(`🔗 Mapping ${itemsID} -> ${result}`);
     return result;
 }
 
@@ -567,6 +617,9 @@ export function initializeModelState() {
     allModelIDs.forEach(modelID => {
         modelState[modelID] = 0;
     });
+    
+    console.log(`📊 All ${allModelIDs.length} models initialized to hidden state`);
+    
     // Set initial parts to visible (1) - Using working configuration from v6001002
     const initialParts = [
         // Upper parts
@@ -599,25 +652,38 @@ export function initializeModelState() {
     initialParts.forEach(modelID => {
         modelState[modelID] = 1;
     });
-    `);
+    
+    console.log(`📊 Model state initialized with ${allModelIDs.length} models`);
+    console.log(`🎯 Initial parts set to visible: ${initialParts.length} models`);
+    console.log(`👁️ Initial visible models:`, initialParts);
+    console.log(`🔄 Ready to show initial objects via objectShowHideSystem()`);
     
     // Debug: Show current modelState
+    console.log('📊 Current modelState:', modelState);
+    
     // Debug: Count visible models
     const visibleCount = Object.values(modelState).filter(state => state === 1).length;
+    console.log(`📊 Visible models count: ${visibleCount}`);
+    
     // Signal that initial models are ready
     window.initialModelsReady = true;
+    console.log('✅ window.initialModelsReady set to true');
+    
     // Also signal that model state is initialized
     window.modelStateInitialized = true;
+    console.log('✅ window.modelStateInitialized set to true');
 }
 
 // Test function to show all models (for debugging)
 export function testShowAllModels() {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
     
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
@@ -625,17 +691,21 @@ export function testShowAllModels() {
             apiGlobal.show(node.instanceID);
             modelState[node.name] = 1;
         });
+        
+        console.log('👁️ All models shown for testing');
     });
 }
 
 // Test function to hide all models (for debugging)
 export function testHideAllModels() {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
     
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
@@ -643,12 +713,15 @@ export function testHideAllModels() {
             apiGlobal.hide(node.instanceID);
             modelState[node.name] = 0;
         });
+        
+        console.log('👁️‍🗨️ All models hidden for testing');
     });
 }
 
 // Debug function to check if initial models exist in scene
 export function debugCheckModelsInScene() {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
     
@@ -681,8 +754,11 @@ export function debugCheckModelsInScene() {
     
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map for debug check:', err);
             return;
         }
+        
+        console.log('🔍 DEBUG: Checking if initial models exist in scene...');
         const nodeNames = Object.values(nodes).map(node => node.name);
         
         let foundCount = 0;
@@ -690,13 +766,20 @@ export function debugCheckModelsInScene() {
         
         initialParts.forEach(modelID => {
             if (nodeNames.includes(modelID)) {
+                console.log(`✅ Found: ${modelID}`);
                 foundCount++;
             } else {
+                console.log(`❌ Missing: ${modelID}`);
                 missingCount++;
             }
         });
+        
+        console.log(`🔍 Initial models check: ${foundCount} found, ${missingCount} missing`);
+        
         if (missingCount > 0) {
+            console.warn(`⚠️ ${missingCount} initial models are missing from scene!`);
         } else {
+            console.log('✅ All initial models found in scene');
         }
     });
 }
@@ -704,19 +787,28 @@ export function debugCheckModelsInScene() {
 // Function to update muzzle device safely
 export function updateMuzzleDevice(newItemsID) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return false;
     }
+    
+    console.log(`🔧 Updating muzzle device to: ${newItemsID}`);
+    
     // Get the new model ID
     const newModelID = getModelIDFromItemsID(newItemsID);
     if (!newModelID) {
+        console.error(`❌ No model ID found for muzzle device: ${newItemsID}`);
         return false;
     }
+    
+    console.log(`🔗 Muzzle device mapping: ${newItemsID} -> ${newModelID}`);
+    
     // Current muzzle device (default)
     const currentMuzzleDevice = 'modelID_muzzleDevice00100101';
     
     // Check if new model exists in scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map for muzzle device update:', err);
             return;
         }
         
@@ -724,19 +816,29 @@ export function updateMuzzleDevice(newItemsID) {
         const exists = nodeNames.includes(newModelID);
         
         if (!exists) {
-            ));
+            console.error(`❌ Muzzle device model ${newModelID} not found in scene!`);
+            console.log('💡 Available muzzle device nodes:', nodeNames.filter(name => name.includes('muzzleDevice')));
             return false;
         }
+        
+        console.log(`✅ Muzzle device model ${newModelID} found in scene`);
+        
         // Hide current muzzle device if it's visible
         if (modelState[currentMuzzleDevice] === 1) {
             hideModel(currentMuzzleDevice);
+            console.log(`👁️‍🗨️ Hidden current muzzle device: ${currentMuzzleDevice}`);
         }
         
         // Show new muzzle device
         showModel(newModelID);
+        console.log(`✅ Showing new muzzle device: ${newModelID}`);
+        
         // Update modelState
         modelState[currentMuzzleDevice] = 0;
         modelState[newModelID] = 1;
+        
+        console.log('✅ Muzzle device updated successfully');
+        console.log(`📊 Current muzzle device state: ${newModelID} = visible`);
     });
     
     return true;
@@ -744,23 +846,32 @@ export function updateMuzzleDevice(newItemsID) {
 
 // Function to test all muzzle device variants (updated to use existing devices only)
 export function testAllMuzzleDevices() {
-    to avoid missing models');
+    console.log('🧪 Testing all muzzle device variants...');
+    console.log('💡 This will now use testExistingMuzzleDevices() to avoid missing models');
     testExistingMuzzleDevices();
 }
 
 // Debug function to check which muzzle devices actually exist in scene
 export function debugMuzzleDevicesInScene() {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
+    
+    console.log('🔍 DEBUG: Checking which muzzle devices exist in scene...');
+    
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
         const nodeNames = Object.values(nodes).map(node => node.name);
         const muzzleDeviceNodes = nodeNames.filter(name => name.includes('muzzleDevice'));
+        
+        console.log('📋 Muzzle device nodes found in scene:');
         muzzleDeviceNodes.forEach(nodeName => {
+            console.log(`  ✅ ${nodeName}`);
         });
         
         // Check our expected muzzle devices
@@ -772,23 +883,33 @@ export function debugMuzzleDevicesInScene() {
             'modelID_muzzledevice00200201',  // Fixed: lowercase 'muzzledevice'
             'modelID_muzzledevice00200202'   // Fixed: lowercase 'muzzledevice'
         ];
+        
+        console.log('🔍 Checking expected muzzle devices:');
         expectedMuzzleDevices.forEach(modelID => {
             const exists = nodeNames.includes(modelID);
             const status = exists ? '✅ EXISTS' : '❌ MISSING';
+            console.log(`  ${status}: ${modelID}`);
         });
         
         // Show available vs expected
+        console.log(`📊 Found ${muzzleDeviceNodes.length} muzzle device nodes in scene`);
+        console.log(`📊 Expected ${expectedMuzzleDevices.length} muzzle device models`);
     });
 }
 
 // Updated function to test only existing muzzle devices
 export function testExistingMuzzleDevices() {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
+    
+    console.log('🧪 Testing only existing muzzle devices...');
+    
     // First check which ones exist
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
@@ -806,7 +927,11 @@ export function testExistingMuzzleDevices() {
             const modelID = getModelIDFromItemsID(itemsID);
             return nodeNames.includes(modelID);
         });
+        
+        console.log(`🧪 Found ${existingMuzzleDevices.length} existing muzzle devices:`, existingMuzzleDevices);
+        
         if (existingMuzzleDevices.length === 0) {
+            console.warn('⚠️ No muzzle devices found in scene!');
             return;
         }
         
@@ -814,12 +939,15 @@ export function testExistingMuzzleDevices() {
         
         function testNextMuzzleDevice() {
             if (testIndex >= existingMuzzleDevices.length) {
+                console.log('🧪 All existing muzzle device tests completed');
                 // Reset to default
                 updateMuzzleDevice('muzzleDevice00100101');
                 return;
             }
             
             const itemsID = existingMuzzleDevices[testIndex];
+            console.log(`🧪 Testing muzzle device ${testIndex + 1}/${existingMuzzleDevices.length}: ${itemsID}`);
+            
             updateMuzzleDevice(itemsID);
             
             testIndex++;
@@ -835,6 +963,8 @@ export function testExistingMuzzleDevices() {
 
 // Function to test all available muzzle devices individually
 export function testAllAvailableMuzzleDevices() {
+    console.log('🧪 Testing all available muzzle devices individually...');
+    
     const availableMuzzleDevices = [
         'muzzleDevice00100101',  // Default - ✅ CONFIRMED
         'muzzleDevice00100201',  // ✅ CONFIRMED
@@ -843,29 +973,38 @@ export function testAllAvailableMuzzleDevices() {
         'muzzleDevice00200201',  // Test this
         'muzzleDevice00200202'   // Test this
     ];
+    
+    console.log('📋 Available muzzle devices to test:');
     availableMuzzleDevices.forEach((itemsID, index) => {
         const status = index < 3 ? '✅ CONFIRMED' : '🧪 TO TEST';
+        console.log(`  ${status}: ${itemsID}`);
     });
     
     // Test each one
     availableMuzzleDevices.forEach((itemsID, index) => {
         setTimeout(() => {
+            console.log(`🧪 Testing ${index + 1}/${availableMuzzleDevices.length}: ${itemsID}`);
             updateMuzzleDevice(itemsID);
         }, index * 3000); // 3 seconds between each test
     });
     
     // Reset to default after all tests
     setTimeout(() => {
+        console.log('🔄 Resetting to default muzzle device...');
         updateMuzzleDevice('muzzleDevice00100101');
     }, availableMuzzleDevices.length * 3000 + 1000);
 }
 
 // Function to test specific muzzle device with confirmation
 export function testSpecificMuzzleDevice(itemsID) {
+    console.log(`🧪 Testing specific muzzle device: ${itemsID}`);
+    
     const result = updateMuzzleDevice(itemsID);
     
     if (result) {
+        console.log(`✅ Successfully updated to: ${itemsID}`);
     } else {
+        console.log(`❌ Failed to update to: ${itemsID}`);
     }
     
     return result;
@@ -873,6 +1012,8 @@ export function testSpecificMuzzleDevice(itemsID) {
 
 // Function to get list of working muzzle devices
 export function getWorkingMuzzleDevices() {
+    console.log('📋 Working muzzle devices:');
+    
     const workingMuzzleDevices = [
         'muzzleDevice00100101',  // Default
         'muzzleDevice00100201',  // Confirmed working
@@ -880,7 +1021,10 @@ export function getWorkingMuzzleDevices() {
     ];
     
     workingMuzzleDevices.forEach((itemsID, index) => {
+        console.log(`  ${index + 1}. ${itemsID}`);
     });
+    
+    console.log('🧪 Muzzle devices to test:');
     const toTestMuzzleDevices = [
         'muzzleDevice00100302',
         'muzzleDevice00200201',
@@ -888,6 +1032,7 @@ export function getWorkingMuzzleDevices() {
     ];
     
     toTestMuzzleDevices.forEach((itemsID, index) => {
+        console.log(`  ${index + 1}. ${itemsID}`);
     });
     
     return {
@@ -899,19 +1044,28 @@ export function getWorkingMuzzleDevices() {
 // Function to update end plate safely
 export function updateEndPlate(newItemsID) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return false;
     }
+    
+    console.log(`🔧 Updating end plate to: ${newItemsID}`);
+    
     // Get the new model ID
     const newModelID = getModelIDFromItemsID(newItemsID);
     if (!newModelID) {
+        console.error(`❌ No model ID found for end plate: ${newItemsID}`);
         return false;
     }
+    
+    console.log(`🔗 End plate mapping: ${newItemsID} -> ${newModelID}`);
+    
     // Current end plate (default)
     const currentEndPlate = 'modelID_endPlate00100101';
     
     // Check if new model exists in scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map for end plate update:', err);
             return;
         }
         
@@ -919,19 +1073,29 @@ export function updateEndPlate(newItemsID) {
         const exists = nodeNames.includes(newModelID);
         
         if (!exists) {
-            ));
+            console.error(`❌ End plate model ${newModelID} not found in scene!`);
+            console.log('💡 Available end plate nodes:', nodeNames.filter(name => name.includes('endPlate')));
             return false;
         }
+        
+        console.log(`✅ End plate model ${newModelID} found in scene`);
+        
         // Hide current end plate if it's visible
         if (modelState[currentEndPlate] === 1) {
             hideModel(currentEndPlate);
+            console.log(`👁️‍🗨️ Hidden current end plate: ${currentEndPlate}`);
         }
         
         // Show new end plate
         showModel(newModelID);
+        console.log(`✅ Showing new end plate: ${newModelID}`);
+        
         // Update modelState
         modelState[currentEndPlate] = 0;
         modelState[newModelID] = 1;
+        
+        console.log('✅ End plate updated successfully');
+        console.log(`📊 Current end plate state: ${newModelID} = visible`);
     });
     
     return true;
@@ -940,16 +1104,24 @@ export function updateEndPlate(newItemsID) {
 // Debug function to check which end plates actually exist in scene
 export function debugEndPlatesInScene() {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
+    
+    console.log('🔍 DEBUG: Checking which end plates exist in scene...');
+    
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
         const nodeNames = Object.values(nodes).map(node => node.name);
         const endPlateNodes = nodeNames.filter(name => name.includes('endPlate'));
+        
+        console.log('📋 End plate nodes found in scene:');
         endPlateNodes.forEach(nodeName => {
+            console.log(`  ✅ ${nodeName}`);
         });
         
         // Check our expected end plates
@@ -972,17 +1144,24 @@ export function debugEndPlatesInScene() {
             'modelID_endPlate00200109',
             'modelID_endPlate00200110'
         ];
+        
+        console.log('🔍 Checking expected end plates:');
         expectedEndPlates.forEach(modelID => {
             const exists = nodeNames.includes(modelID);
             const status = exists ? '✅ EXISTS' : '❌ MISSING';
+            console.log(`  ${status}: ${modelID}`);
         });
         
         // Show available vs expected
+        console.log(`📊 Found ${endPlateNodes.length} end plate nodes in scene`);
+        console.log(`📊 Expected ${expectedEndPlates.length} end plate models`);
     });
 }
 
 // Function to test all available end plates
 export function testAllEndPlates() {
+    console.log('🧪 Testing all available end plates...');
+    
     const availableEndPlates = [
         'endPlate00100101',  // Default
         'endPlate00100102',
@@ -1002,29 +1181,38 @@ export function testAllEndPlates() {
         'endPlate00200109',
         'endPlate00200110'
     ];
+    
+    console.log('📋 Available end plates to test:');
     availableEndPlates.forEach((itemsID, index) => {
         const status = index === 0 ? '✅ DEFAULT' : '🧪 TO TEST';
+        console.log(`  ${status}: ${itemsID}`);
     });
     
     // Test each one
     availableEndPlates.forEach((itemsID, index) => {
         setTimeout(() => {
+            console.log(`🧪 Testing ${index + 1}/${availableEndPlates.length}: ${itemsID}`);
             updateEndPlate(itemsID);
         }, index * 2000); // 2 seconds between each test
     });
     
     // Reset to default after all tests
     setTimeout(() => {
+        console.log('🔄 Resetting to default end plate...');
         updateEndPlate('endPlate00100101');
     }, availableEndPlates.length * 2000 + 1000);
 }
 
 // Function to test specific end plate
 export function testSpecificEndPlate(itemsID) {
+    console.log(`🧪 Testing specific end plate: ${itemsID}`);
+    
     const result = updateEndPlate(itemsID);
     
     if (result) {
+        console.log(`✅ Successfully updated to: ${itemsID}`);
     } else {
+        console.log(`❌ Failed to update to: ${itemsID}`);
     }
     
     return result;
@@ -1033,33 +1221,52 @@ export function testSpecificEndPlate(itemsID) {
 // Universal debug function for any part category
 export function debugPartCategory(partName) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
+    
+    console.log(`🔍 DEBUG: Checking ${partName} parts in scene...`);
+    
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
         const nodeNames = Object.values(nodes).map(node => node.name);
         const partNodes = nodeNames.filter(name => name.toLowerCase().includes(partName.toLowerCase()));
+        
+        console.log(`📋 ${partName} nodes found in scene:`);
         partNodes.forEach(nodeName => {
+            console.log(`  ✅ ${nodeName}`);
         });
+        
+        console.log(`📊 Found ${partNodes.length} ${partName} nodes in scene`);
     });
 }
 
 // Universal update function for any part
 export function updatePart(partName, newItemsID) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return false;
     }
+    
+    console.log(`🔧 Updating ${partName} to: ${newItemsID}`);
+    
     // Get the new model ID
     const newModelID = getModelIDFromItemsID(newItemsID);
     if (!newModelID) {
+        console.error(`❌ No model ID found for ${partName}: ${newItemsID}`);
         return false;
     }
+    
+    console.log(`🔗 ${partName} mapping: ${newItemsID} -> ${newModelID}`);
+    
     // Check if new model exists in scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error(`❌ Error getting node map for ${partName} update:`, err);
             return;
         }
         
@@ -1067,9 +1274,13 @@ export function updatePart(partName, newItemsID) {
         const exists = nodeNames.includes(newModelID);
         
         if (!exists) {
-            .includes(partName.toLowerCase())));
+            console.error(`❌ ${partName} model ${newModelID} not found in scene!`);
+            console.log(`💡 Available ${partName} nodes:`, nodeNames.filter(name => name.toLowerCase().includes(partName.toLowerCase())));
             return false;
         }
+        
+        console.log(`✅ ${partName} model ${newModelID} found in scene`);
+        
         // Find current part (first visible part of this category)
         const currentPart = Object.keys(modelState).find(modelID => 
             modelID.toLowerCase().includes(partName.toLowerCase()) && modelState[modelID] === 1
@@ -1077,15 +1288,21 @@ export function updatePart(partName, newItemsID) {
         
         if (currentPart) {
             hideModel(currentPart);
+            console.log(`👁️‍🗨️ Hidden current ${partName}: ${currentPart}`);
         }
         
         // Show new part
         showModel(newModelID);
+        console.log(`✅ Showing new ${partName}: ${newModelID}`);
+        
         // Update modelState
         if (currentPart) {
             modelState[currentPart] = 0;
         }
         modelState[newModelID] = 1;
+        
+        console.log(`✅ ${partName} updated successfully`);
+        console.log(`📊 Current ${partName} state: ${newModelID} = visible`);
     });
     
     return true;
@@ -1093,29 +1310,39 @@ export function updatePart(partName, newItemsID) {
 
 // Universal test function for any part category
 export function testPartCategory(partName, itemsIDs) {
+    console.log(`🧪 Testing all ${partName} parts...`);
+    
+    console.log(`📋 Available ${partName} parts to test:`);
     itemsIDs.forEach((itemsID, index) => {
         const status = index === 0 ? '✅ DEFAULT' : '🧪 TO TEST';
+        console.log(`  ${status}: ${itemsID}`);
     });
     
     // Test each one
     itemsIDs.forEach((itemsID, index) => {
         setTimeout(() => {
+            console.log(`🧪 Testing ${index + 1}/${itemsIDs.length}: ${itemsID}`);
             updatePart(partName, itemsID);
         }, index * 2000); // 2 seconds between each test
     });
     
     // Reset to default after all tests
     setTimeout(() => {
+        console.log(`🔄 Resetting to default ${partName}...`);
         updatePart(partName, itemsIDs[0]);
     }, itemsIDs.length * 2000 + 1000);
 }
 
 // Function to test specific part
 export function testSpecificPart(partName, itemsID) {
+    console.log(`🧪 Testing specific ${partName}: ${itemsID}`);
+    
     const result = updatePart(partName, itemsID);
     
     if (result) {
+        console.log(`✅ Successfully updated to: ${itemsID}`);
     } else {
+        console.log(`❌ Failed to update to: ${itemsID}`);
     }
     
     return result;
@@ -1124,16 +1351,25 @@ export function testSpecificPart(partName, itemsID) {
 // Function to show specific part by itemsID
 export function showPartByItemsID(itemsID) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return false;
     }
+    
+    console.log(`👁️ Showing part: ${itemsID}`);
+    
     // Get the model ID
     const modelID = getModelIDFromItemsID(itemsID);
     if (!modelID) {
+        console.error(`❌ No model ID found for: ${itemsID}`);
         return false;
     }
+    
+    console.log(`🔗 Mapping: ${itemsID} -> ${modelID}`);
+    
     // Check if model exists in scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
@@ -1141,11 +1377,15 @@ export function showPartByItemsID(itemsID) {
         const exists = nodeNames.includes(modelID);
         
         if (!exists) {
+            console.error(`❌ Model ${modelID} not found in scene!`);
             return false;
         }
+        
+        console.log(`✅ Model ${modelID} found in scene`);
+        
         // Show the model
         showModel(modelID);
-        `);
+        console.log(`✅ Successfully shown: ${itemsID} (${modelID})`);
     });
     
     return true;
@@ -1154,16 +1394,25 @@ export function showPartByItemsID(itemsID) {
 // Function to hide specific part by itemsID
 export function hidePartByItemsID(itemsID) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return false;
     }
+    
+    console.log(`👁️‍🗨️ Hiding part: ${itemsID}`);
+    
     // Get the model ID
     const modelID = getModelIDFromItemsID(itemsID);
     if (!modelID) {
+        console.error(`❌ No model ID found for: ${itemsID}`);
         return false;
     }
+    
+    console.log(`🔗 Mapping: ${itemsID} -> ${modelID}`);
+    
     // Check if model exists in scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
@@ -1171,11 +1420,15 @@ export function hidePartByItemsID(itemsID) {
         const exists = nodeNames.includes(modelID);
         
         if (!exists) {
+            console.error(`❌ Model ${modelID} not found in scene!`);
             return false;
         }
+        
+        console.log(`✅ Model ${modelID} found in scene`);
+        
         // Hide the model
         hideModel(modelID);
-        `);
+        console.log(`✅ Successfully hidden: ${itemsID} (${modelID})`);
     });
     
     return true;
@@ -1184,20 +1437,28 @@ export function hidePartByItemsID(itemsID) {
 // Function to toggle specific part by itemsID
 export function togglePartByItemsID(itemsID) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return false;
     }
+    
+    console.log(`🔄 Toggling part: ${itemsID}`);
+    
     // Get the model ID
     const modelID = getModelIDFromItemsID(itemsID);
     if (!modelID) {
+        console.error(`❌ No model ID found for: ${itemsID}`);
         return false;
     }
+    
+    console.log(`🔗 Mapping: ${itemsID} -> ${modelID}`);
+    
     // Check current state
     const currentState = modelState[modelID];
-    `);
+    console.log(`📊 Current state: ${currentState} (${currentState === 1 ? 'visible' : 'hidden'})`);
     
     // Toggle the model
     toggleModel(modelID);
-    `);
+    console.log(`✅ Successfully toggled: ${itemsID} (${modelID})`);
     
     return true;
 }
@@ -1205,17 +1466,25 @@ export function togglePartByItemsID(itemsID) {
 // Function to check part state
 export function checkPartState(itemsID) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return false;
     }
+    
+    console.log(`🔍 Checking state of part: ${itemsID}`);
+    
     // Get the model ID
     const modelID = getModelIDFromItemsID(itemsID);
     if (!modelID) {
+        console.error(`❌ No model ID found for: ${itemsID}`);
         return false;
     }
+    
+    console.log(`🔗 Mapping: ${itemsID} -> ${modelID}`);
+    
     // Check current state
     const currentState = modelState[modelID];
     const status = currentState === 1 ? '✅ VISIBLE' : '❌ HIDDEN';
-    `);
+    console.log(`📊 State: ${status} (${currentState})`);
     
     return currentState;
 }
@@ -1223,17 +1492,26 @@ export function checkPartState(itemsID) {
 // Function to check if part exists in scene (returns true/false)
 export function checkPartExists(itemsID) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return false;
     }
+    
+    console.log(`🔍 Checking if part exists: ${itemsID}`);
+    
     // Get the model ID
     const modelID = getModelIDFromItemsID(itemsID);
     if (!modelID) {
-        `);
+        console.error(`❌ No model ID found for: ${itemsID}`);
+        console.log(`📊 Result: false (no mapping)`);
         return false;
     }
+    
+    console.log(`🔗 Mapping: ${itemsID} -> ${modelID}`);
+    
     // Check if model exists in scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return false;
         }
         
@@ -1241,9 +1519,11 @@ export function checkPartExists(itemsID) {
         const exists = nodeNames.includes(modelID);
         
         if (exists) {
-            `);
+            console.log(`✅ Model ${modelID} found in scene`);
+            console.log(`📊 Result: true (exists)`);
         } else {
-            `);
+            console.log(`❌ Model ${modelID} not found in scene`);
+            console.log(`📊 Result: false (not found)`);
         }
         
         return exists;
@@ -1255,20 +1535,29 @@ export function checkPartExists(itemsID) {
 // Function to test multiple parts existence at once
 export function testPartsExistence(itemsIDs) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
+    
+    console.log(`🧪 Testing existence of ${itemsIDs.length} parts...`);
+    
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
+            console.error('❌ Error getting node map:', err);
             return;
         }
         
         const nodeNames = Object.values(nodes).map(node => node.name);
+        
+        console.log('📋 Results:');
         itemsIDs.forEach(itemsID => {
             const modelID = getModelIDFromItemsID(itemsID);
             if (!modelID) {
+                console.log(`  ❌ ${itemsID} -> No mapping`);
             } else {
                 const exists = nodeNames.includes(modelID);
                 const status = exists ? '✅ EXISTS' : '❌ MISSING';
+                console.log(`  ${status}: ${itemsID} -> ${modelID}`);
             }
         });
     });
@@ -1277,8 +1566,12 @@ export function testPartsExistence(itemsIDs) {
 // Function to test all parts in a category
 export function testCategoryExistence(partName) {
     if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
         return;
     }
+    
+    console.log(`🧪 Testing existence of all ${partName} parts...`);
+    
     // Get all itemsIDs for this category from modelState
     const categoryItemsIDs = Object.keys(modelState).filter(modelID => 
         modelID.toLowerCase().includes(partName.toLowerCase())
@@ -1291,9 +1584,13 @@ export function testCategoryExistence(partName) {
         }
         return null;
     }).filter(Boolean);
+    
+    console.log(`📋 Found ${categoryItemsIDs.length} ${partName} items to test`);
+    
     if (categoryItemsIDs.length > 0) {
         testPartsExistence(categoryItemsIDs);
     } else {
+        console.log(`⚠️ No ${partName} items found in modelState`);
     }
 }
 

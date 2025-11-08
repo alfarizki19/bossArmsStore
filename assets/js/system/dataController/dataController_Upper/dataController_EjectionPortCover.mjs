@@ -1,7 +1,13 @@
 // === dataController_EjectionPortCover.mjs ===
 // Ejection Port Cover UI Controller (Upper Category) — one product with many variants
+
+console.log("📦 Loading dataController_EjectionPortCover.mjs...");
+
 // Import model controller functions
 import { updateModel_EjectionPortCover, handleEjectionPortCoverSelection } from '../../modelController/modelController_Upper/modelController_EjectionPortCover.mjs';
+
+console.log("✅ dataController_EjectionPortCover.mjs loaded");
+
 function epc_setText(id, text) {
 	const el = document.getElementById(id);
 	if (el) el.textContent = text;
@@ -227,13 +233,17 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
+			console.log("🎯 Ejection Port Cover: Start button clicked");
+			
 			// Validate viewer is ready before configuration
 			if (!window.sketchfabViewerReady) {
+				console.warn("❌ Ejection Port Cover: Cannot configure - Sketchfab viewer is not ready yet");
 				return;
 			}
 			
 			// Check if data is available
 			if (!window.part || !window.part.ejectionPortCover) {
+				console.error("❌ Ejection Port Cover data not loaded yet");
 				return;
 			}
 			
@@ -258,8 +268,13 @@ function setupStartButtonListener() {
 					window.renderTotals();
 				}, 100);
 			}
+			
+			console.log("✅ Ejection Port Cover: Initialized with default 00100101");
 		}, true); // Use capture phase
+		
+		console.log("✅ Ejection Port Cover: Start button listener attached");
 	} else {
+		console.warn("⚠️ Ejection Port Cover: loader-start-button not found");
 	}
 }
 
@@ -292,6 +307,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "ejectionPortCover001001" + k;
+				console.log(`🎯 Variant card clicked: ${itemsID}`);
 				handleEjectionPortCoverSelection(itemsID);
 				
 				// Update total cost
@@ -303,6 +319,8 @@ function setupVariantCardListeners() {
 			}, true); // Use capture phase
 		}
 	}
+	
+	console.log("✅ Ejection Port Cover: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -320,8 +338,11 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_EjectionPortCover();
+			console.log("✅ Ejection Port Cover: Summary cards updated");
 		});
+		console.log("✅ Ejection Port Cover: Summary chart button listener attached");
 	} else {
+		console.warn("⚠️ Ejection Port Cover: summaryChartButton not found");
 	}
 }
 

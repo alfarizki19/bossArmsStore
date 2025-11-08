@@ -1,7 +1,13 @@
 // === dataController_MLOKAndKeymodRail.mjs ===
 // Gear & Acc: MLOK/Keymod Rail controller (non-bipod)
+
+console.log("📦 Loading dataController_MLOKAndKeymodRail.mjs...");
+
 // Import model controller functions
 import { updateModel_MLOK, handleMLOKSelection } from '../../modelController/modelController_Gear/modelController_Mlok.mjs';
+
+console.log("✅ dataController_MLOKAndKeymodRail.mjs loaded");
+
 // ===== Initialize Global Variables (0 or 1 only) =====
 if (typeof window.mlokAndKeymodRail00100101_A_quantity === 'undefined') {
 	window.mlokAndKeymodRail00100101_A_quantity = 0;
@@ -163,6 +169,8 @@ if (document.readyState === 'loading') {
 }
 
 function setupProductCardListeners() {
+	console.log("🔧 MLOK/KeyMod Rail: Setting up product card listeners...");
+	
 	// No Selected - reset MLOK biasa
 	const noBtn = ml_get('productCard_NoSelected_mlokAndKeymodRail');
 	if(noBtn){ 
@@ -179,6 +187,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model
 			const itemsID = "noMlokAndKeymodRail";
+			console.log(`🎯 No MLOK button clicked: ${itemsID}`);
 			handleMLOKSelection(itemsID);
 		}, true);
 	}
@@ -199,6 +208,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model
 			const itemsID = "mlokAndKeymodRail00100101";
+			console.log(`🎯 Part button clicked: ${itemsID}`);
 			handleMLOKSelection(itemsID);
 		}, true);
 	}
@@ -219,9 +229,12 @@ function setupProductCardListeners() {
 			
 			// Update 3D model
 			const itemsID = "mlokAndKeymodRail00200101";
+			console.log(`🎯 Part button clicked: ${itemsID}`);
 			handleMLOKSelection(itemsID);
 		}, true);
 	}
+	
+	console.log("✅ MLOK/KeyMod Rail: Product card listeners attached");
 }
 
 // ===== Start Button Listener =====
@@ -238,6 +251,8 @@ function setupStartButtonListener() {
 	const btn = document.getElementById("loader-start-button");
 	if (btn) {
 		btn.addEventListener("click", function (e) {
+			console.log("🎯 MLOK/KeyMod Rail: Start button clicked - Resetting variables");
+			
 			// Reset all MLOK biasa variables to 0
 			window.mlokAndKeymodRail00100101_A_quantity = 0;
 			window.mlokAndKeymodRail00200101_A_quantity = 0;
@@ -261,7 +276,11 @@ function setupStartButtonListener() {
 			
 			// Update UI
 			uiData_mlok();
+			
+			console.log("✅ MLOK/KeyMod Rail: Variables reset and product cards updated");
 		}, true);
+		
+		console.log("✅ MLOK/KeyMod Rail: Start button listener attached");
 	}
 }
 
