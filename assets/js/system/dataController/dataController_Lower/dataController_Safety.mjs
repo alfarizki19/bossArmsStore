@@ -1,13 +1,7 @@
 // === dataController_Safety.mjs ===
 // Safety UI Controller (Lower Category) — two products with many variants
-
-console.log("📦 Loading dataController_Safety.mjs...");
-
 // Import model controller functions
 import { updateModel_Safety, handleSafetySelection } from '../../modelController/modelController_Lower/modelController_Safety.mjs';
-
-console.log("✅ dataController_Safety.mjs loaded");
-
 function sf_setText(id, text) {
 	const el = document.getElementById(id);
 	if (el) el.textContent = text;
@@ -326,17 +320,13 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Safety: Start button clicked");
-			
 			// Validate viewer is ready before configuration
 			if (!window.sketchfabViewerReady) {
-				console.warn("❌ Safety: Cannot configure - Sketchfab viewer is not ready yet");
 				return;
 			}
 			
 			// Check if data is available
 			if (!window.part || !window.part.safety) {
-				console.error("❌ Safety data not loaded yet");
 				return;
 			}
 			
@@ -362,13 +352,8 @@ function setupStartButtonListener() {
 					window.renderTotals();
 				}, 100);
 			}
-			
-			console.log("✅ Safety: Initialized with default 00100101");
 		}, true); // Use capture phase
-		
-		console.log("✅ Safety: Start button listener attached");
 	} else {
-		console.warn("⚠️ Safety: loader-start-button not found");
 	}
 }
 
@@ -402,7 +387,6 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "safety001001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
 				handleSafetySelection(itemsID);
 				
 				// Update total cost
@@ -435,7 +419,6 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "safety002001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
 				handleSafetySelection(itemsID);
 				
 				// Update total cost
@@ -447,8 +430,6 @@ function setupVariantCardListeners() {
 			}, true); // Use capture phase
 		}
 	}
-	
-	console.log("✅ Safety: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -466,11 +447,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_Safety();
-			console.log("✅ Safety: Summary cards updated");
 		});
-		console.log("✅ Safety: Summary chart button listener attached");
 	} else {
-		console.warn("⚠️ Safety: summaryChartButton not found");
 	}
 }
 

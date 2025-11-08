@@ -3,12 +3,10 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Barrel model controller loaded (implemented version)');
+');
 
 // Update Barrel model based on current selection
 export function updateModel_Barel() {
-  console.log('🔧 Barrel model update - checking current selection');
-  
   // Get current selected barrel from dataController
   const selected = getSelectedBarel();
   if (selected) {
@@ -19,19 +17,15 @@ export function updateModel_Barel() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Barrel: ${selected.id} -> ${modelID}`);
     }
   } else {
     // No selection, hide all variants
     hideAllBarelVariants();
-    console.log('👁️‍🗨️ No Barrel selected - hiding all variants');
   }
 }
 
 // Handle Barrel selection from UI
 export function handleBarelSelection(itemsID) {
-  console.log(`🎯 Barrel selection: ${itemsID}`);
-  
   // Hide all barrel variants first
   hideAllBarelVariants();
   
@@ -39,9 +33,7 @@ export function handleBarelSelection(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Barrel: ${itemsID} -> ${modelID}`);
   } else {
-    console.warn(`⚠️ Model ID not found for Barrel: ${itemsID}`);
   }
 }
 

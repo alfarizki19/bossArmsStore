@@ -1,8 +1,5 @@
 // === dataController_MLOKForBipod.mjs ===
 // Gear & Acc: MLOK for Bipod (alias UI for mlokAndKeymodRail)
-
-console.log("📦 Loading dataController_MLOKForBipod.mjs...");
-
 // Import model controller functions (if exists)
 let updateModel_MlokForBipod = () => {};
 let handleMlokForBipodSelection = () => {};
@@ -12,11 +9,7 @@ try {
 	updateModel_MlokForBipod = modelModule.updateModel_MlokForBipod || modelModule.updateModel_MLOKForBipod || updateModel_MlokForBipod;
 	handleMlokForBipodSelection = modelModule.handleMlokForBipodSelection || modelModule.handleMLOKForBipodSelection || handleMlokForBipodSelection;
 } catch(e) {
-	console.log("ℹ️ MLOK for Bipod: Model controller not found, using empty functions");
 }
-
-console.log("✅ dataController_MLOKForBipod.mjs loaded");
-
 // ===== Initialize Global Variables (0 or 1 only) =====
 if (typeof window.mlokAndKeymodRail00100101_forBipod_quantity === 'undefined') {
 	window.mlokAndKeymodRail00100101_forBipod_quantity = 0;
@@ -156,8 +149,6 @@ if (document.readyState === 'loading') {
 }
 
 function setupProductCardListeners() {
-	console.log("🔧 MLOK for Bipod: Setting up product card listeners...");
-	
 	// MLOK A for bipod (00100101)
 	const aBtn = mfb_get('productCard_mlokAndKeymodRail_001001_forBipod');
 	if(aBtn){ 
@@ -174,7 +165,6 @@ function setupProductCardListeners() {
 			
 			// Update 3D model
 			const itemsID = "mlokAndKeymodRail00100101";
-			console.log(`🎯 M-LOK for Bipod button clicked: ${itemsID}`);
 			handleMlokForBipodSelection(itemsID);
 		}, true);
 	}
@@ -195,12 +185,9 @@ function setupProductCardListeners() {
 			
 			// Update 3D model
 			const itemsID = "mlokAndKeymodRail00200101";
-			console.log(`🎯 M-LOK for Bipod button clicked: ${itemsID}`);
 			handleMlokForBipodSelection(itemsID);
 		}, true);
 	}
-	
-	console.log("✅ MLOK for Bipod: Product card listeners attached");
 }
 
 // ===== Start Button Listener =====
@@ -217,11 +204,8 @@ function setupStartButtonListener() {
 	const btn = document.getElementById("loader-start-button");
 	if (btn) {
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 MLOK for Bipod: Start button clicked - Resetting variables");
-			
 			// Check if data is available
 			if (!window.part || !window.part.mlokAndKeymodRail) {
-				console.error("❌ MLOK for Bipod data not loaded yet");
 				return;
 			}
 			
@@ -237,11 +221,7 @@ function setupStartButtonListener() {
 			
 			// Update UI
 			uiData_mlokForBipod();
-			
-			console.log("✅ MLOK for Bipod: Variables reset");
 		}, true);
-		
-		console.log("✅ MLOK for Bipod: Start button listener attached");
 	}
 }
 

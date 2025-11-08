@@ -3,12 +3,10 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Magazine model controller loaded (implemented version)');
+');
 
 // Update Magazine model based on current selection
 export function updateModel_Magazine() {
-  console.log('🔧 Magazine model update - checking current selection');
-  
   // Get current selected magazine from dataController
   let selected = null;
   if (window.part && window.part.magazine) {
@@ -35,19 +33,15 @@ export function updateModel_Magazine() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Magazine: ${selected.id} -> ${modelID}`);
     }
   } else {
     // No selection, hide all variants
     hideAllMagazineVariants();
-    console.log('👁️‍🗨️ No Magazine selected - hiding all variants');
   }
 }
 
 // Handle Magazine selection from UI
 export function handleMagazineSelection(itemsID) {
-  console.log(`🎯 Magazine selection: ${itemsID}`);
-  
   // Hide all magazine variants first
   hideAllMagazineVariants();
   
@@ -55,9 +49,7 @@ export function handleMagazineSelection(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Magazine: ${itemsID} -> ${modelID}`);
   } else {
-    console.warn(`⚠️ Model ID not found for Magazine: ${itemsID}`);
   }
 }
 

@@ -107,7 +107,6 @@
                                 (data.event && typeof data.event === 'string' && data.event.toLowerCase().includes('ready'))) {
                                 
                                 if (!viewerReady) {
-                                    console.log('✅ Sketchfab viewer ready signal received:', data);
                                     viewerReady = true;
                                     window.sketchfabViewerReady = true;
                                     if (checkInterval) clearInterval(checkInterval);
@@ -134,12 +133,9 @@
                 // Fallback: check iframe load with longer delay
                 iframe.addEventListener('load', function() {
                     iframeLoadTime = Date.now();
-                    console.log('📦 Sketchfab iframe loaded, waiting for viewer to initialize...');
-                    
                     // Wait longer for viewer to fully initialize
                     setTimeout(function() {
                         if (!viewerReady) {
-                            console.log('⏳ Iframe loaded, checking if viewer is ready...');
                             // Start polling to check if viewer is actually ready
                             checkInterval = setInterval(function() {
                                 // Try to access iframe content to verify it's ready
@@ -150,7 +146,7 @@
                                         const timeSinceLoad = Date.now() - iframeLoadTime;
                                         if (timeSinceLoad >= 5000) { // Wait at least 5 seconds after iframe load
                                             if (!viewerReady) {
-                                                console.log('✅ Viewer appears ready (iframe complete + 5s delay)');
+                                                ');
                                                 viewerReady = true;
                                                 window.sketchfabViewerReady = true;
                                                 clearInterval(checkInterval);
@@ -165,7 +161,7 @@
                                     const timeSinceLoad = Date.now() - iframeLoadTime;
                                     if (timeSinceLoad >= 8000) { // Wait 8 seconds total
                                         if (!viewerReady) {
-                                            console.log('✅ Viewer assumed ready (cross-origin, 8s delay)');
+                                            ');
                                             viewerReady = true;
                                             window.sketchfabViewerReady = true;
                                             clearInterval(checkInterval);

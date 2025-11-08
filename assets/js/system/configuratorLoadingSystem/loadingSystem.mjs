@@ -74,7 +74,6 @@ export function hideLoader() {
     
     // Validate that viewer is ready before allowing configuration
     if (!window.sketchfabViewerReady) {
-        console.warn('⚠️ Cannot start: Sketchfab viewer is not ready yet');
         // Show warning message
         const descEl = overlay.querySelector('[data-loader-desc]');
         if (descEl) {
@@ -94,7 +93,6 @@ export function hideLoader() {
     // Viewer is ready, proceed with hiding loader
     if (startButton) startButton.classList.add('hidden');
     overlay.classList.add('hidden');
-    console.log('✅ Starting configurator - viewer is ready');
 }
 
 // Wait for Sketchfab 3D viewer to load
@@ -102,7 +100,6 @@ function waitForSketchfabViewer() {
     return new Promise((resolve) => {
         const iframe = document.getElementById('sketchfab-viewer');
         if (!iframe) {
-            console.warn('Sketchfab viewer iframe not found');
             resolve();
             return;
         }
@@ -120,7 +117,6 @@ function waitForSketchfabViewer() {
                 clearInterval(progressInterval);
                 window.removeEventListener('sketchfab-viewer-ready', readyHandler);
                 window.removeEventListener('sketchfab-viewer-progress', progressHandler);
-                console.log('✅ Sketchfab viewer is ready');
                 resolve();
             }
         };
@@ -148,7 +144,6 @@ function waitForSketchfabViewer() {
                 clearInterval(progressInterval);
                 window.removeEventListener('sketchfab-viewer-ready', readyHandler);
                 window.removeEventListener('sketchfab-viewer-progress', progressHandler);
-                console.warn('⚠️ Sketchfab viewer timeout after 20s, proceeding anyway');
                 // Set flag even on timeout (viewer might be ready but not sending signals)
                 window.sketchfabViewerReady = true;
                 resolve();
@@ -201,14 +196,13 @@ export async function runInitialLoadingSequence() {
     // Verify viewer is actually ready - wait additional time if needed
     let retryCount = 0;
     while (!window.sketchfabViewerReady && retryCount < 5) {
-        console.warn(`⚠️ Viewer ready flag not set, waiting additional time... (attempt ${retryCount + 1}/5)`);
+        `);
         await delay(2000);
         retryCount++;
     }
     
     // Final check - if still not ready, wait one more time
     if (!window.sketchfabViewerReady) {
-        console.warn('⚠️ Viewer still not ready after retries, waiting final 3 seconds...');
         await delay(3000);
         // Force set after final wait (viewer should be ready by now)
         window.sketchfabViewerReady = true;
@@ -226,14 +220,13 @@ export async function runInitialLoadingSequence() {
     const maxModelRetries = 30; // 30 seconds max wait for model
     
     while (!window.initialModelsReady && modelRetryCount < maxModelRetries) {
-        console.log(`⏳ Waiting for 3D model to be ready... (${modelRetryCount + 1}/${maxModelRetries})`);
+        `);
         await delay(1000);
         modelRetryCount++;
     }
     
     // Final check - if still not ready, wait one more time
     if (!window.initialModelsReady) {
-        console.warn('⚠️ 3D model still not ready after retries, waiting final 3 seconds...');
         await delay(3000);
         // Force set after final wait (model should be ready by now)
         window.initialModelsReady = true;
@@ -274,18 +267,16 @@ export async function runInitialLoadingSequence() {
         }
     }
     
-    console.log(`⏳ Finalizing... (${Math.round(finalizingDelay / 1000)}s)`);
+    }s)`);
     await delay(finalizingDelay);
     
     setLoaderProgress(100);
 
     // Stage 10 — Show start button (only after everything is confirmed ready)
     if (window.sketchfabViewerReady && window.initialModelsReady) {
-        console.log('✅ Viewer and 3D model confirmed ready, showing START button');
         await hideLoaderWithDelay('Configurator Ready!', 'Click START to begin configuring your M4 rifle');
     } else {
         // This should not happen, but just in case
-        console.error('❌ Viewer or model not ready after all checks - this should not happen');
         await delay(2000);
         window.sketchfabViewerReady = true; // Force set
         window.initialModelsReady = true; // Force set

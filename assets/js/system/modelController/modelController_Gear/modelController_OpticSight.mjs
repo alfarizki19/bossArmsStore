@@ -3,12 +3,10 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Optic Sight model controller loaded (implemented version)');
+');
 
 // Update Optic Sight model based on current selection
 export function updateModel_OpticSight() {
-  console.log('🔧 Optic Sight model update - checking current selection');
-  
   // Get current selected optic sight from dataController
   const selected = getSelectedOpticSight();
   if (selected) {
@@ -19,19 +17,15 @@ export function updateModel_OpticSight() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Optic Sight: ${selected.id} -> ${modelID}`);
     }
   } else {
     // No selection, hide all variants
     hideAllOpticSightVariants();
-    console.log('👁️‍🗨️ No Optic Sight selected - hiding all variants');
   }
 }
 
 // Handle Optic Sight selection from UI
 export function handleOpticSightSelection(itemsID) {
-  console.log(`🎯 Optic Sight selection: ${itemsID}`);
-  
   // Hide all optic sight variants first
   hideAllOpticSightVariants();
   
@@ -39,9 +33,7 @@ export function handleOpticSightSelection(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Optic Sight: ${itemsID} -> ${modelID}`);
   } else {
-    console.warn(`⚠️ Model ID not found for Optic Sight: ${itemsID}`);
   }
 }
 

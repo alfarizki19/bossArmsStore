@@ -282,7 +282,6 @@ function attachSummaryTrigger() {
             // Or use the generic approach:
             // renderSummaryAll();
         } catch (e) {
-            console.warn("summary update failed", e);
         }
     });
 }
