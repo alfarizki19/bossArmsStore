@@ -1,271 +1,614 @@
 // === dataController_MuzzleDevice.mjs ===
-// Muzzle Device UI Controller (Upper Category)
+// Muzzle Device UI Controller (Upper Category) — three products
 
 // Import model controller functions
 import { updateModel_MuzzleDevice, handleMuzzleDeviceSelection } from '../../modelController/modelController_Upper/modelController_MuzzleDevice.mjs';
 
-function md_setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
-function md_addClass(id, c) { const el = document.getElementById(id); if (el) el.classList.add(c); }
-function md_removeClass(id, c) { const el = document.getElementById(id); if (el) el.classList.remove(c); }
-
-// Note: Part menu HTML for MuzzleDevice shows static images; we only control names/prices and product images where IDs exist.
-
-// Helpers to handle product images for 002002 (has variant images with non-standard ids)
-function md_hideProductImages_002002() {
-	["01", "02"].forEach(function (idx) {
-		const p1 = document.getElementById("productImgID_muzzleDevice002002" + idx);
-		if (p1) p1.style.display = "none";
-		const p2 = document.getElementById("partImgID_muzzleDevice002002" + idx);
-		if (p2) p2.style.display = "none";
-	});
+function md_setText(id, text) {
+	const el = document.getElementById(id);
+	if (el) el.textContent = text;
 }
 
-function md_showDefaultImage_00200201() {
-	const d1 = document.getElementById("productImgID_muzzleDevice00200201");
-	const d2 = document.getElementById("partImgID_muzzleDevice00200201");
-	if (d1) d1.style.display = "flex";
-	if (d2) d2.style.display = "flex";
+function md_addClass(id, className) {
+	const el = document.getElementById(id);
+	if (el) el.classList.add(className);
 }
 
-function md_hideAllUpperImages() {
-	[
-		"partImgID_muzzleDevice00100101",
-		"partImgID_muzzleDevice00100201",
-		"partImgID_muzzleDevice00200201",
-		"partImgID_muzzleDevice00200202",
-	].forEach(function (id) { const el = document.getElementById(id); if (el) el.style.display = "none"; });
+function md_removeClass(id, className) {
+	const el = document.getElementById(id);
+	if (el) el.classList.remove(className);
 }
 
-function md_showUpperDefaultsAllGroups() {
-	["partImgID_muzzleDevice00100101", "partImgID_muzzleDevice00100201", "partImgID_muzzleDevice00200201"].forEach(function (id) {
-		const el = document.getElementById(id); if (el) el.style.display = "flex";
-	});
+function md_showElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "flex";
 }
 
-// Update product header images for 002002 inside its own container
-function md_showProductHeaderImage_002002(variantKey) {
-	// Deterministic: hide both known ids, then show the requested one
-	const id01 = "productImgID_muzzleDevice00200201";
-	const id02 = "productImgID_muzzleDevice00200202";
-	const el01 = document.getElementById(id01);
-	const el02 = document.getElementById(id02);
-	if (el01) el01.style.display = "none";
-	if (el02) el02.style.display = "none";
-	const targetId = variantKey === "02" ? id02 : id01;
-	const target = document.getElementById(targetId);
-	if (target) target.style.display = "flex";
+function md_hideElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "none";
 }
 
-// Update only the upper menu image/texts within upper menu container
-function md_updateUpperMenu(selectedId, title, price) {
-	const nameEl = document.getElementById("partName_MuzzleDevice");
-	if (nameEl) nameEl.textContent = title;
-	const priceEl = document.getElementById("partPrice_MuzzleDevice");
-	if (priceEl) priceEl.textContent = price + " USD";
-	const container = nameEl ? nameEl.closest(".menuPartMenuOptionContainer") : null;
-	if (!container) return;
-	const imgArea = container.querySelector(".menuPartMenuOptionImageArea");
-	if (!imgArea) return;
-	const imgs = imgArea.querySelectorAll("img, image, Image");
-	imgs.forEach(function (img) { img.style.display = "none"; });
-	const upperTarget = imgArea.querySelector("#partImgID_" + selectedId);
-	if (upperTarget) upperTarget.style.display = "flex";
+// Hide all part card images
+function md_hideAllPartCardImages() {
+	const ids = [
+		"partCardImg_muzzleDevice00100101",
+		"partCardImg_muzzleDevice00100201",
+		"partCardImg_muzzleDevice00200201",
+		"partCardImg_muzzleDevice00200202",
+	];
+	ids.forEach(function (id) { md_hideElement(id); });
 }
 
-// Header icon helpers
-function md_setHeaderIconActive(headerSuffix, isActive) {
-	const header = document.getElementById("productHeader_muzzleDevice" + headerSuffix);
-	if (!header) return;
-	const icon = header.querySelector(".itemsAccordionTypeA_OpenAccordion_ButtonIcon");
-	if (!icon) return;
-	if (isActive) icon.classList.add("active"); else icon.classList.remove("active");
+// Hide all product card images for 002002
+function md_hideAllProductCardImages_002002() {
+	md_hideElement("productCardImg_muzzleDevice00200201");
+	md_hideElement("productCardImg_muzzleDevice00200202");
 }
 
-function md_clearAllHeaderIcons() {
-	["001001", "001002", "002002"].forEach(function (suffix) { md_setHeaderIconActive(suffix, false); });
+// Show default product card image for 002002 (variant 01)
+function md_showDefaultProductCardImage_002002() {
+	md_hideAllProductCardImages_002002();
+	const defaultImgId = "productCardImg_muzzleDevice00200201";
+	const el = document.getElementById(defaultImgId);
+	if (el) el.style.display = "block";
 }
 
-// Variant icon helpers for 002002
-function md_clearVariantButtons_002002() {
-	["01", "02"].forEach(function (v) {
-		const btn = document.getElementById("buttonItems_muzzleDevice002002" + v);
-		if (btn) btn.classList.remove("active");
-		const icon = btn ? btn.querySelector(".itemsAccordionTypeA_ColorVariant_ButtonIcon") : null;
-		if (icon) icon.classList.remove("active");
-	});
+// Reset product card to default for 002002
+function md_resetProductCardToDefault_002002() {
+	const group = window.part.muzzleDevice["002"];
+	const product = group.products["002"];
+	const defaultVariant = product.variants["01"];
+	
+	// Show default image (variant 01)
+	md_showDefaultProductCardImage_002002();
+	
+	// Remove active class
+	md_removeClass("productCard_muzzleDevice002002", "active");
 }
 
-function md_setVariantActive_002002(variantKey) {
-	const btn = document.getElementById("buttonItems_muzzleDevice002002" + variantKey);
-	if (btn) btn.classList.add("active");
-	const icon = btn ? btn.querySelector(".itemsAccordionTypeA_ColorVariant_ButtonIcon") : null;
-	if (icon) icon.classList.add("active");
+// Reset all variant cards for 002002
+function md_resetAllVariantCards_002002() {
+	md_removeClass("variantCard_muzzleDevice_00200201", "active");
+	md_removeClass("variantCard_muzzleDevice_00200202", "active");
 }
 
-// Helper: zero Warden quantities if Warden inventory exists
-function md_zeroWardenQuantities(){
-	try{
-		const wdBrand = window.part && window.part.muzzleDevice && window.part.muzzleDevice['001'];
-		const wdProd = wdBrand && wdBrand.products ? wdBrand.products['003'] : null;
-		if(wdProd && wdProd.variants){
-			if(wdProd.variants['01']) wdProd.variants['01'].quantity = 0;
-			if(wdProd.variants['02']) wdProd.variants['02'].quantity = 0;
-		}
-	}catch(e){}
-}
-
+// Reset all variants quantity to 0 for a product
 export function uiReset_muzzleDevice001001() {
-	const product = window.part.muzzleDevice["001"].products["001"]; // warcomp 556 ctn closed, no variant
+	const group = window.part.muzzleDevice["001"];
+	const product = group.products["001"];
 	product.variants["01"].quantity = 0;
-	md_setText("productName_muzzleDevice001001", product.productTitle);
-	md_setText("productPricing_muzzleDevice001001", product.variants["01"].price + " USD");
-	md_removeClass("productHeader_muzzleDevice001001", "active");
+	
+	// Remove active class
+	md_removeClass("productCard_muzzleDevice001001", "active");
 }
 
 export function uiReset_muzzleDevice001002() {
-	const product = window.part.muzzleDevice["001"].products["002"]; // warcomp flash hider, no variant
+	const group = window.part.muzzleDevice["001"];
+	const product = group.products["002"];
 	product.variants["01"].quantity = 0;
-	md_setText("productName_muzzleDevice001002", product.productTitle);
-	md_setText("productPricing_muzzleDevice001002", product.variants["01"].price + " USD");
-	md_removeClass("productHeader_muzzleDevice001002", "active");
+	
+	// Remove active class
+	md_removeClass("productCard_muzzleDevice001002", "active");
 }
 
 export function uiReset_muzzleDevice002002() {
-	const product = window.part.muzzleDevice["002"].products["002"]; // 65 Heart Breaker, variants 01..02
+	const group = window.part.muzzleDevice["002"];
+	const product = group.products["002"];
 	product.variants["01"].quantity = 0;
 	product.variants["02"].quantity = 0;
-	md_setText("productName_muzzleDevice002002", product.productTitle);
-	md_setText("productPricing_muzzleDevice002002", product.variants["01"].price + " USD");
-	md_removeClass("productHeader_muzzleDevice002002", "active");
+	
+	// Reset product card to default
+	md_resetProductCardToDefault_002002();
+	
+	// Reset all variant cards
+	md_resetAllVariantCards_002002();
+}
+
+// Function to update all product cards to default from inventory
+function md_updateAllProductCardsToDefault() {
+	// 002002 - default to variant 01
+	{
+		md_showDefaultProductCardImage_002002();
+	}
+}
+
+// Helper: zero Warden quantities if Warden inventory exists
+function md_zeroWardenQuantities() {
+	try {
+		const wdBrand = window.part && window.part.muzzleDevice && window.part.muzzleDevice['001'];
+		const wdProd = wdBrand && wdBrand.products ? wdBrand.products['003'] : null;
+		if (wdProd && wdProd.variants) {
+			if (wdProd.variants['01']) wdProd.variants['01'].quantity = 0;
+			if (wdProd.variants['02']) wdProd.variants['02'].quantity = 0;
+		}
+		// Also call window.noWarden if available
+		if (window.noWarden) {
+			try {
+				window.noWarden();
+			} catch(e) {}
+		}
+		if (window.uiData_Warden) {
+			try {
+				window.uiData_Warden();
+			} catch(e) {}
+		}
+	} catch(e) {}
 }
 
 export function uiData_MuzzleDevice() {
-	let selected = null; let headerSuffix = null; let productTitle = "";
+let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
 
+	// Check 001001
+	{
+		const group = window.part.muzzleDevice["001"];
+		const product = group.products["001"];
+		if (product.variants["01"].quantity === 1) {
+			selected = product.variants["01"];
+			cardSuffix = "00100101";
+			productTitle = product.productTitle;
+			brand = group.brand;
+			variantTitle = selected.variantTitle;
+}
+	}
+	
+	// Check 001002
+	if (!selected) {
+		const group = window.part.muzzleDevice["001"];
+		const product = group.products["002"];
+		if (product.variants["01"].quantity === 1) {
+			selected = product.variants["01"];
+			cardSuffix = "00100201";
+			productTitle = product.productTitle;
+			brand = group.brand;
+			variantTitle = selected.variantTitle;
+}
+	}
+	
+	// Check 002002 variants
+	if (!selected) {
+		const group = window.part.muzzleDevice["002"];
+		const product = group.products["002"];
+		for (let i = 1; i <= 2; i++) {
+			const k = ("" + i).padStart(2, "0");
+			if (product.variants[k] && product.variants[k].quantity === 1) {
+				selected = product.variants[k];
+				cardSuffix = "002002" + k;
+				productTitle = product.productTitle;
+				brand = group.brand;
+				variantTitle = selected.variantTitle;
+break;
+			}
+		}
+	}
+
+	if (!selected || !cardSuffix) {
+		console.warn("⚠️ Muzzle Device: No selected item found");
+		return;
+	}
+	
+const productGroup = cardSuffix.substring(0, 6); // "001001", "001002", or "002002"
+	const variantNum = cardSuffix.substring(6, 8); // "01", "02", etc.
+
+	// Update selected product card - set active
+	if (productGroup === "001001") {
+		// Reset other product cards first
+		md_removeClass("productCard_muzzleDevice001002", "active");
+		md_resetProductCardToDefault_002002();
+		// Set active for selected
+		md_addClass("productCard_muzzleDevice001001", "active");
+} else if (productGroup === "001002") {
+		// Reset other product cards first
+		md_removeClass("productCard_muzzleDevice001001", "active");
+		md_resetProductCardToDefault_002002();
+		// Set active for selected
+		md_addClass("productCard_muzzleDevice001002", "active");
+} else if (productGroup === "002002") {
+		// Reset other product cards first
+		md_removeClass("productCard_muzzleDevice001001", "active");
+		md_removeClass("productCard_muzzleDevice001002", "active");
+		// Set active for selected
+		md_addClass("productCard_muzzleDevice002002", "active");
+// Update product card image for 002002
+		md_hideAllProductCardImages_002002();
+		const selectedImgId = "productCardImg_muzzleDevice" + cardSuffix;
+		const selectedImg = document.getElementById(selectedImgId);
+		if (selectedImg) selectedImg.style.display = "block";
+	}
+
+	// Note: Other product cards are already reset above
+
+	// Update part card images - show selected, hide others
+	md_hideAllPartCardImages();
+	const partCardImgId = "partCardImg_muzzleDevice" + cardSuffix;
+	const partCardImg = document.getElementById(partCardImgId);
+	if (partCardImg) {
+		partCardImg.style.display = "block";
+} else {
+		console.warn(`⚠️ Muzzle Device: partCardImg ${partCardImgId} not found`);
+	}
+
+	// Update part card - format: brand + productTitle + variantTitle
+	const partCardName = variantTitle.toLowerCase() !== "no variant"
+		? brand + " - " + productTitle + " - " + variantTitle
+		: brand + " - " + productTitle;
+	md_setText("partCardName_muzzleDevice", partCardName);
+	md_setText("partCardPrice_muzzleDevice", "$" + selected.price + " USD");
+
+	// Update variant cards for 002002 - active selected, reset others
+	if (productGroup === "002002") {
+		md_resetAllVariantCards_002002();
+		md_addClass("variantCard_muzzleDevice_" + cardSuffix, "active");
+	}
+
+	// Update summary cards - show selected, hide others
+	// Hide all summary cards first
+	md_hideElement("summaryItemsCard_muzzleDevice_00100101");
+	md_hideElement("summaryItemsCard_muzzleDevice_00100201");
+	md_hideElement("summaryItemsCard_muzzleDevice_00200201");
+	md_hideElement("summaryItemsCard_muzzleDevice_00200202");
+	
+	// Show selected summary card
+	const summaryCardId = "summaryItemsCard_muzzleDevice_" + cardSuffix;
+	md_showElement(summaryCardId);
+	md_setText("summaryCardName_muzzleDevice_" + cardSuffix, partCardName);
+	md_setText("summaryCardPrice_muzzleDevice_" + cardSuffix, "$" + selected.price + " USD");
+}
+
+// Function to update all summary cards from inventory data
+export function updateSummaryCards_MuzzleDevice() {
+	// Update all summary card names and prices from inventory
 	// 001001
 	{
-		const product = window.part.muzzleDevice["001"].products["001"]; const v = product.variants["01"]; if (v.quantity === 1) { selected = v; headerSuffix = "001001"; productTitle = product.productTitle; }
+		const group = window.part.muzzleDevice["001"];
+		const product = group.products["001"];
+		const variant = product.variants["01"];
+		const cardSuffix = "00100101";
+		const variantTitle = variant.variantTitle;
+		const partCardName = variantTitle.toLowerCase() !== "no variant"
+			? group.brand + " - " + product.productTitle + " - " + variantTitle
+			: group.brand + " - " + product.productTitle;
+		md_setText("summaryCardName_muzzleDevice_" + cardSuffix, partCardName);
+		md_setText("summaryCardPrice_muzzleDevice_" + cardSuffix, "$" + variant.price + " USD");
 	}
 	// 001002
 	{
-		const product = window.part.muzzleDevice["001"].products["002"]; const v = product.variants["01"]; if (v.quantity === 1) { selected = v; headerSuffix = "001002"; productTitle = product.productTitle; }
+		const group = window.part.muzzleDevice["001"];
+		const product = group.products["002"];
+		const variant = product.variants["01"];
+		const cardSuffix = "00100201";
+		const variantTitle = variant.variantTitle;
+		const partCardName = variantTitle.toLowerCase() !== "no variant"
+			? group.brand + " - " + product.productTitle + " - " + variantTitle
+			: group.brand + " - " + product.productTitle;
+		md_setText("summaryCardName_muzzleDevice_" + cardSuffix, partCardName);
+		md_setText("summaryCardPrice_muzzleDevice_" + cardSuffix, "$" + variant.price + " USD");
 	}
-	// 002002 (01..02)
+	// 002002 variants
 	{
-		const product = window.part.muzzleDevice["002"].products["002"]; for (const k of ["01", "02"]) { if (product.variants[k].quantity === 1) { selected = product.variants[k]; headerSuffix = "002002"; productTitle = product.productTitle; } }
+		const group = window.part.muzzleDevice["002"];
+		const product = group.products["002"];
+		for (let i = 1; i <= 2; i++) {
+			const k = ("" + i).padStart(2, "0");
+			const variant = product.variants[k];
+			const cardSuffix = "002002" + k;
+			const variantTitle = variant.variantTitle;
+			const partCardName = variantTitle.toLowerCase() !== "no variant"
+				? group.brand + " - " + product.productTitle + " - " + variantTitle
+				: group.brand + " - " + product.productTitle;
+			md_setText("summaryCardName_muzzleDevice_" + cardSuffix, partCardName);
+			md_setText("summaryCardPrice_muzzleDevice_" + cardSuffix, "$" + variant.price + " USD");
+		}
 	}
 
-	if (!selected) return;
-
-	md_setText("productPricing_muzzleDevice" + headerSuffix, selected.price + " USD");
-	md_addClass("productHeader_muzzleDevice" + headerSuffix, "active");
-	md_clearAllHeaderIcons();
-	md_setHeaderIconActive(headerSuffix, true);
-
-	const variantSuffix = (selected.variantTitle && selected.variantTitle.toLowerCase() !== "no variant") ? (" - " + selected.variantTitle) : "";
-	md_setText("productName_muzzleDevice" + headerSuffix, productTitle + variantSuffix);
-
-	// Update 002002 product header image to selected variant; others keep defaults
-	if (headerSuffix === "002002") {
-		md_showProductHeaderImage_002002(selected.id.slice(-2));
+	// Show/hide summary cards based on quantity
+	// 001001
+	{
+		const product = window.part.muzzleDevice["001"].products["001"];
+		const cardSuffix = "00100101";
+		if (product.variants["01"].quantity === 1) {
+			md_showElement("summaryItemsCard_muzzleDevice_" + cardSuffix);
+		} else {
+			md_hideElement("summaryItemsCard_muzzleDevice_" + cardSuffix);
+		}
 	}
-
-	// Upper menu: update only within upper menu container
-	md_updateUpperMenu(selected.id, productTitle + variantSuffix, selected.price);
-
-	// Handle product header images and variant buttons for 002002 group
-	if (headerSuffix === "002002") {
-		md_showProductHeaderImage_002002(selected.id.slice(-2));
-		md_clearVariantButtons_002002();
-		md_setVariantActive_002002(selected.id.slice(-2));
-	} else {
-		// Ensure 002002 defaults to 01 when not selected
-		md_showProductHeaderImage_002002("01");
-		md_clearVariantButtons_002002();
+	// 001002
+	{
+		const product = window.part.muzzleDevice["001"].products["002"];
+		const cardSuffix = "00100201";
+		if (product.variants["01"].quantity === 1) {
+			md_showElement("summaryItemsCard_muzzleDevice_" + cardSuffix);
+		} else {
+			md_hideElement("summaryItemsCard_muzzleDevice_" + cardSuffix);
+		}
+	}
+	// 002002 variants
+	{
+		const product = window.part.muzzleDevice["002"].products["002"];
+		for (let i = 1; i <= 2; i++) {
+			const k = ("" + i).padStart(2, "0");
+			const cardSuffix = "002002" + k;
+			if (product.variants[k].quantity === 1) {
+				md_showElement("summaryItemsCard_muzzleDevice_" + cardSuffix);
+			} else {
+				md_hideElement("summaryItemsCard_muzzleDevice_" + cardSuffix);
+			}
+		}
 	}
 }
 
-// Start defaults: pick first item 001001
-{
-	const btn = document.getElementById("buttonModalStartMenu_StartButton");
+// Start default -> 001001 variant 01
+// Use DOMContentLoaded to ensure element exists
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', function() {
+		setTimeout(setupStartButtonListener, 100);
+	});
+} else {
+	// DOM already loaded
+	setTimeout(setupStartButtonListener, 100);
+}
+
+function setupStartButtonListener() {
+	const btn = document.getElementById("loader-start-button");
 	if (btn) {
-		btn.addEventListener("click", function () {
-			// Reset and set default header image for 002002 to variant 01
-			md_hideProductImages_002002();
-			md_showProductHeaderImage_002002("01");
+		// Keep existing onclick for hideLoader, but add our handler
+		// Use capture phase to run before onclick
+		btn.addEventListener("click", function (e) {
+// Check if data is available
+			if (!window.part || !window.part.muzzleDevice) {
+				console.error("❌ Muzzle Device data not loaded yet");
+				return;
+			}
+			
+			// Update all product cards to default from inventory
+			md_updateAllProductCardsToDefault();
+			
+			// Reset all products (set quantity = 0, remove active class)
 			uiReset_muzzleDevice001001();
 			uiReset_muzzleDevice001002();
 			uiReset_muzzleDevice002002();
+			
+			// Reset warden (default tidak dipilih)
+			md_zeroWardenQuantities();
+			// Update Warden product cards to default from inventory
+			if (window.wd_updateAllProductCardsToDefault) {
+				try {
+					window.wd_updateAllProductCardsToDefault();
+} catch(e) {
+					console.warn("⚠️ Muzzle Device: wd_updateAllProductCardsToDefault not available", e);
+				}
+			}
+			// Also call uiData_Warden to update Warden UI
+			if (window.uiData_Warden) {
+				try {
+					window.uiData_Warden();
+				} catch(e) {
+					console.warn("⚠️ Muzzle Device: uiData_Warden not available", e);
+				}
+			}
+			
+			// Set default quantity = 1 for 00100101
 			window.part.muzzleDevice["001"].products["001"].variants["01"].quantity = 1;
+			
+			// Update UI (will set active class and show/hide images)
 			uiData_MuzzleDevice();
 			
 			// Update 3D model after UI update
 			updateModel_MuzzleDevice();
-		});
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+			
+}, true); // Use capture phase
+		
+} else {
+		console.warn("⚠️ Muzzle Device: loader-start-button not found");
 	}
 }
 
-// Selection listeners
-{
-	const b100101 = document.getElementById("buttonItems_muzzleDevice00100101") || document.getElementById("buttonProductDetail_muzzleDevice001001");
-	if (b100101) b100101.addEventListener("click", function () {
-		const wasSelected = !!(window.part && window.part.muzzleDevice && window.part.muzzleDevice["001"] && window.part.muzzleDevice["001"].products && window.part.muzzleDevice["001"].products["001"] && window.part.muzzleDevice["001"].products["001"].variants && window.part.muzzleDevice["001"].products["001"].variants["01"] && window.part.muzzleDevice["001"].products["001"].variants["01"].quantity === 1);
-		md_hideProductImages_002002(); md_showDefaultImage_00200201();
-		uiReset_muzzleDevice001001(); uiReset_muzzleDevice001002(); uiReset_muzzleDevice002002();
-		// Always reset warden when switching base muzzle device
-		if (window.noWarden) { try { window.noWarden(); } catch(e){} }
-		if (window.uiData_Warden) { try { window.uiData_Warden(); } catch(e){} }
-		window.part.muzzleDevice["001"].products["001"].variants["01"].quantity = 1;
-		uiData_MuzzleDevice();
-		
-		// Update 3D model after UI update (similar to buttonItems_noWarden)
-		updateModel_MuzzleDevice();
-		const itemsID = "muzzleDevice00100101";
-		console.log(`🎯 Part button clicked: ${itemsID}`);
-		handleMuzzleDeviceSelection(itemsID);
+// Product card click listeners (for products with only 1 variant)
+// Use DOMContentLoaded to ensure elements exist
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', function() {
+		setTimeout(setupProductCardListeners, 100);
 	});
-	const b100201 = document.getElementById("buttonItems_muzzleDevice00100201") || document.getElementById("buttonProductDetail_muzzleDevice001002");
-	if (b100201) b100201.addEventListener("click", function () {
-		const wasSelected = !!(window.part && window.part.muzzleDevice && window.part.muzzleDevice["001"] && window.part.muzzleDevice["001"].products && window.part.muzzleDevice["001"].products["002"] && window.part.muzzleDevice["001"].products["002"].variants && window.part.muzzleDevice["001"].products["002"].variants["01"] && window.part.muzzleDevice["001"].products["002"].variants["01"].quantity === 1);
-		md_hideProductImages_002002(); md_showDefaultImage_00200201();
-		uiReset_muzzleDevice001001(); uiReset_muzzleDevice001002(); uiReset_muzzleDevice002002();
-		// Always reset warden when switching base muzzle device
-		if (window.noWarden) { try { window.noWarden(); } catch(e){} }
-		if (window.uiData_Warden) { try { window.uiData_Warden(); } catch(e){} }
-		window.part.muzzleDevice["001"].products["002"].variants["01"].quantity = 1;
-		uiData_MuzzleDevice();
-		
-		// Update 3D model after UI update (similar to buttonItems_noWarden)
-		updateModel_MuzzleDevice();
-		const itemsID = "muzzleDevice00100201";
-		console.log(`🎯 Part button clicked: ${itemsID}`);
-		handleMuzzleDeviceSelection(itemsID);
-	});
-	["01", "02"].forEach(function (v) {
-		const b2002 = document.getElementById("buttonItems_muzzleDevice002002" + v);
-		if (b2002) b2002.addEventListener("click", function () {
-			const wasSelected = !!(window.part && window.part.muzzleDevice && window.part.muzzleDevice["002"] && window.part.muzzleDevice["002"].products && window.part.muzzleDevice["002"].products["002"] && window.part.muzzleDevice["002"].products["002"].variants && window.part.muzzleDevice["002"].products["002"].variants[v] && window.part.muzzleDevice["002"].products["002"].variants[v].quantity === 1);
-			uiReset_muzzleDevice001001(); uiReset_muzzleDevice001002(); uiReset_muzzleDevice002002();
-			// Always reset warden when switching base muzzle device
-		if (window.noWarden) { try { window.noWarden(); } catch(e){} }
-		if (window.uiData_Warden) { try { window.uiData_Warden(); } catch(e){} }
-			window.part.muzzleDevice["002"].products["002"].variants[v].quantity = 1;
+} else {
+	// DOM already loaded
+	setTimeout(setupProductCardListeners, 100);
+}
+
+function setupProductCardListeners() {
+// 001001 -> 01 (only 1 variant, select from product card)
+	const card001001 = document.getElementById("productCard_muzzleDevice001001");
+	if (card001001) {
+// Use capture phase to run before onclick
+		card001001.addEventListener("click", function (e) {
+// Check if already selected
+			const currentQty = window.part.muzzleDevice["001"].products["001"].variants["01"].quantity || 0;
+			const isAlreadySelected = currentQty === 1;
+			
+			if (!isAlreadySelected) {
+				// Reset all products only if not already selected
+				uiReset_muzzleDevice001001();
+				uiReset_muzzleDevice001002();
+				uiReset_muzzleDevice002002();
+				
+				// Set quantity = 1 for selected product
+				window.part.muzzleDevice["001"].products["001"].variants["01"].quantity = 1;
+			} else {
+}
+			
+			// Always hide warden when base muzzle device is selected
+			md_zeroWardenQuantities();
+			
+			// Update UI
 			uiData_MuzzleDevice();
 			
-			// Update 3D model after UI update (similar to buttonItems_noWarden)
-			updateModel_MuzzleDevice();
-			const itemsID = "muzzleDevice002002" + v;
-			console.log(`🎯 Part button clicked: ${itemsID}`);
-			handleMuzzleDeviceSelection(itemsID);
-		});
+			// Update 3D model after UI update
+			const itemsID = "muzzleDevice00100101";
+handleMuzzleDeviceSelection(itemsID);
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+		}, true); // Use capture phase
+	} else {
+		console.warn("⚠️ Muzzle Device: productCard_muzzleDevice001001 not found");
+	}
+	
+	// 001002 -> 01 (only 1 variant, select from product card)
+	const card001002 = document.getElementById("productCard_muzzleDevice001002");
+	if (card001002) {
+// Use capture phase to run before onclick
+		card001002.addEventListener("click", function (e) {
+// Check if already selected
+			const currentQty = window.part.muzzleDevice["001"].products["002"].variants["01"].quantity || 0;
+			const isAlreadySelected = currentQty === 1;
+			
+			if (!isAlreadySelected) {
+				// Reset all products only if not already selected
+				uiReset_muzzleDevice001001();
+				uiReset_muzzleDevice001002();
+				uiReset_muzzleDevice002002();
+				
+				// Set quantity = 1 for selected product
+				window.part.muzzleDevice["001"].products["002"].variants["01"].quantity = 1;
+			} else {
+}
+			
+			// Always hide warden when base muzzle device is selected
+			md_zeroWardenQuantities();
+			
+			// Update UI
+			uiData_MuzzleDevice();
+			
+			// Update 3D model after UI update
+			const itemsID = "muzzleDevice00100201";
+handleMuzzleDeviceSelection(itemsID);
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+		}, true); // Use capture phase
+	} else {
+		console.warn("⚠️ Muzzle Device: productCard_muzzleDevice001002 not found");
+	}
+	
+}
+
+// Variant card click listeners
+// Use DOMContentLoaded to ensure elements exist
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', function() {
+		setTimeout(setupVariantCardListeners, 100);
 	});
+} else {
+	// DOM already loaded
+	setTimeout(setupVariantCardListeners, 100);
+}
+
+function setupVariantCardListeners() {
+// 002002 variants (2 variants)
+	for (let i = 1; i <= 2; i++) {
+		const k = ("" + i).padStart(2, "0");
+		const variantCardId = "variantCard_muzzleDevice_002002" + k;
+		const card = document.getElementById(variantCardId);
+		if (card) {
+// Use capture phase to run before onclick
+			card.addEventListener("click", function (e) {
+// Reset all products
+				uiReset_muzzleDevice001001();
+				uiReset_muzzleDevice001002();
+				uiReset_muzzleDevice002002();
+				
+				// Reset warden (tidak compatible dengan 002002)
+				md_zeroWardenQuantities();
+				
+				// Set quantity = 1 for selected variant
+				window.part.muzzleDevice["002"].products["002"].variants[k].quantity = 1;
+				
+				// Update UI
+				uiData_MuzzleDevice();
+				
+				// Update 3D model after UI update
+				const itemsID = "muzzleDevice002002" + k;
+handleMuzzleDeviceSelection(itemsID);
+				
+				// Update total cost
+				if (window.renderTotals) {
+					setTimeout(() => {
+						window.renderTotals();
+					}, 100);
+				}
+			}, true); // Use capture phase
+		} else {
+			console.warn(`⚠️ Muzzle Device: ${variantCardId} not found`);
+		}
+	}
+	
+}
+
+// Summary chart button click listener
+// Use DOMContentLoaded to ensure element exists
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupSummaryChartButtonListener);
+} else {
+	// DOM already loaded
+	setupSummaryChartButtonListener();
+}
+
+function setupSummaryChartButtonListener() {
+	const btn = document.getElementById("summaryChartButton");
+	if (btn) {
+		btn.addEventListener("click", function () {
+			// Update all summary cards from inventory data
+			updateSummaryCards_MuzzleDevice();
+});
+} else {
+		console.warn("⚠️ Muzzle Device: summaryChartButton not found");
+	}
 }
 
 export function getSelectedMuzzleDevice() {
-	const a = window.part.muzzleDevice["001"].products["001"].variants["01"]; if (a.quantity === 1) return a;
-	const b = window.part.muzzleDevice["001"].products["002"].variants["01"]; if (b.quantity === 1) return b;
-	const c = window.part.muzzleDevice["002"].products["002"].variants; for (const k of ["01", "02"]) { if (c[k].quantity === 1) return c[k]; }
+	// Check 001001
+	{
+		const product = window.part.muzzleDevice["001"].products["001"];
+		if (product.variants["01"] && product.variants["01"].quantity === 1) {
+			return product.variants["01"];
+		}
+	}
+	// Check 001002
+	{
+		const product = window.part.muzzleDevice["001"].products["002"];
+		if (product.variants["01"] && product.variants["01"].quantity === 1) {
+			return product.variants["01"];
+		}
+	}
+	// Check 002002 variants
+	{
+		const product = window.part.muzzleDevice["002"].products["002"];
+		for (let i = 1; i <= 2; i++) {
+			const k = ("" + i).padStart(2, "0");
+			if (product.variants[k] && product.variants[k].quantity === 1) {
+				return product.variants[k];
+			}
+		}
+	}
 	return null;
 }
 
-export function getMuzzleDeviceTotalPrice() { const v = getSelectedMuzzleDevice(); return v ? v.price : 0; }
+export function getMuzzleDeviceTotalPrice() {
+	const v = getSelectedMuzzleDevice();
+	return v ? v.price : 0;
+}
+

@@ -1,0 +1,113 @@
+/* ============================================
+   Configurator System CSS
+   ============================================
+   CSS classes untuk sistem konfigurator
+   Menggunakan Tailwind values untuk consistency
+   Pattern: default class + .active class
+   ============================================ */
+
+/* ============================================
+   PRODUCT CARD
+   ============================================
+   Digunakan untuk product cards di product menu
+   ID format: productCard_{partName}_{itemsID}
+   ============================================ */
+.product-card {
+    padding: 1rem; /* p-4 */
+    border: 1px solid rgba(0, 0, 0, 0.08); /* border border-apple */
+    border-radius: 0.75rem; /* rounded-xl */
+    background-color: white; /* bg-white */
+    cursor: pointer;
+    transition: all 0.2s ease; /* transition-all duration-200 */
+}
+
+.product-card:hover {
+    border-color: rgb(147, 197, 253); /* hover:border-blue-300 */
+    background-color: rgb(239, 246, 255); /* hover:bg-blue-50 */
+    transform: translateY(-1px); /* hover-lift */
+}
+
+.product-card.active {
+    border: 2px solid rgb(59, 130, 246); /* border-2 border-blue-500 */
+    background-color: rgb(239, 246, 255); /* bg-blue-50 */
+}
+
+/* ============================================
+   VARIANT CARD
+   ============================================
+   Digunakan untuk variant cards di variant menu
+   ID format: variantCard_{partName}{itemsID}
+   ============================================ */
+.variant-card {
+    padding: 0.75rem; /* p-3 */
+    border: 1px solid rgba(0, 0, 0, 0.08); /* border border-apple */
+    border-radius: 0.75rem; /* rounded-xl */
+    background-color: white; /* bg-white */
+    cursor: pointer;
+    transition: all 0.2s ease; /* transition-all duration-200 */
+}
+
+.variant-card:hover {
+    border-color: rgb(203, 213, 225); /* hover:border-slate-300 */
+    background-color: rgb(248, 250, 252); /* hover:bg-slate-50 */
+    transform: translateY(-1px); /* hover-lift */
+}
+
+.variant-card.active {
+    border: 2px solid rgb(59, 130, 246); /* border-2 border-blue-500 */
+    background-color: rgb(239, 246, 255); /* bg-blue-50 */
+}
+
+
+/* ============================================
+   MODEL CONTROLLER BUTTON
+   ============================================
+   Digunakan untuk model controller buttons
+   ID format: buttonModelController_{itemsID}_{variant}
+   ============================================ */
+.button-model-controller {
+    padding: 0.75rem; /* p-3 */
+    border: 1px solid rgba(0, 0, 0, 0.08); /* border border-apple */
+    border-radius: 0.75rem; /* rounded-xl */
+    background-color: white; /* bg-white */
+    cursor: pointer;
+    transition: all 0.2s ease; /* transition-all duration-200 */
+}
+
+.button-model-controller:hover {
+    border-color: rgb(147, 197, 253); /* hover:border-blue-300 */
+    background-color: rgb(239, 246, 255); /* hover:bg-blue-50 */
+    transform: translateY(-1px); /* hover-lift */
+}
+
+.button-model-controller.active {
+    border: 2px solid rgb(59, 130, 246); /* border-2 border-blue-500 */
+    background-color: rgb(239, 246, 255); /* bg-blue-50 */
+}
+
+/* ============================================
+   ITEMS CARD (Optional/Alternative)
+   ============================================
+   Digunakan jika ada items card selain product card
+   Bisa digunakan untuk part menu items atau lainnya
+   ============================================ */
+.items-card {
+    padding: 1rem; /* p-4 */
+    border: 1px solid rgba(0, 0, 0, 0.08); /* border border-apple */
+    border-radius: 0.75rem; /* rounded-xl */
+    background-color: white; /* bg-white */
+    cursor: pointer;
+    transition: all 0.2s ease; /* transition-all duration-200 */
+}
+
+.items-card:hover {
+    border-color: rgb(147, 197, 253); /* hover:border-blue-300 */
+    background-color: rgb(239, 246, 255); /* hover:bg-blue-50 */
+    transform: translateY(-1px); /* hover-lift */
+}
+
+.items-card.active {
+    border: 2px solid rgb(59, 130, 246); /* border-2 border-blue-500 */
+    background-color: rgb(239, 246, 255); /* bg-blue-50 */
+}
+

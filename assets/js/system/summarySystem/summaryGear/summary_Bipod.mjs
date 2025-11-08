@@ -51,4 +51,4 @@ window.resetSummary_Bipod = resetSummary_Bipod;
 window.updateSummary_Bipod = updateSummary_Bipod;
 
 
-
+

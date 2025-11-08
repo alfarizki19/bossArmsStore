@@ -13,20 +13,24 @@ window.modelState = modelState;
 export function initSketchfab(api) {
     apiGlobal = api;
     window.sketchfabAPIReady = true;
-    console.log('✅ Sketchfab API initialized for M4_v4_01');
-    console.log('✅ window.sketchfabAPIReady set to true');
-    
-    // Debug: Get list of all models in scene
+// Debug: Get list of all models in scene
     api.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Failed to get node map:', err);
             return;
         }
-        console.log('📋 Available models in M4_v4_01 scene:');
-        Object.values(nodes).forEach(node => {
-            console.log(`- Name: ${node.name}, InstanceID: ${node.instanceID}`);
-        });
+Object.values(nodes).forEach(node => {
+});
     });
+}
+
+// Get Sketchfab API instance (for use by other modules)
+export function getSketchfabAPI() {
+    if (!apiGlobal) {
+        console.warn('⚠️ Sketchfab API not initialized');
+        return null;
+    }
+    return apiGlobal;
 }
 
 // Basic function to show specific model
@@ -38,9 +42,7 @@ export function showModel(modelID) {
     
     // Update model state
     modelState[modelID] = 1;
-    console.log(`📝 Model state updated: ${modelID} = 1 (visible)`);
-    
-    // Apply to 3D scene
+// Apply to 3D scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
@@ -50,8 +52,7 @@ export function showModel(modelID) {
         const node = Object.values(nodes).find((n) => n.name === modelID);
         if (node) {
             apiGlobal.show(node.instanceID);
-            console.log(`✅ ${modelID} shown`);
-            return true;
+return true;
         } else {
             console.warn(`⚠️ ${modelID} not found in scene`);
             return false;
@@ -68,9 +69,7 @@ export function hideModel(modelID) {
     
     // Update model state
     modelState[modelID] = 0;
-    console.log(`📝 Model state updated: ${modelID} = 0 (hidden)`);
-    
-    // Apply to 3D scene
+// Apply to 3D scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
@@ -80,8 +79,7 @@ export function hideModel(modelID) {
         const node = Object.values(nodes).find((n) => n.name === modelID);
         if (node) {
             apiGlobal.hide(node.instanceID);
-            console.log(`👁️‍🗨️ ${modelID} hidden`);
-            return true;
+return true;
         } else {
             console.warn(`⚠️ ${modelID} not found in scene`);
             return false;
@@ -117,8 +115,7 @@ export function hideAllModels() {
             modelState[node.name] = 0;
         });
         
-        console.log('👁️‍🗨️ All models hidden');
-    });
+});
 }
 
 // Show/Hide objects in 3D scene (like the working project)
@@ -128,18 +125,12 @@ export function objectShowHideSystem() {
         return;
     }
     
-    console.log('🔄 Updating show/hide system...');
-    console.log('📊 Current model state:', modelState);
-    
-    // Debug: Count visible vs hidden models
+// Debug: Count visible vs hidden models
     const visibleModels = Object.entries(modelState).filter(([key, value]) => value === 1);
     const hiddenModels = Object.entries(modelState).filter(([key, value]) => value === 0);
     
-    console.log(`📊 Visible models: ${visibleModels.length}, Hidden models: ${hiddenModels.length}`);
-    
-    if (visibleModels.length > 0) {
-        console.log('👁️ Visible models:', visibleModels.map(([key]) => key));
-    }
+if (visibleModels.length > 0) {
+}
     
     // Get all nodes in scene and apply model state
     apiGlobal.getNodeMap(function (err, nodes) {
@@ -148,13 +139,9 @@ export function objectShowHideSystem() {
             return;
         }
         
-        console.log(`📋 Found ${Object.keys(nodes).length} nodes in scene`);
-        
-        // Debug: List all available node names
+// Debug: List all available node names
         const nodeNames = Object.values(nodes).map(node => node.name);
-        console.log('📋 Available node names:', nodeNames);
-        
-        let successCount = 0;
+let successCount = 0;
         let errorCount = 0;
         
         // Apply model state to 3D scene
@@ -167,13 +154,11 @@ export function objectShowHideSystem() {
                     if (visibility === 1) {
                         // Show model
                         apiGlobal.show(node.instanceID);
-                        console.log(`✅ Showing: ${modelID} (InstanceID: ${node.instanceID})`);
-                        successCount++;
+successCount++;
                     } else {
                         // Hide model
                         apiGlobal.hide(node.instanceID);
-                        console.log(`👁️‍🗨️ Hiding: ${modelID} (InstanceID: ${node.instanceID})`);
-                        successCount++;
+successCount++;
                     }
                 } catch (error) {
                     console.error(`❌ Error updating ${modelID}:`, error);
@@ -185,17 +170,13 @@ export function objectShowHideSystem() {
             }
         }
         
-        console.log(`✅ Show/Hide system updated: ${successCount} success, ${errorCount} errors`);
-        
-        // Debug: Check if models are actually visible
+// Debug: Check if models are actually visible
         setTimeout(() => {
-            console.log('🔍 Debug: Checking model visibility after 1 second...');
-            Object.entries(modelState).forEach(([modelID, visibility]) => {
+Object.entries(modelState).forEach(([modelID, visibility]) => {
                 if (visibility === 1) {
                     const node = Object.values(nodes).find((n) => n.name === modelID);
                     if (node) {
-                        console.log(`🔍 Model ${modelID} should be visible (InstanceID: ${node.instanceID})`);
-                    }
+}
                 }
             });
         }, 1000);
@@ -209,19 +190,15 @@ export function debugSketchfabResources() {
         return;
     }
     
-    console.log('🔍 DEBUG: Sketchfab Resources Check');
-    
-    // Get all nodes
+// Get all nodes
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
             return;
         }
         
-        console.log('📋 Available models in scene:');
-        Object.values(nodes).forEach(node => {
-            console.log(`- ${node.name} (InstanceID: ${node.instanceID})`);
-        });
+Object.values(nodes).forEach(node => {
+});
     });
     
     // Get all textures
@@ -231,10 +208,8 @@ export function debugSketchfabResources() {
             return;
         }
         
-        console.log('🎨 Available textures:');
-        textures.forEach(texture => {
-            console.log(`- ${texture.name} (UID: ${texture.uid})`);
-        });
+textures.forEach(texture => {
+});
     });
     
     // Get all materials
@@ -244,10 +219,8 @@ export function debugSketchfabResources() {
             return;
         }
         
-        console.log('🔧 Available materials:');
-        materials.forEach(material => {
-            console.log(`- ${material.name} (Channels: ${Object.keys(material.channels || {}).join(', ')})`);
-        });
+materials.forEach(material => {
+});
     });
 }
 
@@ -476,8 +449,7 @@ export function getModelIDFromItemsID(itemsID) {
     };
     
     const result = modelIDMap[itemsID] || null;
-    console.log(`🔗 Mapping ${itemsID} -> ${result}`);
-    return result;
+return result;
 }
 
 // Initialize model state (simplified)
@@ -609,9 +581,7 @@ export function initializeModelState() {
         modelState[modelID] = 0;
     });
     
-    console.log(`📊 All ${allModelIDs.length} models initialized to hidden state`);
-    
-    // Set initial parts to visible (1) - Using working configuration from v6001002
+// Set initial parts to visible (1) - Using working configuration from v6001002
     const initialParts = [
         // Upper parts
         'modelID_barel00200101',
@@ -644,25 +614,13 @@ export function initializeModelState() {
         modelState[modelID] = 1;
     });
     
-    console.log(`📊 Model state initialized with ${allModelIDs.length} models`);
-    console.log(`🎯 Initial parts set to visible: ${initialParts.length} models`);
-    console.log(`👁️ Initial visible models:`, initialParts);
-    console.log(`🔄 Ready to show initial objects via objectShowHideSystem()`);
-    
-    // Debug: Show current modelState
-    console.log('📊 Current modelState:', modelState);
-    
-    // Debug: Count visible models
+// Debug: Show current modelState
+// Debug: Count visible models
     const visibleCount = Object.values(modelState).filter(state => state === 1).length;
-    console.log(`📊 Visible models count: ${visibleCount}`);
-    
-    // Signal that initial models are ready
+// Signal that initial models are ready
     window.initialModelsReady = true;
-    console.log('✅ window.initialModelsReady set to true');
-    
-    // Also signal that model state is initialized
+// Also signal that model state is initialized
     window.modelStateInitialized = true;
-    console.log('✅ window.modelStateInitialized set to true');
 }
 
 // Test function to show all models (for debugging)
@@ -683,8 +641,7 @@ export function testShowAllModels() {
             modelState[node.name] = 1;
         });
         
-        console.log('👁️ All models shown for testing');
-    });
+});
 }
 
 // Test function to hide all models (for debugging)
@@ -705,8 +662,7 @@ export function testHideAllModels() {
             modelState[node.name] = 0;
         });
         
-        console.log('👁️‍🗨️ All models hidden for testing');
-    });
+});
 }
 
 // Debug function to check if initial models exist in scene
@@ -749,29 +705,23 @@ export function debugCheckModelsInScene() {
             return;
         }
         
-        console.log('🔍 DEBUG: Checking if initial models exist in scene...');
-        const nodeNames = Object.values(nodes).map(node => node.name);
+const nodeNames = Object.values(nodes).map(node => node.name);
         
         let foundCount = 0;
         let missingCount = 0;
         
         initialParts.forEach(modelID => {
             if (nodeNames.includes(modelID)) {
-                console.log(`✅ Found: ${modelID}`);
-                foundCount++;
+foundCount++;
             } else {
-                console.log(`❌ Missing: ${modelID}`);
-                missingCount++;
+missingCount++;
             }
         });
         
-        console.log(`🔍 Initial models check: ${foundCount} found, ${missingCount} missing`);
-        
-        if (missingCount > 0) {
+if (missingCount > 0) {
             console.warn(`⚠️ ${missingCount} initial models are missing from scene!`);
         } else {
-            console.log('✅ All initial models found in scene');
-        }
+}
     });
 }
 
@@ -782,18 +732,14 @@ export function updateMuzzleDevice(newItemsID) {
         return false;
     }
     
-    console.log(`🔧 Updating muzzle device to: ${newItemsID}`);
-    
-    // Get the new model ID
+// Get the new model ID
     const newModelID = getModelIDFromItemsID(newItemsID);
     if (!newModelID) {
         console.error(`❌ No model ID found for muzzle device: ${newItemsID}`);
         return false;
     }
     
-    console.log(`🔗 Muzzle device mapping: ${newItemsID} -> ${newModelID}`);
-    
-    // Current muzzle device (default)
+// Current muzzle device (default)
     const currentMuzzleDevice = 'modelID_muzzleDevice00100101';
     
     // Check if new model exists in scene
@@ -808,38 +754,28 @@ export function updateMuzzleDevice(newItemsID) {
         
         if (!exists) {
             console.error(`❌ Muzzle device model ${newModelID} not found in scene!`);
-            console.log('💡 Available muzzle device nodes:', nodeNames.filter(name => name.includes('muzzleDevice')));
-            return false;
+return false;
         }
         
-        console.log(`✅ Muzzle device model ${newModelID} found in scene`);
-        
-        // Hide current muzzle device if it's visible
+// Hide current muzzle device if it's visible
         if (modelState[currentMuzzleDevice] === 1) {
             hideModel(currentMuzzleDevice);
-            console.log(`👁️‍🗨️ Hidden current muzzle device: ${currentMuzzleDevice}`);
-        }
+}
         
         // Show new muzzle device
         showModel(newModelID);
-        console.log(`✅ Showing new muzzle device: ${newModelID}`);
-        
-        // Update modelState
+// Update modelState
         modelState[currentMuzzleDevice] = 0;
         modelState[newModelID] = 1;
         
-        console.log('✅ Muzzle device updated successfully');
-        console.log(`📊 Current muzzle device state: ${newModelID} = visible`);
-    });
+});
     
     return true;
 }
 
 // Function to test all muzzle device variants (updated to use existing devices only)
 export function testAllMuzzleDevices() {
-    console.log('🧪 Testing all muzzle device variants...');
-    console.log('💡 This will now use testExistingMuzzleDevices() to avoid missing models');
-    testExistingMuzzleDevices();
+testExistingMuzzleDevices();
 }
 
 // Debug function to check which muzzle devices actually exist in scene
@@ -849,9 +785,7 @@ export function debugMuzzleDevicesInScene() {
         return;
     }
     
-    console.log('🔍 DEBUG: Checking which muzzle devices exist in scene...');
-    
-    apiGlobal.getNodeMap(function (err, nodes) {
+apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
             return;
@@ -860,10 +794,8 @@ export function debugMuzzleDevicesInScene() {
         const nodeNames = Object.values(nodes).map(node => node.name);
         const muzzleDeviceNodes = nodeNames.filter(name => name.includes('muzzleDevice'));
         
-        console.log('📋 Muzzle device nodes found in scene:');
-        muzzleDeviceNodes.forEach(nodeName => {
-            console.log(`  ✅ ${nodeName}`);
-        });
+muzzleDeviceNodes.forEach(nodeName => {
+});
         
         // Check our expected muzzle devices
         const expectedMuzzleDevices = [
@@ -875,17 +807,13 @@ export function debugMuzzleDevicesInScene() {
             'modelID_muzzledevice00200202'   // Fixed: lowercase 'muzzledevice'
         ];
         
-        console.log('🔍 Checking expected muzzle devices:');
-        expectedMuzzleDevices.forEach(modelID => {
+expectedMuzzleDevices.forEach(modelID => {
             const exists = nodeNames.includes(modelID);
             const status = exists ? '✅ EXISTS' : '❌ MISSING';
-            console.log(`  ${status}: ${modelID}`);
-        });
+});
         
         // Show available vs expected
-        console.log(`📊 Found ${muzzleDeviceNodes.length} muzzle device nodes in scene`);
-        console.log(`📊 Expected ${expectedMuzzleDevices.length} muzzle device models`);
-    });
+});
 }
 
 // Updated function to test only existing muzzle devices
@@ -895,9 +823,7 @@ export function testExistingMuzzleDevices() {
         return;
     }
     
-    console.log('🧪 Testing only existing muzzle devices...');
-    
-    // First check which ones exist
+// First check which ones exist
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
@@ -919,9 +845,7 @@ export function testExistingMuzzleDevices() {
             return nodeNames.includes(modelID);
         });
         
-        console.log(`🧪 Found ${existingMuzzleDevices.length} existing muzzle devices:`, existingMuzzleDevices);
-        
-        if (existingMuzzleDevices.length === 0) {
+if (existingMuzzleDevices.length === 0) {
             console.warn('⚠️ No muzzle devices found in scene!');
             return;
         }
@@ -930,16 +854,13 @@ export function testExistingMuzzleDevices() {
         
         function testNextMuzzleDevice() {
             if (testIndex >= existingMuzzleDevices.length) {
-                console.log('🧪 All existing muzzle device tests completed');
-                // Reset to default
+// Reset to default
                 updateMuzzleDevice('muzzleDevice00100101');
                 return;
             }
             
             const itemsID = existingMuzzleDevices[testIndex];
-            console.log(`🧪 Testing muzzle device ${testIndex + 1}/${existingMuzzleDevices.length}: ${itemsID}`);
-            
-            updateMuzzleDevice(itemsID);
+updateMuzzleDevice(itemsID);
             
             testIndex++;
             
@@ -954,9 +875,7 @@ export function testExistingMuzzleDevices() {
 
 // Function to test all available muzzle devices individually
 export function testAllAvailableMuzzleDevices() {
-    console.log('🧪 Testing all available muzzle devices individually...');
-    
-    const availableMuzzleDevices = [
+const availableMuzzleDevices = [
         'muzzleDevice00100101',  // Default - ✅ CONFIRMED
         'muzzleDevice00100201',  // ✅ CONFIRMED
         'muzzleDevice00100301',  // ✅ CONFIRMED
@@ -965,66 +884,53 @@ export function testAllAvailableMuzzleDevices() {
         'muzzleDevice00200202'   // Test this
     ];
     
-    console.log('📋 Available muzzle devices to test:');
-    availableMuzzleDevices.forEach((itemsID, index) => {
+availableMuzzleDevices.forEach((itemsID, index) => {
         const status = index < 3 ? '✅ CONFIRMED' : '🧪 TO TEST';
-        console.log(`  ${status}: ${itemsID}`);
-    });
+});
     
     // Test each one
     availableMuzzleDevices.forEach((itemsID, index) => {
         setTimeout(() => {
-            console.log(`🧪 Testing ${index + 1}/${availableMuzzleDevices.length}: ${itemsID}`);
-            updateMuzzleDevice(itemsID);
+updateMuzzleDevice(itemsID);
         }, index * 3000); // 3 seconds between each test
     });
     
     // Reset to default after all tests
     setTimeout(() => {
-        console.log('🔄 Resetting to default muzzle device...');
-        updateMuzzleDevice('muzzleDevice00100101');
+updateMuzzleDevice('muzzleDevice00100101');
     }, availableMuzzleDevices.length * 3000 + 1000);
 }
 
 // Function to test specific muzzle device with confirmation
 export function testSpecificMuzzleDevice(itemsID) {
-    console.log(`🧪 Testing specific muzzle device: ${itemsID}`);
-    
-    const result = updateMuzzleDevice(itemsID);
+const result = updateMuzzleDevice(itemsID);
     
     if (result) {
-        console.log(`✅ Successfully updated to: ${itemsID}`);
-    } else {
-        console.log(`❌ Failed to update to: ${itemsID}`);
-    }
+} else {
+}
     
     return result;
 }
 
 // Function to get list of working muzzle devices
 export function getWorkingMuzzleDevices() {
-    console.log('📋 Working muzzle devices:');
-    
-    const workingMuzzleDevices = [
+const workingMuzzleDevices = [
         'muzzleDevice00100101',  // Default
         'muzzleDevice00100201',  // Confirmed working
         'muzzleDevice00100301'   // Confirmed working
     ];
     
     workingMuzzleDevices.forEach((itemsID, index) => {
-        console.log(`  ${index + 1}. ${itemsID}`);
-    });
+});
     
-    console.log('🧪 Muzzle devices to test:');
-    const toTestMuzzleDevices = [
+const toTestMuzzleDevices = [
         'muzzleDevice00100302',
         'muzzleDevice00200201',
         'muzzleDevice00200202'
     ];
     
     toTestMuzzleDevices.forEach((itemsID, index) => {
-        console.log(`  ${index + 1}. ${itemsID}`);
-    });
+});
     
     return {
         working: workingMuzzleDevices,
@@ -1039,18 +945,14 @@ export function updateEndPlate(newItemsID) {
         return false;
     }
     
-    console.log(`🔧 Updating end plate to: ${newItemsID}`);
-    
-    // Get the new model ID
+// Get the new model ID
     const newModelID = getModelIDFromItemsID(newItemsID);
     if (!newModelID) {
         console.error(`❌ No model ID found for end plate: ${newItemsID}`);
         return false;
     }
     
-    console.log(`🔗 End plate mapping: ${newItemsID} -> ${newModelID}`);
-    
-    // Current end plate (default)
+// Current end plate (default)
     const currentEndPlate = 'modelID_endPlate00100101';
     
     // Check if new model exists in scene
@@ -1065,29 +967,21 @@ export function updateEndPlate(newItemsID) {
         
         if (!exists) {
             console.error(`❌ End plate model ${newModelID} not found in scene!`);
-            console.log('💡 Available end plate nodes:', nodeNames.filter(name => name.includes('endPlate')));
-            return false;
+return false;
         }
         
-        console.log(`✅ End plate model ${newModelID} found in scene`);
-        
-        // Hide current end plate if it's visible
+// Hide current end plate if it's visible
         if (modelState[currentEndPlate] === 1) {
             hideModel(currentEndPlate);
-            console.log(`👁️‍🗨️ Hidden current end plate: ${currentEndPlate}`);
-        }
+}
         
         // Show new end plate
         showModel(newModelID);
-        console.log(`✅ Showing new end plate: ${newModelID}`);
-        
-        // Update modelState
+// Update modelState
         modelState[currentEndPlate] = 0;
         modelState[newModelID] = 1;
         
-        console.log('✅ End plate updated successfully');
-        console.log(`📊 Current end plate state: ${newModelID} = visible`);
-    });
+});
     
     return true;
 }
@@ -1099,9 +993,7 @@ export function debugEndPlatesInScene() {
         return;
     }
     
-    console.log('🔍 DEBUG: Checking which end plates exist in scene...');
-    
-    apiGlobal.getNodeMap(function (err, nodes) {
+apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
             return;
@@ -1110,10 +1002,8 @@ export function debugEndPlatesInScene() {
         const nodeNames = Object.values(nodes).map(node => node.name);
         const endPlateNodes = nodeNames.filter(name => name.includes('endPlate'));
         
-        console.log('📋 End plate nodes found in scene:');
-        endPlateNodes.forEach(nodeName => {
-            console.log(`  ✅ ${nodeName}`);
-        });
+endPlateNodes.forEach(nodeName => {
+});
         
         // Check our expected end plates
         const expectedEndPlates = [
@@ -1136,24 +1026,18 @@ export function debugEndPlatesInScene() {
             'modelID_endPlate00200110'
         ];
         
-        console.log('🔍 Checking expected end plates:');
-        expectedEndPlates.forEach(modelID => {
+expectedEndPlates.forEach(modelID => {
             const exists = nodeNames.includes(modelID);
             const status = exists ? '✅ EXISTS' : '❌ MISSING';
-            console.log(`  ${status}: ${modelID}`);
-        });
+});
         
         // Show available vs expected
-        console.log(`📊 Found ${endPlateNodes.length} end plate nodes in scene`);
-        console.log(`📊 Expected ${expectedEndPlates.length} end plate models`);
-    });
+});
 }
 
 // Function to test all available end plates
 export function testAllEndPlates() {
-    console.log('🧪 Testing all available end plates...');
-    
-    const availableEndPlates = [
+const availableEndPlates = [
         'endPlate00100101',  // Default
         'endPlate00100102',
         'endPlate00100103',
@@ -1173,38 +1057,30 @@ export function testAllEndPlates() {
         'endPlate00200110'
     ];
     
-    console.log('📋 Available end plates to test:');
-    availableEndPlates.forEach((itemsID, index) => {
+availableEndPlates.forEach((itemsID, index) => {
         const status = index === 0 ? '✅ DEFAULT' : '🧪 TO TEST';
-        console.log(`  ${status}: ${itemsID}`);
-    });
+});
     
     // Test each one
     availableEndPlates.forEach((itemsID, index) => {
         setTimeout(() => {
-            console.log(`🧪 Testing ${index + 1}/${availableEndPlates.length}: ${itemsID}`);
-            updateEndPlate(itemsID);
+updateEndPlate(itemsID);
         }, index * 2000); // 2 seconds between each test
     });
     
     // Reset to default after all tests
     setTimeout(() => {
-        console.log('🔄 Resetting to default end plate...');
-        updateEndPlate('endPlate00100101');
+updateEndPlate('endPlate00100101');
     }, availableEndPlates.length * 2000 + 1000);
 }
 
 // Function to test specific end plate
 export function testSpecificEndPlate(itemsID) {
-    console.log(`🧪 Testing specific end plate: ${itemsID}`);
-    
-    const result = updateEndPlate(itemsID);
+const result = updateEndPlate(itemsID);
     
     if (result) {
-        console.log(`✅ Successfully updated to: ${itemsID}`);
-    } else {
-        console.log(`❌ Failed to update to: ${itemsID}`);
-    }
+} else {
+}
     
     return result;
 }
@@ -1216,9 +1092,7 @@ export function debugPartCategory(partName) {
         return;
     }
     
-    console.log(`🔍 DEBUG: Checking ${partName} parts in scene...`);
-    
-    apiGlobal.getNodeMap(function (err, nodes) {
+apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
             return;
@@ -1227,13 +1101,10 @@ export function debugPartCategory(partName) {
         const nodeNames = Object.values(nodes).map(node => node.name);
         const partNodes = nodeNames.filter(name => name.toLowerCase().includes(partName.toLowerCase()));
         
-        console.log(`📋 ${partName} nodes found in scene:`);
-        partNodes.forEach(nodeName => {
-            console.log(`  ✅ ${nodeName}`);
-        });
+partNodes.forEach(nodeName => {
+});
         
-        console.log(`📊 Found ${partNodes.length} ${partName} nodes in scene`);
-    });
+});
 }
 
 // Universal update function for any part
@@ -1243,18 +1114,14 @@ export function updatePart(partName, newItemsID) {
         return false;
     }
     
-    console.log(`🔧 Updating ${partName} to: ${newItemsID}`);
-    
-    // Get the new model ID
+// Get the new model ID
     const newModelID = getModelIDFromItemsID(newItemsID);
     if (!newModelID) {
         console.error(`❌ No model ID found for ${partName}: ${newItemsID}`);
         return false;
     }
     
-    console.log(`🔗 ${partName} mapping: ${newItemsID} -> ${newModelID}`);
-    
-    // Check if new model exists in scene
+// Check if new model exists in scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error(`❌ Error getting node map for ${partName} update:`, err);
@@ -1266,75 +1133,57 @@ export function updatePart(partName, newItemsID) {
         
         if (!exists) {
             console.error(`❌ ${partName} model ${newModelID} not found in scene!`);
-            console.log(`💡 Available ${partName} nodes:`, nodeNames.filter(name => name.toLowerCase().includes(partName.toLowerCase())));
-            return false;
+return false;
         }
         
-        console.log(`✅ ${partName} model ${newModelID} found in scene`);
-        
-        // Find current part (first visible part of this category)
+// Find current part (first visible part of this category)
         const currentPart = Object.keys(modelState).find(modelID => 
             modelID.toLowerCase().includes(partName.toLowerCase()) && modelState[modelID] === 1
         );
         
         if (currentPart) {
             hideModel(currentPart);
-            console.log(`👁️‍🗨️ Hidden current ${partName}: ${currentPart}`);
-        }
+}
         
         // Show new part
         showModel(newModelID);
-        console.log(`✅ Showing new ${partName}: ${newModelID}`);
-        
-        // Update modelState
+// Update modelState
         if (currentPart) {
             modelState[currentPart] = 0;
         }
         modelState[newModelID] = 1;
         
-        console.log(`✅ ${partName} updated successfully`);
-        console.log(`📊 Current ${partName} state: ${newModelID} = visible`);
-    });
+});
     
     return true;
 }
 
 // Universal test function for any part category
 export function testPartCategory(partName, itemsIDs) {
-    console.log(`🧪 Testing all ${partName} parts...`);
-    
-    console.log(`📋 Available ${partName} parts to test:`);
-    itemsIDs.forEach((itemsID, index) => {
+itemsIDs.forEach((itemsID, index) => {
         const status = index === 0 ? '✅ DEFAULT' : '🧪 TO TEST';
-        console.log(`  ${status}: ${itemsID}`);
-    });
+});
     
     // Test each one
     itemsIDs.forEach((itemsID, index) => {
         setTimeout(() => {
-            console.log(`🧪 Testing ${index + 1}/${itemsIDs.length}: ${itemsID}`);
-            updatePart(partName, itemsID);
+updatePart(partName, itemsID);
         }, index * 2000); // 2 seconds between each test
     });
     
     // Reset to default after all tests
     setTimeout(() => {
-        console.log(`🔄 Resetting to default ${partName}...`);
-        updatePart(partName, itemsIDs[0]);
+updatePart(partName, itemsIDs[0]);
     }, itemsIDs.length * 2000 + 1000);
 }
 
 // Function to test specific part
 export function testSpecificPart(partName, itemsID) {
-    console.log(`🧪 Testing specific ${partName}: ${itemsID}`);
-    
-    const result = updatePart(partName, itemsID);
+const result = updatePart(partName, itemsID);
     
     if (result) {
-        console.log(`✅ Successfully updated to: ${itemsID}`);
-    } else {
-        console.log(`❌ Failed to update to: ${itemsID}`);
-    }
+} else {
+}
     
     return result;
 }
@@ -1346,18 +1195,14 @@ export function showPartByItemsID(itemsID) {
         return false;
     }
     
-    console.log(`👁️ Showing part: ${itemsID}`);
-    
-    // Get the model ID
+// Get the model ID
     const modelID = getModelIDFromItemsID(itemsID);
     if (!modelID) {
         console.error(`❌ No model ID found for: ${itemsID}`);
         return false;
     }
     
-    console.log(`🔗 Mapping: ${itemsID} -> ${modelID}`);
-    
-    // Check if model exists in scene
+// Check if model exists in scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
@@ -1372,12 +1217,9 @@ export function showPartByItemsID(itemsID) {
             return false;
         }
         
-        console.log(`✅ Model ${modelID} found in scene`);
-        
-        // Show the model
+// Show the model
         showModel(modelID);
-        console.log(`✅ Successfully shown: ${itemsID} (${modelID})`);
-    });
+});
     
     return true;
 }
@@ -1389,18 +1231,14 @@ export function hidePartByItemsID(itemsID) {
         return false;
     }
     
-    console.log(`👁️‍🗨️ Hiding part: ${itemsID}`);
-    
-    // Get the model ID
+// Get the model ID
     const modelID = getModelIDFromItemsID(itemsID);
     if (!modelID) {
         console.error(`❌ No model ID found for: ${itemsID}`);
         return false;
     }
     
-    console.log(`🔗 Mapping: ${itemsID} -> ${modelID}`);
-    
-    // Check if model exists in scene
+// Check if model exists in scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
@@ -1415,12 +1253,9 @@ export function hidePartByItemsID(itemsID) {
             return false;
         }
         
-        console.log(`✅ Model ${modelID} found in scene`);
-        
-        // Hide the model
+// Hide the model
         hideModel(modelID);
-        console.log(`✅ Successfully hidden: ${itemsID} (${modelID})`);
-    });
+});
     
     return true;
 }
@@ -1432,26 +1267,18 @@ export function togglePartByItemsID(itemsID) {
         return false;
     }
     
-    console.log(`🔄 Toggling part: ${itemsID}`);
-    
-    // Get the model ID
+// Get the model ID
     const modelID = getModelIDFromItemsID(itemsID);
     if (!modelID) {
         console.error(`❌ No model ID found for: ${itemsID}`);
         return false;
     }
     
-    console.log(`🔗 Mapping: ${itemsID} -> ${modelID}`);
-    
-    // Check current state
+// Check current state
     const currentState = modelState[modelID];
-    console.log(`📊 Current state: ${currentState} (${currentState === 1 ? 'visible' : 'hidden'})`);
-    
-    // Toggle the model
+// Toggle the model
     toggleModel(modelID);
-    console.log(`✅ Successfully toggled: ${itemsID} (${modelID})`);
-    
-    return true;
+return true;
 }
 
 // Function to check part state
@@ -1461,23 +1288,17 @@ export function checkPartState(itemsID) {
         return false;
     }
     
-    console.log(`🔍 Checking state of part: ${itemsID}`);
-    
-    // Get the model ID
+// Get the model ID
     const modelID = getModelIDFromItemsID(itemsID);
     if (!modelID) {
         console.error(`❌ No model ID found for: ${itemsID}`);
         return false;
     }
     
-    console.log(`🔗 Mapping: ${itemsID} -> ${modelID}`);
-    
-    // Check current state
+// Check current state
     const currentState = modelState[modelID];
     const status = currentState === 1 ? '✅ VISIBLE' : '❌ HIDDEN';
-    console.log(`📊 State: ${status} (${currentState})`);
-    
-    return currentState;
+return currentState;
 }
 
 // Function to check if part exists in scene (returns true/false)
@@ -1487,19 +1308,14 @@ export function checkPartExists(itemsID) {
         return false;
     }
     
-    console.log(`🔍 Checking if part exists: ${itemsID}`);
-    
-    // Get the model ID
+// Get the model ID
     const modelID = getModelIDFromItemsID(itemsID);
     if (!modelID) {
         console.error(`❌ No model ID found for: ${itemsID}`);
-        console.log(`📊 Result: false (no mapping)`);
-        return false;
+return false;
     }
     
-    console.log(`🔗 Mapping: ${itemsID} -> ${modelID}`);
-    
-    // Check if model exists in scene
+// Check if model exists in scene
     apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
@@ -1508,14 +1324,6 @@ export function checkPartExists(itemsID) {
         
         const nodeNames = Object.values(nodes).map(node => node.name);
         const exists = nodeNames.includes(modelID);
-        
-        if (exists) {
-            console.log(`✅ Model ${modelID} found in scene`);
-            console.log(`📊 Result: true (exists)`);
-        } else {
-            console.log(`❌ Model ${modelID} not found in scene`);
-            console.log(`📊 Result: false (not found)`);
-        }
         
         return exists;
     });
@@ -1530,9 +1338,7 @@ export function testPartsExistence(itemsIDs) {
         return;
     }
     
-    console.log(`🧪 Testing existence of ${itemsIDs.length} parts...`);
-    
-    apiGlobal.getNodeMap(function (err, nodes) {
+apiGlobal.getNodeMap(function (err, nodes) {
         if (err) {
             console.error('❌ Error getting node map:', err);
             return;
@@ -1540,16 +1346,13 @@ export function testPartsExistence(itemsIDs) {
         
         const nodeNames = Object.values(nodes).map(node => node.name);
         
-        console.log('📋 Results:');
-        itemsIDs.forEach(itemsID => {
+itemsIDs.forEach(itemsID => {
             const modelID = getModelIDFromItemsID(itemsID);
             if (!modelID) {
-                console.log(`  ❌ ${itemsID} -> No mapping`);
-            } else {
+} else {
                 const exists = nodeNames.includes(modelID);
                 const status = exists ? '✅ EXISTS' : '❌ MISSING';
-                console.log(`  ${status}: ${itemsID} -> ${modelID}`);
-            }
+}
         });
     });
 }
@@ -1561,9 +1364,7 @@ export function testCategoryExistence(partName) {
         return;
     }
     
-    console.log(`🧪 Testing existence of all ${partName} parts...`);
-    
-    // Get all itemsIDs for this category from modelState
+// Get all itemsIDs for this category from modelState
     const categoryItemsIDs = Object.keys(modelState).filter(modelID => 
         modelID.toLowerCase().includes(partName.toLowerCase())
     ).map(modelID => {
@@ -1576,13 +1377,10 @@ export function testCategoryExistence(partName) {
         return null;
     }).filter(Boolean);
     
-    console.log(`📋 Found ${categoryItemsIDs.length} ${partName} items to test`);
-    
-    if (categoryItemsIDs.length > 0) {
+if (categoryItemsIDs.length > 0) {
         testPartsExistence(categoryItemsIDs);
     } else {
-        console.log(`⚠️ No ${partName} items found in modelState`);
-    }
+}
 }
 
 // Make debug functions available globally

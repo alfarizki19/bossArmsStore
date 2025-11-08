@@ -12,4 +12,4 @@ export function initSummaryNavigation_LaserSight() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_LaserSight);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_LaserSight);

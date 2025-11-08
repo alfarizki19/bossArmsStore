@@ -167,4 +167,4 @@ window.part.takedownPin = {
             }
         }
     }
-};
+};

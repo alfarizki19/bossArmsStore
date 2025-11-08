@@ -3,13 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Buffer Tube model controller loaded (implemented version)');
-
 // Update Buffer Tube model based on current selection
 export function updateModel_BufferTube() {
-  console.log('🔧 Buffer Tube model update - checking current selection');
-  
-  // Get current selected buffer tube from dataController
+// Get current selected buffer tube from dataController
   const selected = getSelectedBufferTube();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -19,28 +15,23 @@ export function updateModel_BufferTube() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Buffer Tube: ${selected.id} -> ${modelID}`);
-    }
+}
   } else {
     // No selection, hide all variants
     hideAllBufferTubeVariants();
-    console.log('👁️‍🗨️ No Buffer Tube selected - hiding all variants');
-  }
+}
 }
 
 // Handle Buffer Tube selection from UI
 export function handleBufferTubeSelection(itemsID) {
-  console.log(`🎯 Buffer Tube selection: ${itemsID}`);
-  
-  // Hide all buffer tube variants first
+// Hide all buffer tube variants first
   hideAllBufferTubeVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Buffer Tube: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Buffer Tube: ${itemsID}`);
   }
 }

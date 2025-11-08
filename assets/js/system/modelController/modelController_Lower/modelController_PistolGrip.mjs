@@ -3,13 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Pistol Grip model controller loaded (implemented version)');
-
 // Update Pistol Grip model based on current selection
 export function updateModel_PistolGrip() {
-  console.log('🔧 Pistol Grip model update - checking current selection');
-  
-  // Get current selected pistol grip from dataController
+// Get current selected pistol grip from dataController
   const selected = getSelectedPistolGrip();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -19,28 +15,23 @@ export function updateModel_PistolGrip() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Pistol Grip: ${selected.id} -> ${modelID}`);
-    }
+}
   } else {
     // No selection, hide all variants
     hideAllPistolGripVariants();
-    console.log('👁️‍🗨️ No Pistol Grip selected - hiding all variants');
-  }
+}
 }
 
 // Handle Pistol Grip selection from UI
 export function handlePistolGripSelection(itemsID) {
-  console.log(`🎯 Pistol Grip selection: ${itemsID}`);
-  
-  // Hide all pistol grip variants first
+// Hide all pistol grip variants first
   hideAllPistolGripVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Pistol Grip: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Pistol Grip: ${itemsID}`);
   }
   
@@ -50,41 +41,29 @@ export function handlePistolGripSelection(itemsID) {
 
 // Handle Trigger Guard interaction based on pistol grip selection
 function handleTriggerGuardInteraction(itemsID) {
-  console.log(`🔧 Handling Trigger Guard interaction for: ${itemsID}`);
-  
-  if (itemsID.startsWith('pistolGrip001001')) {
+if (itemsID.startsWith('pistolGrip001001')) {
     // Group 001001: NO TRIGGER GUARD needed (integrated trigger guard)
-    console.log('🚫 Pistol Grip 001001 - Hiding all trigger guard models');
-    hideAllTriggerGuardVariants();
+hideAllTriggerGuardVariants();
   } else if (itemsID.startsWith('pistolGrip002001')) {
     // Group 002001: TRIGGER GUARD needed (separate trigger guard)
-    console.log('✅ Pistol Grip 002001 - Showing default trigger guard');
-    showDefaultTriggerGuard();
+showDefaultTriggerGuard();
   }
 }
 
 // Helper function to hide all trigger guard variants
 function hideAllTriggerGuardVariants() {
   const triggerGuardModels = [
-    // Group 001001 (7 variants)
+    // Group 001001 (3 variants - removed 04-07)
     'modelID_triggerGuard00100101',
     'modelID_triggerGuard00100102',
     'modelID_triggerGuard00100103',
-    'modelID_triggerGuard00100104',
-    'modelID_triggerGuard00100105',
-    'modelID_triggerGuard00100106',
-    'modelID_triggerGuard00100107',
-    // Group 002001 (10 variants)
+    // Removed: 00100104-00100107 (hidden variants)
+    // Group 002001 (4 variants - removed 05-10)
     'modelID_triggerGuard00200101',
     'modelID_triggerGuard00200102',
     'modelID_triggerGuard00200103',
-    'modelID_triggerGuard00200104',
-    'modelID_triggerGuard00200105',
-    'modelID_triggerGuard00200106',
-    'modelID_triggerGuard00200107',
-    'modelID_triggerGuard00200108',
-    'modelID_triggerGuard00200109',
-    'modelID_triggerGuard00200110'
+    'modelID_triggerGuard00200104'
+    // Removed: 00200105-00200110 (hidden variants)
   ];
   
   triggerGuardModels.forEach(modelID => {
@@ -100,7 +79,6 @@ function showDefaultTriggerGuard() {
   // Show default trigger guard: triggerGuard00100101
   const defaultModelID = 'modelID_triggerGuard00100101';
   showModel(defaultModelID);
-  console.log(`✅ Showing default Trigger Guard: triggerGuard00100101 -> ${defaultModelID}`);
 }
 
 // Helper function to hide all pistol grip variants
@@ -110,14 +88,12 @@ function hideAllPistolGripVariants() {
     'modelID_pistolGrip00100101',
     'modelID_pistolGrip00100102',
     'modelID_pistolGrip00100103',
-    // Group 002 variants
+    // Group 002 variants (4 variants - removed 05-07)
     'modelID_pistolGrip00200101',
     'modelID_pistolGrip00200102',
     'modelID_pistolGrip00200103',
-    'modelID_pistolGrip00200104',
-    'modelID_pistolGrip00200105',
-    'modelID_pistolGrip00200106',
-    'modelID_pistolGrip00200107'
+    'modelID_pistolGrip00200104'
+    // Removed: 00200105-00200107 (hidden variants)
   ];
   
   pistolGripModels.forEach(modelID => {

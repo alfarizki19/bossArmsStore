@@ -27,4 +27,4 @@ export function initSummaryNavigation_Safety() {
 
 document.addEventListener('DOMContentLoaded', initSummaryNavigation_Safety);
 
-
+

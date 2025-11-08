@@ -11,7 +11,8 @@ export function initSummaryNavigation_MagazineRelease() {
         'summaryItemsCard_magazineRelease_00200106',
         'summaryItemsCard_magazineRelease_00200107',
         'summaryItemsCard_magazineRelease_00200108',
-        'summaryItemsCard_magazineRelease_00200109'
+        'summaryItemsCard_magazineRelease_00200109',
+        'summaryItemsCard_magazineRelease_00200110'
     ];
     ids.forEach(id => {
         const el = document.getElementById(id);
@@ -24,5 +25,3 @@ export function initSummaryNavigation_MagazineRelease() {
 }
 
 document.addEventListener('DOMContentLoaded', initSummaryNavigation_MagazineRelease);
-
-

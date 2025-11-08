@@ -3,13 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Charging Handle model controller loaded (implemented version)');
-
 // Update Charging Handle model based on current selection
 export function updateModel_ChargingHandle() {
-  console.log('🔧 Charging Handle model update - checking current selection');
-  
-  // Get current selected charging handle from dataController
+// Get current selected charging handle from dataController
   const selected = getSelectedChargingHandle();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -19,28 +15,23 @@ export function updateModel_ChargingHandle() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Charging Handle: ${selected.id} -> ${modelID}`);
-    }
+}
   } else {
     // No selection, hide all variants
     hideAllChargingHandleVariants();
-    console.log('👁️‍🗨️ No Charging Handle selected - hiding all variants');
-  }
+}
 }
 
 // Handle Charging Handle selection from UI
 export function handleChargingHandleSelection(itemsID) {
-  console.log(`🎯 Charging Handle selection: ${itemsID}`);
-  
-  // Hide all charging handle variants first
+// Hide all charging handle variants first
   hideAllChargingHandleVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Charging Handle: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Charging Handle: ${itemsID}`);
   }
 }
@@ -58,12 +49,8 @@ function hideAllChargingHandleVariants() {
     'modelID_chargingHandle00400102',
     'modelID_chargingHandle00400103',
     'modelID_chargingHandle00400104',
-    'modelID_chargingHandle00400105',
-    'modelID_chargingHandle00400106',
-    'modelID_chargingHandle00400107',
-    'modelID_chargingHandle00400108',
-    'modelID_chargingHandle00400109',
-    'modelID_chargingHandle00400110'
+    'modelID_chargingHandle00400105'
+    // Removed: 00400106-00400110 (hidden variants)
   ];
   
   chargingHandleModels.forEach(modelID => {

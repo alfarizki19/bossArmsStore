@@ -8,9 +8,9 @@ export function initSummaryNavigation_UpperReceiver() {
 		if (!el) return;
 		el.addEventListener('click', () => {
 			if (typeof closeSummaryMenu === 'function') closeSummaryMenu();
-			if (typeof navigateToMenu === 'function') navigateToMenu('menuUpperReceiverProductMenu');
+			if (typeof navigateToMenu === 'function') navigateToMenu('menuUpperReceiver');
 		});
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_UpperReceiver);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_UpperReceiver);

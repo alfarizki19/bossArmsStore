@@ -57,4 +57,4 @@ export function updateSummary_BoltCatch() {
 window.resetSummary_BoltCatch = resetSummary_BoltCatch;
 window.updateSummary_BoltCatch = updateSummary_BoltCatch;
 
-
+

@@ -236,6 +236,15 @@ function navigateToVariantMenu(variantMenuId) {
     updateMenuHeader(variantMenuId);
 }
 
+// Navigate to model controller menu
+function navigateToModelControllerMenu(modelControllerMenuId) {
+    setMenuOpenedID(modelControllerMenuId);
+    closeAllMenu();
+    openMenu();
+    updatePartMenuVisibility();
+    updateMenuHeader(modelControllerMenuId);
+}
+
 // Go back to previous menu
 function goBackToMenu() {
     // For now, always go back to main menu
@@ -276,7 +285,7 @@ function goBackToHandguardRailSystemProductMenu() {
 
 // Navigate to muzzle device product menu
 function goBackToMuzzleDeviceProductMenu() {
-    navigateToMenu('menuMuzzleDevice');
+    navigateToMenu('menuMuzzleDeviceProductMenu');
     updatePartMenuVisibility();
 }
 
@@ -412,7 +421,6 @@ function goBackToMagazineReleaseVariantMenu002001() {
     updatePartMenuVisibility();
 }
 
-
 // Select variant function
 function selectVariant(variantId, variantName) {
     // No functionality - backend will handle this
@@ -517,7 +525,12 @@ function initializeMenuNavigation() {
         'backButton_LaserSightProductMenu',
         'backButton_MLOKAndKeymodRailProductMenu',
         'backButton_OpticSightProductMenu',
-        'backButton_RearSightProductMenu'
+        'backButton_RearSightProductMenu',
+        'backButton_BipodModelControllerMenu00100101',
+        'backButton_FrontSightModelControllerMenu00100101',
+        'backButton_FrontSightModelControllerMenu00200101',
+        'backButton_RearSightModelControllerMenu00100101',
+        'backButton_RearSightModelControllerMenu00200101'
     ];
 
     backButtons.forEach(buttonId => {
@@ -623,6 +636,21 @@ function initializeMenuNavigation() {
                     goBackToGearMenu();
                 } else if (buttonId === 'backButton_RearSightProductMenu') {
                     goBackToGearMenu();
+                } else if (buttonId === 'backButton_BipodModelControllerMenu00100101') {
+                    navigateToMenu('menuBipodProductMenu');
+                    updatePartMenuVisibility();
+                } else if (buttonId === 'backButton_FrontSightModelControllerMenu00100101') {
+                    navigateToMenu('menuFrontSightProductMenu');
+                    updatePartMenuVisibility();
+                } else if (buttonId === 'backButton_FrontSightModelControllerMenu00200101') {
+                    navigateToMenu('menuFrontSightProductMenu');
+                    updatePartMenuVisibility();
+                } else if (buttonId === 'backButton_RearSightModelControllerMenu00100101') {
+                    navigateToMenu('menuRearSightProductMenu');
+                    updatePartMenuVisibility();
+                } else if (buttonId === 'backButton_RearSightModelControllerMenu00200101') {
+                    navigateToMenu('menuRearSightProductMenu');
+                    updatePartMenuVisibility();
                 } else {
                     goBackToMenu();
                 }
@@ -780,6 +808,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Export functions for global access
 window.navigateToMenu = navigateToMenu;
 window.navigateToVariantMenu = navigateToVariantMenu;
+window.navigateToModelControllerMenu = navigateToModelControllerMenu;
 window.goBackToMenu = goBackToMenu;
 window.goBackToUpperGroupMenu = goBackToUpperGroupMenu;
 window.goBackToEjectionPortCoverProductMenu = goBackToEjectionPortCoverProductMenu;

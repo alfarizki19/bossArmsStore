@@ -156,4 +156,4 @@ window.part.magazineRelease = {
             }
         }
     }
-};
+};

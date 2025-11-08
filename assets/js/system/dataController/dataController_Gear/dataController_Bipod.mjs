@@ -1,143 +1,283 @@
 // === dataController_Bipod.mjs ===
 // Gear & Acc: Bipod controller (with MLOK-for-Bipod linkage)
 
-// Import model controller functions
-import { updateModel_Bipod, handleBipodSelection, handleBipodToggle } from '../../modelController/modelController_Gear/modelController_Bipod.mjs';
+// Import model controller functions (if exists)
+let updateModel_Bipod = () => {};
+let handleBipodSelection = () => {};
+let handleBipodToggle = () => {};
 
+try {
+	const modelModule = await import('../../modelController/modelController_Gear/modelController_Bipod.mjs');
+	updateModel_Bipod = modelModule.updateModel_Bipod || updateModel_Bipod;
+	handleBipodSelection = modelModule.handleBipodSelection || handleBipodSelection;
+	handleBipodToggle = modelModule.handleBipodToggle || handleBipodToggle;
+} catch(e) {
+}
+
+// Helper functions
 function bp_get(id){ return document.getElementById(id); }
 function bp_setText(id, text){ const el=bp_get(id); if(el) el.textContent=text; }
 function bp_addClass(id, c){ const el=bp_get(id); if(el) el.classList.add(c); }
 function bp_removeClass(id, c){ const el=bp_get(id); if(el) el.classList.remove(c); }
+function bp_showElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "flex";
+}
+function bp_hideElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "none";
+}
 
-function bp_getGearWrap(){ const nameEl=bp_get('partName_Bipod'); if(!nameEl) return null; let p=nameEl.parentElement; while(p && !p.classList.contains('menuPartMenuOptionContainer')){ p=p.parentElement; } return p? p.querySelector('.menuPartMenuOptionImageArea') : null; }
-function bp_hideGearImages(){ const wrap=bp_getGearWrap(); if(!wrap) return; wrap.querySelectorAll('img, image, Image').forEach(el=>el.style.display='none'); }
-function bp_showGearDefault(){ const img=bp_get('partImgID_bipod00100101'); if(img) img.style.display='flex'; }
+// Hide gear images
+function bp_hideGearImages(){
+	const img = bp_get('partCardImg_bipod00100101');
+	if(img) img.style.display='none';
+}
+function bp_showGearDefault(){
+	const img = bp_get('partCardImg_bipod00100101');
+	if(img) img.style.display='block';
+}
 
 // Inventory access
-function bp_getBipod(){ return (window.part && window.part.bipod && window.part.bipod['001'] && window.part.bipod['001'].products && window.part.bipod['001'].products['001']) ? window.part.bipod['001'].products['001'] : null; }
-function bp_getMlokA(){ return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['001'] && window.part.mlokAndKeymodRail['001'].products && window.part.mlokAndKeymodRail['001'].products['001']) ? window.part.mlokAndKeymodRail['001'].products['001'] : null; }
-function bp_getMlokB(){ return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['002'] && window.part.mlokAndKeymodRail['002'].products && window.part.mlokAndKeymodRail['002'].products['001']) ? window.part.mlokAndKeymodRail['002'].products['001'] : null; }
+function bp_getBipod(){ 
+	return (window.part && window.part.bipod && window.part.bipod['001'] && window.part.bipod['001'].products && window.part.bipod['001'].products['001']) 
+		? window.part.bipod['001'].products['001'] 
+		: null; 
+}
+function bp_getMlokA(){ 
+	return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['001'] && window.part.mlokAndKeymodRail['001'].products && window.part.mlokAndKeymodRail['001'].products['001']) 
+		? window.part.mlokAndKeymodRail['001'].products['001'] 
+		: null; 
+}
+function bp_getMlokB(){ 
+	return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['002'] && window.part.mlokAndKeymodRail['002'].products && window.part.mlokAndKeymodRail['002'].products['001']) 
+		? window.part.mlokAndKeymodRail['002'].products['001'] 
+		: null; 
+}
+function bp_getMlokBrandA(){ 
+	return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['001']) 
+		? window.part.mlokAndKeymodRail['001'].brand 
+		: '---'; 
+}
 
-function bp_getMlokBrandA(){ return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['001']) ? window.part.mlokAndKeymodRail['001'].brand : '---'; }
-function bp_getMlokBrandB(){ return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['002']) ? window.part.mlokAndKeymodRail['002'].brand : '---'; }
+// ===== Update Inventory Quantity =====
+// Use the function from MLOK biasa (shared)
+function updateInventoryQuantity_mlokAndKeymodRail() {
+	if (window.updateInventoryQuantity_mlokAndKeymodRail) {
+		window.updateInventoryQuantity_mlokAndKeymodRail();
+	}
+}
 
-function bp_incMlokA(){ const a=bp_getMlokA(); if(a && a.variants['01']) a.variants['01'].quantity = Math.max(0,(a.variants['01'].quantity||0)+1); }
-function bp_decMlokIfAny(){ const a=bp_getMlokA(); const b=bp_getMlokB(); if(a && a.variants['01'] && (a.variants['01'].quantity||0)>0) a.variants['01'].quantity -= 1; if(b && b.variants['01'] && (b.variants['01'].quantity||0)>0) b.variants['01'].quantity -= 1; }
+// ===== Update UI based on selected Bipod =====
+export function uiData_Bipod(){ 
+	const p=bp_getBipod(); 
+	if(!p) return; 
+	
+	const v01=p.variants['01']; 
+	const selected = v01 && v01.quantity===1 ? v01 : null; 
+	
+	// Default gear image baseline
+	bp_hideGearImages(); 
+	
+	if(!selected){ 
+		// No bipod selected
+		bp_showGearDefault(); 
+		bp_setText('partCardName_bipod','No Bipod Selected'); 
+		bp_setText('partCardPrice_bipod','----- USD'); 
+		
+		// Ensure no-selected active
+		bp_addClass('productCard_NoSelected_bipod','active'); 
+		bp_removeClass('productCard_bipod_001001','active'); 
+		
+		// Hide summary card
+		bp_hideElement('summaryItemsCard_bipod_00100101');
+		
+		return;
+	}
+	
+	// Selected bipod
+	const title = p.productTitle; 
+	bp_setText('partCardName_bipod', title); 
+	bp_setText('partCardPrice_bipod', '$' + v01.price + ' USD'); 
+	
+	const img=bp_get('partCardImg_'+v01.id); 
+	if(img) img.style.display='block';
+	
+	// Part menu states
+	bp_removeClass('productCard_NoSelected_bipod','active'); 
+	bp_addClass('productCard_bipod_001001','active');
+	
+	// Update part-menu header texts for bipod
+	bp_setText('productCardName_bipod_001001', p.productTitle); 
+	bp_setText('productCardPrice_bipod_001001', '$' + v01.price + ' USD');
+	
+	// Show summary card
+	const group = window.part.bipod['001'];
+	const summaryName = group.brand + ' - ' + p.productTitle;
+	bp_showElement('summaryItemsCard_bipod_00100101');
+	bp_setText('summaryCardName_bipod_00100101', summaryName);
+	bp_setText('summaryCardPrice_bipod_00100101', '$' + v01.price + ' USD');
+	
+	// Update MLOK for bipod UI (if function exists)
+	if (window.uiData_mlokForBipod) {
+		window.uiData_mlokForBipod();
+	}
+}
 
-function bp_updateAdditionalFromMlokA(){ const a=bp_getMlokA(); if(!a || !a.variants['01']) return; const v=a.variants['01']; // per spec: name=productTitle, brand from brand node, price=variant price
- bp_setText('additionalItemsName_bipod001001', a.productTitle); bp_setText('additionalItemsBrand_bipod001001', bp_getMlokBrandA()); bp_setText('additionalItemsPricing_bipod001001', v.price + ' USD'); const imgA = bp_get('productImgAdditionalID_MLOKBipod001'); const imgB = bp_get('productImgAdditionalID_MLOKBipod002'); if(imgA) imgA.style.display='flex'; if(imgB) imgB.style.display='none'; }
+// ===== Event Listeners =====
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', function() {
+		setTimeout(setupProductCardListeners, 100);
+	});
+} else {
+	setTimeout(setupProductCardListeners, 100);
+}
 
-// Reset to no-selected (explicit command)
-export function uiReset_bipod(){ const p=bp_getBipod(); if(!p) return; // clear quantities
- Object.keys(p.variants).forEach(k=>p.variants[k].quantity=0);
- // Gear menu
- bp_hideGearImages(); bp_showGearDefault(); bp_setText('partName_Bipod','No Bipod Selected'); bp_setText('partPrice_Bipod','--- USD');
- // Part menu header/icon states
- bp_addClass('productHeader_noBipod','active'); bp_addClass('productButtonIcon_NoBipod','active');
- bp_removeClass('productHeader_bipod001001','active'); bp_removeClass('productButtonIcon_bipod00100101','active'); bp_removeClass('productButtonIcon_bipod001001','active');
- // Part menu header texts (defaults from inventory)
- bp_setText('productName_bipod001001', p.productTitle); bp_setText('productPricing_bipod001001', p.variants['01'].price + ' USD');
- // Additional panel to defaults
- bp_setText('additionalItemsName_bipod001001','no parts selected'); bp_setText('additionalItemsBrand_bipod001001','--- ---'); bp_setText('additionalItemsPricing_bipod001001','----- USD'); const imgA = bp_get('productImgAdditionalID_MLOKBipod001'); const imgB = bp_get('productImgAdditionalID_MLOKBipod002'); if(imgA) imgA.style.display='none'; if(imgB) imgB.style.display='none';
- // MLOK decrement both brands if any
- bp_decMlokIfAny(); }
+function setupProductCardListeners() {
+// No bipod
+	const noBtn = bp_get('productCard_NoSelected_bipod');
+	if(noBtn){ 
+		noBtn.addEventListener('click', function(){ 
+			const p=bp_getBipod(); 
+			const a=bp_getMlokA();
+			
+			// Set bipod quantity = 0 (0->0, 1->0)
+			if(p && p.variants['01']) {
+				const qty = p.variants['01'].quantity || 0;
+				if (qty === 0) {
+					p.variants['01'].quantity = 0;
+				} else if (qty === 1) {
+					p.variants['01'].quantity = 0;
+				}
+			}
+			
+			// Set MLOK for bipod variable terpisah = 0
+			window.mlokAndKeymodRail00100101_forBipod_quantity = 0;
+			window.mlokAndKeymodRail00200101_forBipod_quantity = 0;
+			
+			// Update inventory quantity
+			updateInventoryQuantity_mlokAndKeymodRail();
+			
+			// Set UI manually
+			bp_addClass('productCard_NoSelected_bipod','active');
+			bp_removeClass('productCard_bipod_001001','active');
+			bp_removeClass('productCard_mlokAndKeymodRail_001001_forBipod','active');
+			bp_removeClass('productCard_mlokAndKeymodRail_002001_forBipod','active');
+			
+			// Hide forBipod summary cards
+			bp_hideElement('summaryItemsCard_mlokAndKeymodRail_00100101_forBipod');
+			bp_hideElement('summaryItemsCard_mlokAndKeymodRail_00200101_forBipod');
+			
+			// Update UI
+			uiData_Bipod(); 
+			
+			// Update MLOK for bipod UI
+			if (window.uiData_mlokForBipod) {
+				window.uiData_mlokForBipod();
+			}
+			
+			// Update 3D model
+			updateModel_Bipod();
+		}, true);
+	}
+	
+	// Select bipod 00100101
+	const pick = bp_get('productCard_bipod_001001');
+	if(pick){ 
+		pick.addEventListener('click', function(){ 
+			const p=bp_getBipod(); 
+			if(!p) return;
+			const a=bp_getMlokA();
+			
+			// Get current bipod quantity
+			const qty = p.variants['01'].quantity || 0;
+			
+			// Set bipod quantity = 1 (0->1, 1->1)
+			if (qty === 0) {
+				p.variants['01'].quantity = 1;
+			} else if (qty === 1) {
+				p.variants['01'].quantity = 1;
+			}
+			
+			// Only reset to default MLOK for bipod if bipod is newly added (quantity was 0)
+			if (qty === 0) {
+				// Bipod baru ditambahkan - set default adapter = A
+				window.mlokAndKeymodRail00100101_forBipod_quantity = 1;
+				window.mlokAndKeymodRail00200101_forBipod_quantity = 0;
+				
+				// Update inventory quantity
+				updateInventoryQuantity_mlokAndKeymodRail();
+				
+				// Set UI manually for default
+				bp_addClass('productCard_mlokAndKeymodRail_001001_forBipod','active');
+				bp_removeClass('productCard_mlokAndKeymodRail_002001_forBipod','active');
+				
+				// Show A forBipod summary
+				if(a && a.variants['01']) {
+					const summaryName = bp_getMlokBrandA() + ' - ' + a.productTitle + ' for bipod';
+					bp_showElement('summaryItemsCard_mlokAndKeymodRail_00100101_forBipod');
+					bp_setText('summaryCardName_mlokAndKeymodRail_00100101_forBipod', summaryName);
+					bp_setText('summaryCardPrice_mlokAndKeymodRail_00100101_forBipod', '$' + a.variants['01'].price + ' USD');
+				}
+			}
+			// If qty != 0, bipod sudah ada - tidak perlu reset MLOK for bipod, biarkan yang sudah dipilih
+			
+			// Set UI manually
+			bp_removeClass('productCard_NoSelected_bipod','active');
+			bp_addClass('productCard_bipod_001001','active');
+			
+			// Update UI
+			uiData_Bipod(); 
+			
+			// Update MLOK for bipod UI
+			if (window.uiData_mlokForBipod) {
+				window.uiData_mlokForBipod();
+			}
+			
+			// Update 3D model
+			const itemsID = "bipod00100101";
+handleBipodSelection(itemsID);
+		}, true);
+	}
+	
+}
 
-export function uiData_Bipod(){ const p=bp_getBipod(); if(!p) return; const v01=p.variants['01']; const selected = v01 && v01.quantity===1 ? v01 : null; // Default gear image baseline
- bp_hideGearImages(); if(!selected){ bp_showGearDefault(); bp_setText('partName_Bipod','No Bipod Selected'); bp_setText('partPrice_Bipod','--- USD'); // ensure no-selected active
- bp_addClass('productHeader_noBipod','active'); bp_addClass('productButtonIcon_NoBipod','active'); bp_removeClass('productHeader_bipod001001','active'); bp_removeClass('productButtonIcon_bipod00100101','active'); bp_removeClass('productButtonIcon_bipod001001','active'); return; }
- // Selected bipod
- const title = p.productTitle; bp_setText('partName_Bipod', title); bp_setText('partPrice_Bipod', v01.price + ' USD'); const img=bp_get('partImgID_'+v01.id); if(img) img.style.display='flex';
- // Part menu states
- bp_removeClass('productHeader_noBipod','active'); bp_removeClass('productButtonIcon_NoBipod','active'); bp_addClass('productHeader_bipod001001','active');
- // toggle either icon id
- bp_addClass('productButtonIcon_bipod001001','active'); bp_addClass('productButtonIcon_bipod00100101','active');
- // Update part-menu header texts for bipod
- bp_setText('productName_bipod001001', p.productTitle); bp_setText('productPricing_bipod001001', v01.price + ' USD');
- // Activate MLOK for bipod header/icon (if present)
- bp_addClass('productHeader_mlokAndKeymodRail001001_forbipod','active'); bp_addClass('productButtonIcon_mlokAndKeymodRail001001_forbipod','active');
- // Ensure MLOK A +1 and update additional panel
- bp_incMlokA(); bp_updateAdditionalFromMlokA(); }
+// ===== Start Button Listener =====
+// Reset bipod and MLOK for bipod variables when start button is clicked
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', function() {
+		setTimeout(setupStartButtonListener, 100);
+	});
+} else {
+	setTimeout(setupStartButtonListener, 100);
+}
 
-// Wiring buttons
-(function(){ 
-  const start=bp_get('buttonModalStartMenu_StartButton'); 
-  if(start){ 
-    start.addEventListener('click', function(){ 
-      uiReset_bipod(); 
-      uiData_Bipod(); 
-      
-      // Update 3D model after UI update
-      updateModel_Bipod();
-    }); 
-  }
-  
-  // no bipod
-  const noBtn = bp_get('buttonItems_noBipod'); 
-  if(noBtn){ 
-    noBtn.addEventListener('click', function(){ 
-      const p=bp_getBipod(); 
-      if(p){ p.variants['01'].quantity=0; } 
-      uiReset_bipod(); 
-      uiData_Bipod(); 
-      
-      // Update 3D model after UI update
-      updateModel_Bipod();
-    }); 
-  }
-  
-  // select bipod 00100101
-  const pick = bp_get('buttonItems_bipod00100101'); 
-  if(pick){ 
-    pick.addEventListener('click', function(){ 
-      const p=bp_getBipod(); 
-      if(!p) return; 
-      p.variants['01'].quantity=1; 
-      uiData_Bipod(); 
-      
-      // Update 3D model after UI update
-      const itemsID = "bipod00100101";
-      console.log(`🎯 Part button clicked: ${itemsID}`);
-      handleBipodSelection(itemsID);
-    }); 
-  }
-  
-  // Add toggle button listeners for Bipod states (A, B, C, D)
-  // Button A (Folded Long)
-  const toggleBtnA = bp_get('buttonModelController_bipod00100101_A');
-  if(toggleBtnA){
-    toggleBtnA.addEventListener('click', function(){
-      console.log(`🔄 Toggle button clicked: bipod00100101_A (Folded Long)`);
-      handleBipodToggle('bipod00100101', 'A');
-    });
-  }
-  
-  // Button B (Folded Short)
-  const toggleBtnB = bp_get('buttonModelController_bipod00100101_B');
-  if(toggleBtnB){
-    toggleBtnB.addEventListener('click', function(){
-      console.log(`🔄 Toggle button clicked: bipod00100101_B (Folded Short)`);
-      handleBipodToggle('bipod00100101', 'B');
-    });
-  }
-  
-  // Button C (Open Short)
-  const toggleBtnC = bp_get('buttonModelController_bipod00100101_C');
-  if(toggleBtnC){
-    toggleBtnC.addEventListener('click', function(){
-      console.log(`🔄 Toggle button clicked: bipod00100101_C (Open Short)`);
-      handleBipodToggle('bipod00100101', 'C');
-    });
-  }
-  
-  // Button D (Open Long)
-  const toggleBtnD = bp_get('buttonModelController_bipod00100101_D');
-  if(toggleBtnD){
-    toggleBtnD.addEventListener('click', function(){
-      console.log(`🔄 Toggle button clicked: bipod00100101_D (Open Long)`);
-      handleBipodToggle('bipod00100101', 'D');
-    });
-  }
-})();
-
-export function getSelectedBipod(){ const p=bp_getBipod(); if(!p) return null; return (p.variants['01'].quantity===1)? p.variants['01']: null; }
-export function getBipodTotalPrice(){ const v=getSelectedBipod(); return v? v.price:0; }
+function setupStartButtonListener() {
+	const btn = document.getElementById("loader-start-button");
+	if (btn) {
+		btn.addEventListener("click", function (e) {
+// Reset bipod quantity
+			const p = bp_getBipod();
+			if(p && p.variants['01']) {
+				p.variants['01'].quantity = 0;
+			}
+			
+			// Reset all MLOK for bipod variables to 0
+			window.mlokAndKeymodRail00100101_forBipod_quantity = 0;
+			window.mlokAndKeymodRail00200101_forBipod_quantity = 0;
+			
+			// Update inventory quantity
+			updateInventoryQuantity_mlokAndKeymodRail();
+			
+			// Update UI
+			uiData_Bipod();
+			
+			// Update MLOK for bipod UI
+			if (window.uiData_mlokForBipod) {
+				window.uiData_mlokForBipod();
+			}
+			
+}, true);
+		
+}
+}

@@ -8,9 +8,9 @@ export function initSummaryNavigation_ForwardAssist() {
 		if (!el) return;
 		el.addEventListener('click', () => {
 			if (typeof closeSummaryMenu === 'function') closeSummaryMenu();
-			if (typeof navigateToMenu === 'function') navigateToMenu('menuForwardAssistProductMenu');
+			if (typeof navigateToMenu === 'function') navigateToMenu('menuForwardAssistsProductMenu');
 		});
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_ForwardAssist);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_ForwardAssist);

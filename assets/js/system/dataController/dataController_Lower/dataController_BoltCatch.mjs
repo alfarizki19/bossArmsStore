@@ -1,67 +1,288 @@
 // === dataController_BoltCatch.mjs ===
-// Bolt Catch UI Controller (Lower Category)
+// Bolt Catch Assembly UI Controller (Lower Category)
 
-function bc_setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
-function bc_addClass(id, c) { const el = document.getElementById(id); if (el) el.classList.add(c); }
-function bc_removeClass(id, c) { const el = document.getElementById(id); if (el) el.classList.remove(c); }
+// Import model controller functions (if exists)
+// Note: Model controller may not exist yet
+let updateModel_BoltCatch = () => {};
+let handleBoltCatchSelection = () => {};
+
+function bca_setText(id, text) {
+	const el = document.getElementById(id);
+	if (el) el.textContent = text;
+}
+
+function bca_addClass(id, className) {
+	const el = document.getElementById(id);
+	if (el) el.classList.add(className);
+}
+
+function bca_removeClass(id, className) {
+	const el = document.getElementById(id);
+	if (el) el.classList.remove(className);
+}
+
+function bca_showElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "flex";
+}
+
+function bca_hideElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "none";
+}
+
+function bca_hideAllPartCardImages() {
+	const ids = [
+		"partCardImg_boltCatch00100101",
+	];
+	ids.forEach(function (id) { bca_hideElement(id); });
+}
 
 export function uiReset_boltCatch001001() {
-    // Single product, single variant 01
-    const product = window.part.boltCatch["001"].products["001"]; // Extended Bolt Catch
-    product.variants["01"].quantity = 0;
-    bc_setText("productName_boltCatch001001", product.productTitle);
-    bc_setText("productPricing_boltCatch001001", product.variants["01"].price + " USD");
-    bc_removeClass("productHeader_boltCatch001001", "active");
-    bc_removeClass("productButtonIcon_boltCatch001001", "active");
-    // lower part menu
-    bc_setText("partName_BoltCatch", "-----");
-    bc_setText("partPrice_BoltCatch", "-----");
+	const group = window.part.boltCatch["001"];
+	const product = group.products["001"]; // 001001
+	product.variants["01"].quantity = 0;
+
+	// Reset product card
+	// Note: HTML uses productCard_boltCatch_00100101 (with underscore)
+	bca_removeClass("productCard_boltCatch_00100101", "active");
+
+	// Hide part card images
+	bca_hideAllPartCardImages();
+
+	// Reset part card
+	bca_setText("partCardName_boltCatch", "--- --- ---");
+	bca_setText("partCardPrice_boltCatch", "----- USD");
+
+	// Hide summary card
+	// Note: Check if summary card exists
+	const summaryCard = document.getElementById("summaryItemsCard_boltCatch_00100101");
+	if (summaryCard) bca_hideElement("summaryItemsCard_boltCatch_00100101");
+}
+
+// Function to update all product card names and prices from inventory
+function bca_updateAllProductCards() {
+	// 001001
+	{
+		const group = window.part.boltCatch["001"];
+		const product = group.products["001"];
+		const variant = product.variants["01"];
+		// Note: HTML uses productCardName_boltCatch_00100101 and productCardPrice_boltCatch_00100101
+		const nameId = "productCardName_boltCatch_00100101";
+		const priceId = "productCardPrice_boltCatch_00100101";
+		if (document.getElementById(nameId)) {
+			bca_setText(nameId, product.productTitle);
+		}
+		if (document.getElementById(priceId)) {
+			bca_setText(priceId, "$" + variant.price + " USD");
+		}
+	}
 }
 
 export function uiData_BoltCatch() {
-    const product = window.part.boltCatch["001"].products["001"];
-    const v = product.variants["01"];
-    if (v.quantity !== 1) return;
+	let selected = null; let cardSuffix = null; let productTitle = ""; let brand = "";
 
-    // header
-    bc_setText("productPricing_boltCatch001001", v.price + " USD");
-    bc_addClass("productHeader_boltCatch001001", "active");
-    bc_addClass("productButtonIcon_boltCatch001001", "active");
+	// 001001
+	{
+		const group = window.part.boltCatch["001"];
+		const product = group.products["001"];
+		if (product.variants["01"].quantity === 1) {
+			selected = product.variants["01"]; 
+			cardSuffix = "00100101"; 
+			productTitle = product.productTitle;
+			brand = group.brand;
+		}
+	}
 
-    // product img (only one)
-    const pImg = document.getElementById("productImgID_" + v.id);
-    if (pImg) pImg.style.display = "flex";
+	if (!selected || !cardSuffix) return;
 
-    // lower menu
-    const variantSuffix = (v.variantTitle && v.variantTitle.toLowerCase() !== "no variant") ? (" - " + v.variantTitle) : "";
-    bc_setText("productName_boltCatch001001", product.productTitle + variantSuffix);
-    bc_setText("partName_BoltCatch", product.productTitle + variantSuffix);
-    bc_setText("partPrice_BoltCatch", v.price + " USD");
+	// Update product card
+	// Note: HTML uses productCard_boltCatch_00100101 (with underscore)
+	const productCardId = "productCard_boltCatch_00100101";
+	const productCard = document.getElementById(productCardId);
+	if (productCard) {
+		bca_addClass(productCardId, "active");
+} else {
+		console.warn("⚠️ Bolt Catch: productCard_boltCatch_00100101 not found");
+	}
+	
+	// Update product card name and price
+	// Note: HTML uses productCardName_boltCatch_00100101 and productCardPrice_boltCatch_00100101
+	const nameId = "productCardName_boltCatch_00100101";
+	const priceId = "productCardPrice_boltCatch_00100101";
+	if (document.getElementById(nameId)) {
+		bca_setText(nameId, productTitle);
+	}
+	if (document.getElementById(priceId)) {
+		bca_setText(priceId, "$" + selected.price + " USD");
+	}
+
+	// Update part card images - show selected, hide others
+	bca_hideAllPartCardImages();
+	const partCardImgId = "partCardImg_boltCatch" + cardSuffix;
+	bca_showElement(partCardImgId);
+
+	// Update part card - format: brand + productTitle
+	bca_setText("partCardName_boltCatch", brand + " - " + productTitle);
+	bca_setText("partCardPrice_boltCatch", "$" + selected.price + " USD");
+
+	// Update summary cards - show selected, hide others
+	const summaryCardId = "summaryItemsCard_boltCatch_" + cardSuffix;
+	if (document.getElementById(summaryCardId)) {
+		bca_showElement(summaryCardId);
+		bca_setText("summaryCardName_boltCatch_" + cardSuffix, brand + " - " + productTitle);
+		bca_setText("summaryCardPrice_boltCatch_" + cardSuffix, "$" + selected.price + " USD");
+	}
 }
 
-// Start default
-{
-    const btn = document.getElementById("buttonModalStartMenu_StartButton");
-    if (btn) {
-        btn.addEventListener("click", function () {
-            uiReset_boltCatch001001();
-            window.part.boltCatch["001"].products["001"].variants["01"].quantity = 1;
-            uiData_BoltCatch();
-        });
-    }
+// Function to update all summary cards from inventory data
+export function updateSummaryCards_BoltCatch() {
+	// Update all summary card names and prices from inventory
+	// 001001
+	{
+		const group = window.part.boltCatch["001"];
+		const product = group.products["001"];
+		const variant = product.variants["01"];
+		const summaryCardId = "summaryItemsCard_boltCatch_00100101";
+		if (document.getElementById(summaryCardId)) {
+			bca_setText("summaryCardName_boltCatch_00100101", group.brand + " - " + product.productTitle);
+			bca_setText("summaryCardPrice_boltCatch_00100101", "$" + variant.price + " USD");
+		}
+	}
+
+	// Show/hide summary cards based on quantity
+	// 001001
+	{
+		const product = window.part.boltCatch["001"].products["001"];
+		const summaryCardId = "summaryItemsCard_boltCatch_00100101";
+		if (document.getElementById(summaryCardId)) {
+			if (product.variants["01"].quantity === 1) {
+				bca_showElement(summaryCardId);
+			} else {
+				bca_hideElement(summaryCardId);
+			}
+		}
+	}
 }
 
-// Selection
-{
-    const b = document.getElementById("buttonItems_boltCatch00100101");
-    if (b) b.addEventListener("click", function () {
-        uiReset_boltCatch001001();
-        window.part.boltCatch["001"].products["001"].variants["01"].quantity = 1;
-        uiData_BoltCatch();
-    });
+// Start default -> 001001 variant 01
+// Use DOMContentLoaded to ensure element exists
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupStartButtonListener);
+} else {
+	// DOM already loaded
+	setupStartButtonListener();
 }
 
-export function getSelectedBoltCatch() { const v = window.part.boltCatch["001"].products["001"].variants["01"]; return v.quantity === 1 ? v : null; }
-export function getBoltCatchTotalPrice() { const v = getSelectedBoltCatch(); return v ? v.price : 0; }
+function setupStartButtonListener() {
+	const btn = document.getElementById("loader-start-button");
+	if (btn) {
+		// Keep existing onclick for hideLoader, but add our handler
+		// Use capture phase to run before onclick
+		btn.addEventListener("click", function (e) {
+// Check if data is available
+			if (!window.part || !window.part.boltCatch) {
+				console.error("❌ Bolt Catch data not loaded yet");
+				return;
+			}
+			
+			// Update all product card names and prices from inventory
+			bca_updateAllProductCards();
+			
+			// Reset all products (set quantity = 0, remove active class)
+			uiReset_boltCatch001001();
+			
+			// Set default quantity = 1 for 00100101
+			window.part.boltCatch["001"].products["001"].variants["01"].quantity = 1;
+			
+			// Update UI (will set active class and show/hide images)
+			uiData_BoltCatch();
+			
+			// Update 3D model after UI update
+			updateModel_BoltCatch();
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+			
+}, true); // Use capture phase
+		
+} else {
+		console.warn("⚠️ Bolt Catch: loader-start-button not found");
+	}
+}
 
+// Product card click listeners
+// Use DOMContentLoaded to ensure elements exist
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupProductCardListeners);
+} else {
+	// DOM already loaded
+	setupProductCardListeners();
+}
 
+function setupProductCardListeners() {
+	// 001001 -> 01
+	// Note: HTML uses productCard_boltCatch_00100101 (with underscore)
+	const card001001 = document.getElementById("productCard_boltCatch_00100101");
+	if (card001001) {
+		// Use capture phase to run before onclick
+		card001001.addEventListener("click", function (e) {
+			// Reset all products
+			uiReset_boltCatch001001();
+			
+			// Set quantity = 1 for selected product
+			window.part.boltCatch["001"].products["001"].variants["01"].quantity = 1;
+			
+			// Update UI
+			uiData_BoltCatch();
+			
+			// Update 3D model after UI update
+			const itemsID = "boltCatch00100101";
+handleBoltCatchSelection(itemsID);
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+		}, true); // Use capture phase
+	}
+	
+}
+
+// Summary chart button click listener
+// Use DOMContentLoaded to ensure element exists
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupSummaryChartButtonListener);
+} else {
+	// DOM already loaded
+	setupSummaryChartButtonListener();
+}
+
+function setupSummaryChartButtonListener() {
+	const btn = document.getElementById("summaryChartButton");
+	if (btn) {
+		btn.addEventListener("click", function () {
+			// Update all summary cards from inventory data
+			updateSummaryCards_BoltCatch();
+});
+} else {
+		console.warn("⚠️ Bolt Catch: summaryChartButton not found");
+	}
+}
+
+export function getSelectedBoltCatch() {
+	const a = window.part.boltCatch["001"].products["001"].variants;
+	if (a["01"].quantity === 1) return a["01"];
+	return null;
+}
+
+export function getBoltCatchTotalPrice() {
+	const v = getSelectedBoltCatch();
+	return v ? v.price : 0;
+}

@@ -1,144 +1,296 @@
 // === dataController_Barrel.mjs ===
-// Barrel UI Controller for M4 Rifle Configurator
+// Barrel UI Controller (Upper Category)
 
-// Import model controller functions
-import { updateModel_Barel, handleBarelSelection } from '../../modelController/modelController_Upper/modelController_Barel.mjs';
+// Import model controller functions (if exists)
+// Note: Model controller may not exist yet
+let updateModel_Barrel = () => {};
+let handleBarrelSelection = () => {};
 
-// Debug: Check if inventory data is loaded
-console.log("Barrel dataController loaded");
-console.log("window.part:", window.part);
-console.log("window.part.barel:", window.part.barel);
-
-// Check if data is properly loaded
-if (window.part && window.part.barel) {
-    console.log("✅ Barrel inventory data loaded successfully");
-    const barrel = window.part.barel["002"].products["001"].variants["01"];
-    console.log("Barrel data:", barrel);
-} else {
-    console.error("❌ Barrel inventory data not loaded!");
+function brl_setText(id, text) {
+	const el = document.getElementById(id);
+	if (el) el.textContent = text;
 }
 
-export function uiReset_barel002001() {
-    // Reset quantity for KM Tactical 16 Barrel 223 Wylde (barel00200101)
-    window.part.barel["002"].products["001"].variants["01"].quantity = 0;
-    
-    // Update product name & pricing (use data from inventory)
-    const productNode = window.part.barel["002"].products["001"];
-    const variantNode = productNode.variants["01"];
-    document.getElementById("productName_barel002001").textContent = productNode.productTitle;
-    document.getElementById("productPricing_barel002001").textContent = variantNode.price + " USD";
+function brl_addClass(id, className) {
+	const el = document.getElementById(id);
+	if (el) el.classList.add(className);
+}
 
-    // Reset icon button accordion
-    document.getElementById("productButtonIcon_barel002001").classList.remove("active");
+function brl_removeClass(id, className) {
+	const el = document.getElementById(id);
+	if (el) el.classList.remove(className);
+}
 
-    // Reset header container state
-    document.getElementById("productHeader_barel002001").classList.remove("active");
+function brl_showElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "flex";
+}
 
-    // Hide part menu image
-    document.getElementById("partImgID_barel00200101").style.display = "none";
+function brl_hideElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "none";
+}
 
-    // Reset part menu texts (match HTML ids)
-    document.getElementById("partName_Barel").textContent = "-----";
-    document.getElementById("partPrice_Barel").textContent = "-----";
+function brl_hideAllPartCardImages() {
+	const ids = [
+		"partCardImg_barrel00200101",
+	];
+	ids.forEach(function (id) { brl_hideElement(id); });
+}
+
+export function uiReset_barrel002001() {
+	const group = window.part.barel["002"];
+	const product = group.products["001"]; // 002001
+	product.variants["01"].quantity = 0;
+
+	// Reset product card
+	// Note: HTML uses productCard_barrel002001 (no underscore)
+	brl_removeClass("productCard_barrel002001", "active");
+
+	// Hide part card images
+	brl_hideAllPartCardImages();
+
+	// Reset part card
+	brl_setText("partCardName_barrel", "--- --- ---");
+	brl_setText("partCardPrice_barrel", "----- USD");
+
+	// Hide summary card
+	// Note: Check if summary card exists (HTML uses "barel" not "barrel")
+	const summaryCard = document.getElementById("summaryItemsCard_barel_00200101");
+	if (summaryCard) brl_hideElement("summaryItemsCard_barel_00200101");
+}
+
+// Function to update all product card names and prices from inventory
+function brl_updateAllProductCards() {
+	// 002001
+	{
+		const group = window.part.barel["002"];
+		const product = group.products["001"];
+		const variant = product.variants["01"];
+		// Note: HTML uses productCardName_barel_00200101 and productCardPrice_barel_00200101
+		const nameId = "productCardName_barel_00200101";
+		const priceId = "productCardPrice_barel_00200101";
+		if (document.getElementById(nameId)) {
+			brl_setText(nameId, product.productTitle);
+		}
+		if (document.getElementById(priceId)) {
+			brl_setText(priceId, "$" + variant.price + " USD");
+		}
+	}
 }
 
 export function uiData_Barrel() {
-    // Check if KM Tactical 16 Barrel 223 Wylde is selected
-    const productNode = window.part.barel["002"].products["001"];
-    const variantNode = productNode.variants["01"];
-    console.log("uiData_Barrel called, barrel quantity:", variantNode.quantity);
-    
-    if (variantNode.quantity === 1) {
-        console.log("Updating UI for selected barrel:", productNode.productTitle);
-        
-        // Items menu - Update pricing and states
-        const pricingElement = document.getElementById("productPricing_barel002001");
-        const headerElement = document.getElementById("productHeader_barel002001");
-        const buttonIconElement = document.getElementById("productButtonIcon_barel002001");
-        
-        if (pricingElement) pricingElement.textContent = variantNode.price + " USD";
-        const nameElement = document.getElementById("productName_barel002001");
-        if (nameElement) nameElement.textContent = productNode.productTitle;
-        if (headerElement) headerElement.classList.add("active");
-        if (buttonIconElement) buttonIconElement.classList.add("active");
+	let selected = null; let cardSuffix = null; let productTitle = ""; let brand = "";
 
-        // Product menu - Show image
-        const productImgElement = document.getElementById("productImgID_barel00200101");
-        if (productImgElement) productImgElement.style.display = "flex";
+	// 002001
+	{
+		const group = window.part.barel["002"];
+		const product = group.products["001"];
+		if (product.variants["01"].quantity === 1) {
+			selected = product.variants["01"]; 
+			cardSuffix = "00200101"; 
+			productTitle = product.productTitle;
+			brand = group.brand;
+		}
+	}
 
-        // Upper part menu - Update display
-        const partImgElement = document.getElementById("partImgID_barel00200101");
-        const partNameElement = document.getElementById("partName_Barel");
-        const partPriceElement = document.getElementById("partPrice_Barel");
-        
-        if (partImgElement) partImgElement.style.display = "flex";
-        if (partNameElement) partNameElement.textContent = productNode.productTitle;
-        if (partPriceElement) partPriceElement.textContent = variantNode.price + " USD";
-        
-        console.log("UI updated successfully");
-    } else {
-        console.log("Barrel not selected, quantity:", variantNode.quantity);
-    }
-}
+	if (!selected || !cardSuffix) return;
 
-// Event listener for start button - Auto-select default barrel (first part in inventory)
-const startButton = document.getElementById("buttonModalStartMenu_StartButton");
-if (startButton) {
-    startButton.addEventListener("click", function () {
-        console.log("Start button clicked - Barrel");
-        uiReset_barel002001();
-        // Auto-select first barrel in inventory as default (KM Tactical 16 Barrel 223 Wylde)
-        window.part.barel["002"].products["001"].variants["01"].quantity = 1;
-        uiData_Barrel();
-        
-        // Update 3D model after UI update
-        updateModel_Barel();
-    });
+	// Update product card
+	// Note: HTML uses productCard_barrel002001 (no underscore)
+	const productCardId = "productCard_barrel002001";
+	const productCard = document.getElementById(productCardId);
+	if (productCard) {
+		brl_addClass(productCardId, "active");
 } else {
-    console.error("Start button not found: buttonModalStartMenu_StartButton");
+		console.warn("⚠️ Barrel: productCard_barrel002001 not found");
+	}
+	// Also try alternative ID if exists
+	const altProductCardId = "productCard_barel_00200101";
+	const altCard = document.getElementById(altProductCardId);
+	if (altCard) {
+		brl_addClass(altProductCardId, "active");
+}
+	
+	// Update product card name and price
+	// Note: HTML uses productCardName_barel_00200101 and productCardPrice_barel_00200101
+	const nameId = "productCardName_barel_00200101";
+	const priceId = "productCardPrice_barel_00200101";
+	if (document.getElementById(nameId)) {
+		brl_setText(nameId, productTitle);
+	}
+	if (document.getElementById(priceId)) {
+		brl_setText(priceId, "$" + selected.price + " USD");
+	}
+
+	// Update part card images - show selected, hide others
+	brl_hideAllPartCardImages();
+	// Note: HTML uses "barel" (typo) not "barrel"
+	const partCardImgId = "partCardImg_barel" + cardSuffix;
+	brl_showElement(partCardImgId);
+
+	// Update part card - format: brand + productTitle
+	brl_setText("partCardName_barrel", brand + " - " + productTitle);
+	brl_setText("partCardPrice_barrel", "$" + selected.price + " USD");
+
+	// Update summary cards - show selected, hide others
+	// Note: HTML uses "barel" (typo) not "barrel"
+	const summaryCardId = "summaryItemsCard_barel_" + cardSuffix;
+	if (document.getElementById(summaryCardId)) {
+		brl_showElement(summaryCardId);
+		brl_setText("summaryCardName_barel_" + cardSuffix, brand + " - " + productTitle);
+		brl_setText("summaryCardPrice_barel_" + cardSuffix, "$" + selected.price + " USD");
+	}
 }
 
-// Event listener for barrel selection button
-const barrelButton = document.getElementById("buttonItems_barel00200101");
-if (barrelButton) {
-    barrelButton.addEventListener("click", function () {
-        console.log("Barrel button clicked");
-        uiReset_barel002001();
-        // Select KM Tactical 16 Barrel 223 Wylde
-        window.part.barel["002"].products["001"].variants["01"].quantity = 1;
-        uiData_Barrel();
-        
-        // Update 3D model after UI update
-        const itemsID = "barel00200101";
-        console.log(`🎯 Part button clicked: ${itemsID}`);
-        handleBarelSelection(itemsID);
-    });
+// Function to update all summary cards from inventory data
+export function updateSummaryCards_Barrel() {
+	// Update all summary card names and prices from inventory
+	// 002001
+	{
+		const group = window.part.barel["002"];
+		const product = group.products["001"];
+		const variant = product.variants["01"];
+		const summaryCardId = "summaryItemsCard_barel_00200101";
+		if (document.getElementById(summaryCardId)) {
+			brl_setText("summaryCardName_barel_00200101", group.brand + " - " + product.productTitle);
+			brl_setText("summaryCardPrice_barel_00200101", "$" + variant.price + " USD");
+		}
+	}
+
+	// Show/hide summary cards based on quantity
+	// 002001
+	{
+		const product = window.part.barel["002"].products["001"];
+		const summaryCardId = "summaryItemsCard_barel_00200101";
+		if (document.getElementById(summaryCardId)) {
+			if (product.variants["01"].quantity === 1) {
+				brl_showElement(summaryCardId);
+			} else {
+				brl_hideElement(summaryCardId);
+			}
+		}
+	}
+}
+
+// Start default -> 002001 variant 01
+// Use DOMContentLoaded to ensure element exists
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupStartButtonListener);
 } else {
-    console.error("Barrel button not found: buttonItems_barel00200101");
+	// DOM already loaded
+	setupStartButtonListener();
 }
 
+function setupStartButtonListener() {
+	const btn = document.getElementById("loader-start-button");
+	if (btn) {
+		// Keep existing onclick for hideLoader, but add our handler
+		// Use capture phase to run before onclick
+		btn.addEventListener("click", function (e) {
+// Check if data is available
+			if (!window.part || !window.part.barel) {
+				console.error("❌ Barrel data not loaded yet");
+				return;
+			}
+			
+			// Update all product card names and prices from inventory
+			brl_updateAllProductCards();
+			
+			// Reset all products (set quantity = 0, remove active class)
+			uiReset_barrel002001();
+			
+			// Set default quantity = 1 for 00200101
+			window.part.barel["002"].products["001"].variants["01"].quantity = 1;
+			
+			// Update UI (will set active class and show/hide images)
+			uiData_Barrel();
+			
+			// Update 3D model after UI update
+			updateModel_Barrel();
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+			
+}, true); // Use capture phase
+		
+} else {
+		console.warn("⚠️ Barrel: loader-start-button not found");
+	}
+}
 
-// Helper function to get currently selected barrel
+// Product card click listeners
+// Use DOMContentLoaded to ensure elements exist
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupProductCardListeners);
+} else {
+	// DOM already loaded
+	setupProductCardListeners();
+}
+
+function setupProductCardListeners() {
+	// 002001 -> 01
+	// Note: HTML uses productCard_barrel002001 (no underscore)
+	const card002001 = document.getElementById("productCard_barrel002001");
+	if (card002001) {
+		// Use capture phase to run before onclick
+		card002001.addEventListener("click", function (e) {
+			// Reset all products
+			uiReset_barrel002001();
+			
+			// Set quantity = 1 for selected product
+			window.part.barel["002"].products["001"].variants["01"].quantity = 1;
+			
+			// Update UI
+			uiData_Barrel();
+			
+			// Update 3D model after UI update
+			const itemsID = "barel00200101";
+handleBarrelSelection(itemsID);
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+		}, true); // Use capture phase
+	}
+	
+}
+
+// Summary chart button click listener
+// Use DOMContentLoaded to ensure element exists
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupSummaryChartButtonListener);
+} else {
+	// DOM already loaded
+	setupSummaryChartButtonListener();
+}
+
+function setupSummaryChartButtonListener() {
+	const btn = document.getElementById("summaryChartButton");
+	if (btn) {
+		btn.addEventListener("click", function () {
+			// Update all summary cards from inventory data
+			updateSummaryCards_Barrel();
+});
+} else {
+		console.warn("⚠️ Barrel: summaryChartButton not found");
+	}
+}
+
 export function getSelectedBarrel() {
-    const barrel = window.part.barel["002"].products["001"].variants["01"];
-    return barrel.quantity === 1 ? barrel : null;
+	const a = window.part.barel["002"].products["001"].variants;
+	if (a["01"].quantity === 1) return a["01"];
+	return null;
 }
 
-// Helper function to get total barrel price
 export function getBarrelTotalPrice() {
-    const selectedBarrel = getSelectedBarrel();
-    return selectedBarrel ? selectedBarrel.price : 0;
+	const v = getSelectedBarrel();
+	return v ? v.price : 0;
 }
-
-// Test function to manually trigger barrel selection
-export function testBarrelSelection() {
-    console.log("Testing barrel selection...");
-    uiReset_barel002001();
-    window.part.barel["002"].products["001"].variants["01"].quantity = 1;
-    uiData_Barrel();
-    updateModel_Barel();
-    console.log("Test completed");
-}
-
-// Make test function available globally for debugging
-window.testBarrelSelection = testBarrelSelection;

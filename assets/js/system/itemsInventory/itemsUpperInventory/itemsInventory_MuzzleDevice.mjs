@@ -98,4 +98,4 @@ window.part.muzzleDevice = {
             }
         }
     }
-};
+};

@@ -13,4 +13,4 @@ export function initSummaryNavigation_FrontSight() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_FrontSight);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_FrontSight);

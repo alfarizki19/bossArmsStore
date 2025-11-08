@@ -54,12 +54,30 @@ export function computeTotalsFromInventory() {
 export function renderTotals() {
     const totals = computeTotalsFromInventory();
     const formatted = formatUsd(totals.subtotal);
+    // Format with $ prefix for new UI
+    const formattedWithDollar = "$" + totals.subtotal.toFixed(2);
 
+// Old IDs (if exist)
     const elA = document.getElementById("summaryTextTotalBelanja");
     if (elA) elA.textContent = formatted;
 
     const elB = document.getElementById("modalSummaryTotalBelanja");
     if (elB) elB.textContent = formatted;
+
+    // New IDs
+    const elC = document.getElementById("summaryTotalPrice");
+    if (elC) {
+        elC.textContent = formattedWithDollar;
+} else {
+        console.warn("⚠️ summaryTotalPrice element not found");
+    }
+
+    const elD = document.getElementById("summarySideMenuTotalPrice");
+    if (elD) {
+        elD.textContent = formattedWithDollar;
+} else {
+        console.warn("⚠️ summarySideMenuTotalPrice element not found");
+    }
 }
 
 function resetTotalsDisplay() {
@@ -67,15 +85,32 @@ function resetTotalsDisplay() {
     if (elA) elA.textContent = "0 USD";
     const elB = document.getElementById("modalSummaryTotalBelanja");
     if (elB) elB.textContent = "0 USD";
+    
+    // New IDs
+    const elC = document.getElementById("summaryTotalPrice");
+    if (elC) elC.textContent = "$0.00";
+    const elD = document.getElementById("summarySideMenuTotalPrice");
+    if (elD) elD.textContent = "$0.00";
 }
 
-// Attach triggers: summaryChartButton and any button with id starting with "buttonItems_"
+// Attach triggers: summaryChartButton, loader-start-button, and product card clicks
 function attachTotalCostTriggers() {
     try {
         const btn = document.getElementById("summaryChartButton");
         if (btn) btn.addEventListener("click", () => { try { resetTotalsDisplay(); requestAnimationFrame(() => renderTotals()); } catch (_) {} });
+        
+        // Old start button
         const startBtn = document.getElementById("buttonModalStartMenu_StartButton");
         if (startBtn) startBtn.addEventListener("click", () => { try { resetTotalsDisplay(); requestAnimationFrame(() => renderTotals()); } catch (_) {} });
+        
+        // New start button (loader-start-button)
+        const loaderStartBtn = document.getElementById("loader-start-button");
+        if (loaderStartBtn) loaderStartBtn.addEventListener("click", () => { 
+            try { 
+                resetTotalsDisplay(); 
+                requestAnimationFrame(() => renderTotals()); 
+            } catch (_) {} 
+        });
     } catch (_) {}
 
     // Delegate clicks on item buttons (support clicks on child elements)
@@ -87,6 +122,16 @@ function attachTotalCostTriggers() {
             if (triggerEl) {
                 resetTotalsDisplay();
                 requestAnimationFrame(() => renderTotals());
+            }
+            
+            // Also handle product card clicks (new UI)
+            const productCard = t.closest('[id^="productCard_"]');
+            if (productCard) {
+                // Small delay to allow quantity to be updated first
+                setTimeout(() => {
+                    resetTotalsDisplay();
+                    requestAnimationFrame(() => renderTotals());
+                }, 50);
             }
         } catch (_) {}
     }, true);
@@ -106,12 +151,12 @@ function attachTotalCostTriggers() {
 
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
-        attachTotalCostTriggers();
-        try { renderTotals(); } catch (_) {}
+attachTotalCostTriggers();
+        try { renderTotals(); } catch (e) { console.error("❌ Error rendering totals:", e); }
     });
 } else {
-    attachTotalCostTriggers();
-    try { renderTotals(); } catch (_) {}
+attachTotalCostTriggers();
+    try { renderTotals(); } catch (e) { console.error("❌ Error rendering totals:", e); }
 }
 
 // Expose to window for manual triggering

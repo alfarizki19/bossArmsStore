@@ -92,4 +92,4 @@ export function updateSummary_MuzzleDevice() {
 window.resetSummary_MuzzleDevice = resetSummary_MuzzleDevice;
 window.updateSummary_MuzzleDevice = updateSummary_MuzzleDevice;
 
-
+

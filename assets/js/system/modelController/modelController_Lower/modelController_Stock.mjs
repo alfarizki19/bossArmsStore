@@ -3,13 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Stock model controller loaded (implemented version)');
-
 // Update Stock model based on current selection
 export function updateModel_Stock() {
-  console.log('🔧 Stock model update - checking current selection');
-  
-  // Get current selected stock from dataController
+// Get current selected stock from dataController
   const selected = getSelectedStock();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -19,28 +15,23 @@ export function updateModel_Stock() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Stock: ${selected.id} -> ${modelID}`);
-    }
+}
   } else {
     // No selection, hide all variants
     hideAllStockVariants();
-    console.log('👁️‍🗨️ No Stock selected - hiding all variants');
-  }
+}
 }
 
 // Handle Stock selection from UI
 export function handleStockSelection(itemsID) {
-  console.log(`🎯 Stock selection: ${itemsID}`);
-  
-  // Hide all stock variants first
+// Hide all stock variants first
   hideAllStockVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Stock: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Stock: ${itemsID}`);
   }
 }
@@ -48,12 +39,11 @@ export function handleStockSelection(itemsID) {
 // Helper function to hide all stock variants
 function hideAllStockVariants() {
   const stockModels = [
-    // Group 001001 (5 variants)
+    // Group 001001 (3 variants - removed 04-05)
     'modelID_stock00100101',
     'modelID_stock00100102',
     'modelID_stock00100103',
-    'modelID_stock00100104',
-    'modelID_stock00100105',
+    // Removed: 00100104-00100105 (hidden variants)
     // Group 002001 (3 variants)
     'modelID_stock00200101',
     'modelID_stock00200102',

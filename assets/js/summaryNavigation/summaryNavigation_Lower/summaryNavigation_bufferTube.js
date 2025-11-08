@@ -8,5 +8,3 @@ export function initSummaryNavigation_BufferTube() {
 }
 
 document.addEventListener('DOMContentLoaded', initSummaryNavigation_BufferTube);
-
-

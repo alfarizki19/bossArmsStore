@@ -12,4 +12,4 @@ export function initSummaryNavigation_Bipod() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_Bipod);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_Bipod);

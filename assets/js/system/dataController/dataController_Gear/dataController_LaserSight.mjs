@@ -1,85 +1,323 @@
 // === dataController_LaserSight.mjs ===
-// Gear & Acc: Laser Sight controller
+// Laser Sight UI Controller (Gear Category) — 1 product with "No Selected" option
 
-// Import model controller functions
-import { updateModel_LaserSight, handleLaserSightSelection } from '../../modelController/modelController_Gear/modelController_LaserSight.mjs';
+// Import model controller functions (if exists)
+let updateModel_LaserSight = () => {};
+let handleLaserSightSelection = () => {};
 
-function ls_get(id){ return document.getElementById(id); }
-function ls_setText(id,t){ const el=ls_get(id); if(el) el.textContent=t; }
-function ls_addClass(id,c){ const el=ls_get(id); if(el) el.classList.add(c); }
-function ls_removeClass(id,c){ const el=ls_get(id); if(el) el.classList.remove(c); }
-
-function ls_getGearWrap(){ const nameEl=ls_get('partName_LaserSight'); if(!nameEl) return null; let p=nameEl.parentElement; while(p && !p.classList.contains('menuPartMenuOptionContainer')){ p=p.parentElement; } return p? p.querySelector('.menuPartMenuOptionImageArea'):null; }
-function ls_hideGearImages(){ const wrap=ls_getGearWrap(); if(!wrap) return; wrap.querySelectorAll('img, image, Image').forEach(el=>el.style.display='none'); }
-function ls_showGearDefault(){ const a=ls_get('partImgID_laserSight00100101'); if(a) a.style.display='flex'; }
-
-function ls_getProduct(){ const p = window.part.laserSight && window.part.laserSight['001'] && window.part.laserSight['001'].products && window.part.laserSight['001'].products['001']; return p || null; }
-
-export function uiReset_laserSight(){ const p=ls_getProduct(); if(p){ Object.keys(p.variants).forEach(k=>p.variants[k].quantity=0); }
- // clear part-menu header states
- ls_removeClass('productHeader_laserSight00100101','active'); ls_removeClass('productHeader_noLaserSight','active');
- // gear menu default
- ls_hideGearImages(); ls_showGearDefault(); ls_setText('partName_LaserSight','no laser sight selected'); ls_setText('partPrice_LaserSight','----- USD');
- // clear icons
- ls_removeClass('productButtonIcon_NoLaserSight','active'); ls_removeClass('productButtonIcon_laserSight001001','active');
- // keep part-menu product defaults from inventory
- if(p){ ls_setText('productName_laserSight00100101', p.productTitle); ls_setText('productPricing_laserSight00100101', p.variants['01'].price + ' USD'); }
+try {
+	const modelModule = await import('../../modelController/modelController_Gear/modelController_LaserSight.mjs');
+	updateModel_LaserSight = modelModule.updateModel_LaserSight || updateModel_LaserSight;
+	handleLaserSightSelection = modelModule.handleLaserSightSelection || handleLaserSightSelection;
+} catch(e) {
 }
 
-export function uiData_LaserSight(){ const p=ls_getProduct(); const sel=p && p.variants['01'] && p.variants['01'].quantity===1 ? p.variants['01'] : null; ls_hideGearImages(); if(!sel){ ls_showGearDefault(); ls_setText('partName_LaserSight','no laser sight selected'); ls_setText('partPrice_LaserSight','----- USD'); // activate no-selection header/icon
- ls_addClass('productHeader_noLaserSight','active'); ls_addClass('productButtonIcon_NoLaserSight','active'); ls_removeClass('productButtonIcon_laserSight001001','active'); return; }
- const img=ls_get('partImgID_'+sel.id); if(img) img.style.display='flex'; const title=p.productTitle; const suffix=(sel.variantTitle && sel.variantTitle.toLowerCase()!=='no variant')? (' - '+sel.variantTitle):'';
- // gear menu texts
- ls_setText('partName_LaserSight', title + suffix); ls_setText('partPrice_LaserSight', sel.price+' USD');
- // part menu header texts
- ls_setText('productName_laserSight00100101', title + suffix); ls_setText('productPricing_laserSight00100101', sel.price+' USD');
- // active states
- ls_addClass('productHeader_laserSight00100101','active'); ls_addClass('productButtonIcon_laserSight001001','active'); ls_removeClass('productHeader_noLaserSight','active'); ls_removeClass('productButtonIcon_NoLaserSight','active');
+function ls_setText(id, text) {
+	const el = document.getElementById(id);
+	if (el) el.textContent = text;
 }
 
-(function(){ 
-	const start=ls_get('buttonModalStartMenu_StartButton'); 
-	if(start){ 
-		start.addEventListener('click', function(){ 
-			uiReset_laserSight(); 
-			uiData_LaserSight(); 
+function ls_addClass(id, className) {
+	const el = document.getElementById(id);
+	if (el) el.classList.add(className);
+}
+
+function ls_removeClass(id, className) {
+	const el = document.getElementById(id);
+	if (el) el.classList.remove(className);
+}
+
+function ls_showElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "flex";
+}
+
+function ls_hideElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "none";
+}
+
+// Reset all LaserSight quantities to 0
+function ls_zeroLaserSightQuantities() {
+	try {
+		const group = window.part.laserSight["001"];
+		const product = group.products["001"];
+		if (product && product.variants) {
+			if (product.variants["01"]) product.variants["01"].quantity = 0;
+		}
+	} catch(e) {
+		console.warn("⚠️ Laser Sight: Error zeroing quantities", e);
+	}
+}
+
+// Reset product cards to default (remove active class)
+function ls_resetAllProductCards() {
+	ls_removeClass("productCard_laserSight_001001", "active");
+	ls_removeClass("productCard_NoSelected_laserSight", "active");
+}
+
+// Update product cards to default from inventory
+function ls_updateAllProductCardsToDefault() {
+	// 001001 - default
+	{
+		const group = window.part.laserSight["001"];
+		const product = group.products["001"];
+		const variant01 = product.variants["01"];
+		ls_setText("productCardName_laserSight_001001", product.productTitle);
+		ls_setText("productCardPrice_laserSight_001001", "$" + variant01.price + " USD");
+	}
+	// Reset all product cards to default (no active)
+	ls_resetAllProductCards();
+	// Set NoSelected active by default
+	ls_addClass("productCard_NoSelected_laserSight", "active");
+}
+
+// Reset all LaserSight variants
+export function uiReset_laserSight() {
+	ls_zeroLaserSightQuantities();
+	ls_resetAllProductCards();
+}
+
+// Update UI based on selected LaserSight
+export function uiData_LaserSight() {
+let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
+
+	// Check 00100101
+	{
+		const group = window.part.laserSight["001"];
+		const product = group.products["001"];
+		if (product.variants["01"].quantity === 1) {
+			selected = product.variants["01"];
+			cardSuffix = "00100101";
+			productTitle = product.productTitle;
+			brand = group.brand;
+			variantTitle = selected.variantTitle;
+}
+	}
+
+	if (!selected || !cardSuffix) {
+		console.warn("⚠️ Laser Sight: No selected item found - setting NoSelected active");
+		// Reset all product cards
+		ls_resetAllProductCards();
+		// Set NoSelected active
+		ls_addClass("productCard_NoSelected_laserSight", "active");
+		// Update part card to "No Laser Sight Selected"
+		ls_setText("partCardName_laserSight", "No Laser Sight Selected");
+		ls_setText("partCardPrice_laserSight", "----- USD");
+		// Hide part card image
+		const partCardImg = document.getElementById("partCardImg_laserSight00100101");
+		if (partCardImg) partCardImg.style.display = "none";
+		// Hide summary card
+		ls_hideElement("summaryItemsCard_laserSight_00100101");
+		return;
+	}
+	
+// Update selected product card - active
+	// Reset all product cards first
+	ls_resetAllProductCards();
+	
+	ls_addClass("productCard_laserSight_001001", "active");
+// Update product card name and price
+	const group = window.part.laserSight["001"];
+	const product = group.products["001"];
+	ls_setText("productCardName_laserSight_001001", product.productTitle);
+	ls_setText("productCardPrice_laserSight_001001", "$" + selected.price + " USD");
+
+	// Update part card image - show selected
+	const partCardImg = document.getElementById("partCardImg_laserSight00100101");
+	if (partCardImg) {
+		partCardImg.style.display = "block";
+} else {
+		console.warn("⚠️ Laser Sight: partCardImg_laserSight00100101 not found");
+	}
+
+	// Update part card - format: brand + productTitle
+	const partCardName = variantTitle.toLowerCase() !== "no variant"
+		? brand + " - " + productTitle + " - " + variantTitle
+		: brand + " - " + productTitle;
+	ls_setText("partCardName_laserSight", partCardName);
+	ls_setText("partCardPrice_laserSight", "$" + selected.price + " USD");
+
+	// Update summary cards - show selected, hide others
+	ls_hideElement("summaryItemsCard_laserSight_00100101");
+	
+	// Show selected summary card
+	const summaryCardId = "summaryItemsCard_laserSight_" + cardSuffix;
+	ls_showElement(summaryCardId);
+	ls_setText("summaryCardName_laserSight_" + cardSuffix, partCardName);
+	ls_setText("summaryCardPrice_laserSight_" + cardSuffix, "$" + selected.price + " USD");
+}
+
+// Update summary cards based on quantity (called by summaryChartButton)
+export function updateSummaryCards_LaserSight() {
+// 00100101
+	{
+		const product = window.part.laserSight["001"].products["001"];
+		if (product.variants["01"].quantity === 1) {
+			ls_showElement("summaryItemsCard_laserSight_00100101");
+		} else {
+			ls_hideElement("summaryItemsCard_laserSight_00100101");
+		}
+	}
+}
+
+// Start default -> No Selected (quantity = 0)
+// Use DOMContentLoaded to ensure element exists
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', function() {
+		setTimeout(setupStartButtonListener, 100);
+	});
+} else {
+	// DOM already loaded
+	setTimeout(setupStartButtonListener, 100);
+}
+
+function setupStartButtonListener() {
+	const btn = document.getElementById("loader-start-button");
+	if (btn) {
+		// Keep existing onclick for hideLoader, but add our handler
+		// Use capture phase to run before onclick
+		btn.addEventListener("click", function (e) {
+// Check if data is available
+			if (!window.part || !window.part.laserSight) {
+				console.error("❌ Laser Sight data not loaded yet");
+				return;
+			}
+			
+			// Update all product cards to default from inventory
+			ls_updateAllProductCardsToDefault();
+			
+			// Reset all LaserSight quantities (set quantity = 0)
+			ls_zeroLaserSightQuantities();
+			
+			// Update UI (will set NoSelected active)
+			uiData_LaserSight();
 			
 			// Update 3D model after UI update
 			updateModel_LaserSight();
-		}); 
-	}
-	
-	const noBtn=ls_get('buttonItems_noLaserSight'); 
-	if(noBtn){ 
-		noBtn.addEventListener('click', function(){ 
-			console.log(`🎯 No Laser Sight button clicked`);
 			
-			// 1. Reset UI and data (set quantity = 0) - same pattern as Warden
-			uiReset_laserSight(); 
-			uiData_LaserSight(); 
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
 			
-			// 2. Update 3D model after UI update (hide all laser sight models) - same pattern as Warden
-			updateModel_LaserSight();
-		}); 
+}, true); // Use capture phase
+		
+} else {
+		console.warn("⚠️ Laser Sight: loader-start-button not found");
 	}
-	
-	const pick=ls_get('buttonItems_laserSight00100101'); 
-	if(pick){ 
-		pick.addEventListener('click', function(){ 
-			// Same pattern as Warden: set quantity and update UI
-			const p=ls_getProduct(); 
-			if(p){ 
-				p.variants['01'].quantity=1; 
-			} 
-			uiData_LaserSight(); 
-			
-			// Update 3D model after UI update - same pattern as Warden
-			const itemsID = "laserSight00100101";
-			console.log(`🎯 Laser Sight button clicked: ${itemsID}`);
-			handleLaserSightSelection(itemsID);
-		}); 
-	}
-})();
+}
 
-export function getSelectedLaserSight(){ const p=ls_getProduct(); if(p && p.variants['01'].quantity===1) return p.variants['01']; return null; }
-export function getLaserSightTotalPrice(){ const v=getSelectedLaserSight(); return v? v.price:0; }
+// Product card click listeners
+// Use DOMContentLoaded to ensure elements exist
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', function() {
+		setTimeout(setupProductCardListeners, 100);
+	});
+} else {
+	// DOM already loaded
+	setTimeout(setupProductCardListeners, 100);
+}
+
+function setupProductCardListeners() {
+// No Selected - reset all LaserSight quantities
+	const cardNoSelected = document.getElementById("productCard_NoSelected_laserSight");
+	if (cardNoSelected) {
+// Use capture phase to run before onclick
+		cardNoSelected.addEventListener("click", function (e) {
+// Reset all LaserSight quantities
+			ls_zeroLaserSightQuantities();
+			
+			// Reset product cards
+			ls_resetAllProductCards();
+			ls_addClass("productCard_NoSelected_laserSight", "active");
+			
+			// Update UI
+			uiData_LaserSight();
+			
+			// Update 3D model - hide all laser sight variants when no selected
+			updateModel_LaserSight();
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+		}, true); // Use capture phase
+	} else {
+		console.warn("⚠️ Laser Sight: productCard_NoSelected_laserSight not found");
+	}
+	
+	// 00100101 - Tactical Device Laser Sight LS321
+	const card001001 = document.getElementById("productCard_laserSight_001001");
+	if (card001001) {
+// Use capture phase to run before onclick
+		card001001.addEventListener("click", function (e) {
+// Reset all LaserSight quantities
+			ls_zeroLaserSightQuantities();
+			
+			// Set quantity = 1 for selected product
+			window.part.laserSight["001"].products["001"].variants["01"].quantity = 1;
+			
+			// Update UI
+			uiData_LaserSight();
+			
+			// Update 3D model after UI update
+			const itemsID = "laserSight00100101";
+handleLaserSightSelection(itemsID);
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+		}, true); // Use capture phase
+	} else {
+		console.warn("⚠️ Laser Sight: productCard_laserSight_001001 not found");
+	}
+	
+}
+
+// Summary chart button click listener
+// Use DOMContentLoaded to ensure element exists
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', function() {
+		setTimeout(setupSummaryChartButtonListener, 100);
+	});
+} else {
+	// DOM already loaded
+	setTimeout(setupSummaryChartButtonListener, 100);
+}
+
+function setupSummaryChartButtonListener() {
+	const btn = document.getElementById("summaryChartButton");
+	if (btn) {
+		btn.addEventListener("click", function () {
+			// Update all summary cards from inventory data
+			updateSummaryCards_LaserSight();
+});
+} else {
+		console.warn("⚠️ Laser Sight: summaryChartButton not found");
+	}
+}
+
+export function getSelectedLaserSight() {
+	// Check 00100101
+	{
+		const product = window.part.laserSight["001"].products["001"];
+		if (product.variants["01"] && product.variants["01"].quantity === 1) {
+			return product.variants["01"];
+		}
+	}
+	return null;
+}
+
+export function getLaserSightTotalPrice() {
+	const v = getSelectedLaserSight();
+	return v ? v.price : 0;
+}
+

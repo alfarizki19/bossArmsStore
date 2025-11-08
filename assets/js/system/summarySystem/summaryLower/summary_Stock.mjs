@@ -51,4 +51,4 @@ export function updateSummary_Stock() {
 window.resetSummary_Stock = resetSummary_Stock;
 window.updateSummary_Stock = updateSummary_Stock;
 
-
+

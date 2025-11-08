@@ -27,4 +27,4 @@ export function initSummaryNavigation_ChargingHandle() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_ChargingHandle);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_ChargingHandle);

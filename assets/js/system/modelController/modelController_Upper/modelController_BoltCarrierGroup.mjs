@@ -3,13 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Bolt Carrier Group model controller loaded (implemented version)');
-
 // Update Bolt Carrier Group model based on current selection
 export function updateModel_BoltCarrierGroup() {
-  console.log('🔧 Bolt Carrier Group model update - checking current selection');
-  
-  // Get current selected bolt carrier group from dataController
+// Get current selected bolt carrier group from dataController
   const selected = getSelectedBoltCarrierGroup();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -19,28 +15,23 @@ export function updateModel_BoltCarrierGroup() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Bolt Carrier Group: ${selected.id} -> ${modelID}`);
-    }
+}
   } else {
     // No selection, hide all variants
     hideAllBoltCarrierGroupVariants();
-    console.log('👁️‍🗨️ No Bolt Carrier Group selected - hiding all variants');
-  }
+}
 }
 
 // Handle Bolt Carrier Group selection from UI
 export function handleBoltCarrierGroupSelection(itemsID) {
-  console.log(`🎯 Bolt Carrier Group selection: ${itemsID}`);
-  
-  // Hide all bolt carrier group variants first
+// Hide all bolt carrier group variants first
   hideAllBoltCarrierGroupVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Bolt Carrier Group: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Bolt Carrier Group: ${itemsID}`);
   }
 }

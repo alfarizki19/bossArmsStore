@@ -3,13 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Bolt Catch model controller loaded (implemented version)');
-
 // Update Bolt Catch model based on current selection
 export function updateModel_BoltCatch() {
-  console.log('🔧 Bolt Catch model update - checking current selection');
-  
-  // Get current selected bolt catch from dataController
+// Get current selected bolt catch from dataController
   const selected = getSelectedBoltCatch();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -19,28 +15,23 @@ export function updateModel_BoltCatch() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Bolt Catch: ${selected.id} -> ${modelID}`);
-    }
+}
   } else {
     // No selection, hide all variants
     hideAllBoltCatchVariants();
-    console.log('👁️‍🗨️ No Bolt Catch selected - hiding all variants');
-  }
+}
 }
 
 // Handle Bolt Catch selection from UI
 export function handleBoltCatchSelection(itemsID) {
-  console.log(`🎯 Bolt Catch selection: ${itemsID}`);
-  
-  // Hide all bolt catch variants first
+// Hide all bolt catch variants first
   hideAllBoltCatchVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Bolt Catch: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Bolt Catch: ${itemsID}`);
   }
 }

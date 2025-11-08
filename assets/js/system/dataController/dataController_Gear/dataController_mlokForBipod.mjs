@@ -1,97 +1,206 @@
-// === dataController_mlokForBipod.mjs ===
+// === dataController_MLOKForBipod.mjs ===
 // Gear & Acc: MLOK for Bipod (alias UI for mlokAndKeymodRail)
 
-// Import model controller functions
-import { updateModel_MlokForBipod, handleMlokForBipodSelection } from '../../modelController/modelController_Gear/modelController_MlokForBipod.mjs';
+// Import model controller functions (if exists)
+let updateModel_MlokForBipod = () => {};
+let handleMlokForBipodSelection = () => {};
 
+try {
+	const modelModule = await import('../../modelController/modelController_Gear/modelController_MLOKForBipod.mjs');
+	updateModel_MlokForBipod = modelModule.updateModel_MlokForBipod || modelModule.updateModel_MLOKForBipod || updateModel_MlokForBipod;
+	handleMlokForBipodSelection = modelModule.handleMlokForBipodSelection || modelModule.handleMLOKForBipodSelection || handleMlokForBipodSelection;
+} catch(e) {
+}
+
+// ===== Initialize Global Variables (0 or 1 only) =====
+if (typeof window.mlokAndKeymodRail00100101_forBipod_quantity === 'undefined') {
+	window.mlokAndKeymodRail00100101_forBipod_quantity = 0;
+}
+if (typeof window.mlokAndKeymodRail00200101_forBipod_quantity === 'undefined') {
+	window.mlokAndKeymodRail00200101_forBipod_quantity = 0;
+}
+
+// Helper functions
 function mfb_get(id){ return document.getElementById(id); }
 function mfb_setText(id,t){ const el=mfb_get(id); if(el) el.textContent=t; }
 function mfb_addClass(id,c){ const el=mfb_get(id); if(el) el.classList.add(c); }
 function mfb_removeClass(id,c){ const el=mfb_get(id); if(el) el.classList.remove(c); }
-
-function mfb_getProdA(){ return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['001'] && window.part.mlokAndKeymodRail['001'].products && window.part.mlokAndKeymodRail['001'].products['001']) ? window.part.mlokAndKeymodRail['001'].products['001'] : null; }
-function mfb_getProdB(){ return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['002'] && window.part.mlokAndKeymodRail['002'].products && window.part.mlokAndKeymodRail['002'].products['001']) ? window.part.mlokAndKeymodRail['002'].products['001'] : null; }
-function mfb_getBrandA(){ return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['001']) ? window.part.mlokAndKeymodRail['001'].brand : '---'; }
-function mfb_getBrandB(){ return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['002']) ? window.part.mlokAndKeymodRail['002'].brand : '---'; }
-
-// Additional panel in Bipod menu
-function mfb_updateAdditional(product){ if(!product || !product.variants['01']) return; const v=product.variants['01']; mfb_setText('additionalItemsName_bipod001001', product.productTitle); mfb_setText('additionalItemsBrand_bipod001001', product === mfb_getProdA() ? mfb_getBrandA() : mfb_getBrandB()); mfb_setText('additionalItemsPricing_bipod001001', v.price + ' USD'); const imgA=mfb_get('productImgAdditionalID_MLOKBipod001'); const imgB=mfb_get('productImgAdditionalID_MLOKBipod002'); if(product===mfb_getProdA()){ if(imgA) imgA.style.display='flex'; if(imgB) imgB.style.display='none'; } else { if(imgA) imgA.style.display='none'; if(imgB) imgB.style.display='flex'; } }
-
-// Resets per group (no quantity change here; just UI texts/classes)
-export function uiReset_mlokForBipod001001(){ const p=mfb_getProdA(); if(!p) return; mfb_setText('productName_mlokAndKeymodRail001001_forbipod', p.productTitle); mfb_setText('productPricing_mlokAndKeymodRail001001_forbipod', p.variants['01'].price + ' USD'); mfb_removeClass('productHeader_mlokAndKeymodRail001001_forbipod','active'); mfb_removeClass('productButtonIcon_mlokAndKeymodRail001001_forbipod','active'); }
-export function uiReset_mlokForBipod002001(){ const p=mfb_getProdB(); if(!p) return; mfb_setText('productName_mlokAndKeymodRail002001_forbipod', p.productTitle); mfb_setText('productPricing_mlokAndKeymodRail002001_forbipod', p.variants['01'].price + ' USD'); mfb_removeClass('productHeader_mlokAndKeymodRail002001_forbipod','active'); mfb_removeClass('productButtonIcon_mlokAndKeymodRail002001_forbipod','active'); }
-
-export function uiData_mlokForBipod(){ const a=mfb_getProdA(); const b=mfb_getProdB(); const aq = a && a.variants['01'] ? (a.variants['01'].quantity||0) : 0; const bq = b && b.variants['01'] ? (b.variants['01'].quantity||0) : 0; // clear actives first
- mfb_removeClass('productHeader_mlokAndKeymodRail001001_forbipod','active'); mfb_removeClass('productHeader_mlokAndKeymodRail002001_forbipod','active'); mfb_removeClass('productButtonIcon_mlokAndKeymodRail001001_forbipod','active'); mfb_removeClass('productButtonIcon_mlokAndKeymodRail002001_forbipod','active'); mfb_removeClass('productContainer_mlokAndKeymodRail001001_forbipod','active'); mfb_removeClass('productContainer_mlokAndKeymodRail002001_forbipod','active');
- // reflect current state exclusively by last-selected choice
- const lastSel = window.__mlokLastSelected || (aq>0? 'A' : (bq>0? 'B': null));
- if(lastSel==='A' && a && aq>0){ mfb_setText('productName_mlokAndKeymodRail001001_forbipod', a.productTitle); mfb_setText('productPricing_mlokAndKeymodRail001001_forbipod', a.variants['01'].price + ' USD'); mfb_addClass('productHeader_mlokAndKeymodRail001001_forbipod','active'); mfb_addClass('productButtonIcon_mlokAndKeymodRail001001_forbipod','active'); mfb_addClass('productContainer_mlokAndKeymodRail001001_forbipod','active'); mfb_updateAdditional(a); return; }
- if(lastSel==='B' && b && bq>0){ mfb_setText('productName_mlokAndKeymodRail002001_forbipod', b.productTitle); mfb_setText('productPricing_mlokAndKeymodRail002001_forbipod', b.variants['01'].price + ' USD'); mfb_addClass('productHeader_mlokAndKeymodRail002001_forbipod','active'); mfb_addClass('productButtonIcon_mlokAndKeymodRail002001_forbipod','active'); mfb_addClass('productContainer_mlokAndKeymodRail002001_forbipod','active'); mfb_updateAdditional(b); return; }
- // if none yet but one has qty, activate that one
- if(aq>0 && a){ mfb_setText('productName_mlokAndKeymodRail001001_forbipod', a.productTitle); mfb_setText('productPricing_mlokAndKeymodRail001001_forbipod', a.variants['01'].price + ' USD'); mfb_addClass('productHeader_mlokAndKeymodRail001001_forbipod','active'); mfb_addClass('productButtonIcon_mlokAndKeymodRail001001_forbipod','active'); mfb_addClass('productContainer_mlokAndKeymodRail001001_forbipod','active'); mfb_updateAdditional(a); return; }
- if(bq>0 && b){ mfb_setText('productName_mlokAndKeymodRail002001_forbipod', b.productTitle); mfb_setText('productPricing_mlokAndKeymodRail002001_forbipod', b.variants['01'].price + ' USD'); mfb_addClass('productHeader_mlokAndKeymodRail002001_forbipod','active'); mfb_addClass('productButtonIcon_mlokAndKeymodRail002001_forbipod','active'); mfb_addClass('productContainer_mlokAndKeymodRail002001_forbipod','active'); mfb_updateAdditional(b); return; }
- // none -> default to brand A texts
- if(a){ mfb_setText('productName_mlokAndKeymodRail001001_forbipod', a.productTitle); mfb_setText('productPricing_mlokAndKeymodRail001001_forbipod', a.variants['01'].price + ' USD'); }
+function mfb_showElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "flex";
+}
+function mfb_hideElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "none";
 }
 
-(function(){ 
-  const start=mfb_get('buttonModalStartMenu_StartButton'); 
-  if(start){ 
-    start.addEventListener('click', function(){ 
-      uiReset_mlokForBipod001001(); 
-      uiReset_mlokForBipod002001(); 
-      window.__mlokSummaryMode='forBipod'; 
-      uiData_mlokForBipod(); 
-      
-      // Update 3D model after UI update
-      updateModel_MlokForBipod();
-    }); 
-  }
-  
-  const aBtn=mfb_get('buttonItems_mlokAndKeymodRail00100101_forbipod'); 
-  if(aBtn){ 
-    aBtn.addEventListener('click', function(){ 
-      const a=mfb_getProdA(); 
-      const b=mfb_getProdB(); 
-      if(b && b.variants['01']) b.variants['01'].quantity = 0; 
-      if(a && a.variants['01']) a.variants['01'].quantity = Math.max(0,(a.variants['01'].quantity||0) + 1); 
-      window.__mlokLastSelected='A'; 
-      window.__mlokSummaryMode='forBipod'; 
-      uiData_mlokForBipod(); 
-      
-      // Update 3D model after UI update
-      const itemsID = "mlokAndKeymodRail00100101";
-      console.log(`🎯 M-LOK for Bipod button clicked: ${itemsID}`);
-      handleMlokForBipodSelection(itemsID);
-    }); 
-  }
-  
-  const bBtn=mfb_get('buttonItems_mlokAndKeymodRail00200101_forbipod'); 
-  if(bBtn){ 
-    bBtn.addEventListener('click', function(){ 
-      const a=mfb_getProdA(); 
-      const b=mfb_getProdB(); 
-      if(a && a.variants['01']) a.variants['01'].quantity = 0; 
-      if(b && b.variants['01']) b.variants['01'].quantity = Math.max(0,(b.variants['01'].quantity||0) + 1); 
-      window.__mlokLastSelected='B'; 
-      window.__mlokSummaryMode='forBipod'; 
-      uiData_mlokForBipod(); 
-      
-      // Update 3D model after UI update
-      const itemsID = "mlokAndKeymodRail00200101";
-      console.log(`🎯 M-LOK for Bipod button clicked: ${itemsID}`);
-      handleMlokForBipodSelection(itemsID);
-    }); 
-  }
-  
-  const jump=mfb_get('buttonKeMenuMlokForBipod_bipod001001'); 
-  if(jump){ 
-    jump.addEventListener('click', function(){ 
-      window.__mlokSummaryMode='forBipod'; 
-      uiData_mlokForBipod(); 
-      
-      // Update 3D model after UI update
-      updateModel_MlokForBipod();
-    }); 
-  }
-})();
+// Get products from inventory
+function mfb_getProdA(){ 
+	return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['001'] && window.part.mlokAndKeymodRail['001'].products && window.part.mlokAndKeymodRail['001'].products['001']) 
+		? window.part.mlokAndKeymodRail['001'].products['001'] 
+		: null; 
+}
+function mfb_getProdB(){ 
+	return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['002'] && window.part.mlokAndKeymodRail['002'].products && window.part.mlokAndKeymodRail['002'].products['001']) 
+		? window.part.mlokAndKeymodRail['002'].products['001'] 
+		: null; 
+}
+function mfb_getBrandA(){ 
+	return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['001']) 
+		? window.part.mlokAndKeymodRail['001'].brand 
+		: '---'; 
+}
+function mfb_getBrandB(){ 
+	return (window.part && window.part.mlokAndKeymodRail && window.part.mlokAndKeymodRail['002']) 
+		? window.part.mlokAndKeymodRail['002'].brand 
+		: '---'; 
+}
+
+// ===== Update Inventory Quantity =====
+// Use the function from MLOK biasa (shared)
+function updateInventoryQuantity_mlokAndKeymodRail() {
+	if (window.updateInventoryQuantity_mlokAndKeymodRail) {
+		window.updateInventoryQuantity_mlokAndKeymodRail();
+	}
+}
+
+// ===== Update UI based on variable terpisah =====
+// UI dikontrol oleh variable terpisah (0 = default/hide, 1 = active/show)
+export function uiData_mlokForBipod(){
+	const qtyA = window.mlokAndKeymodRail00100101_forBipod_quantity || 0;
+	const qtyB = window.mlokAndKeymodRail00200101_forBipod_quantity || 0;
+	const a = mfb_getProdA();
+	const b = mfb_getProdB();
+	
+	// Clear all actives first
+	mfb_removeClass('productCard_mlokAndKeymodRail_001001_forBipod','active');
+	mfb_removeClass('productCard_mlokAndKeymodRail_002001_forBipod','active');
+	
+	if(qtyA === 0 && qtyB === 0){
+		// No Selected - default to brand A texts and hide summary cards
+		if(a){ 
+			mfb_setText('productCardName_mlokAndKeymodRail_001001_forBipod', a.productTitle); 
+			mfb_setText('productCardPrice_mlokAndKeymodRail_001001_forBipod', '$' + a.variants['01'].price + ' USD'); 
+		}
+		mfb_hideElement('summaryItemsCard_mlokAndKeymodRail_00100101_forBipod');
+		mfb_hideElement('summaryItemsCard_mlokAndKeymodRail_00200101_forBipod');
+		return;
+	}
+	
+	// Determine which one is selected
+	let choice = null;
+	if(qtyA === 1) choice = 'A';
+	else if(qtyB === 1) choice = 'B';
+	
+	if(choice === 'A'){
+		mfb_addClass('productCard_mlokAndKeymodRail_001001_forBipod','active');
+		if(a && a.variants['01']){
+			mfb_setText('productCardName_mlokAndKeymodRail_001001_forBipod', a.productTitle); 
+			mfb_setText('productCardPrice_mlokAndKeymodRail_001001_forBipod', '$' + a.variants['01'].price + ' USD');
+			
+			// Show summary card
+			const summaryName = mfb_getBrandA() + ' - ' + a.productTitle + ' for bipod';
+			mfb_showElement('summaryItemsCard_mlokAndKeymodRail_00100101_forBipod');
+			mfb_setText('summaryCardName_mlokAndKeymodRail_00100101_forBipod', summaryName);
+			mfb_setText('summaryCardPrice_mlokAndKeymodRail_00100101_forBipod', '$' + a.variants['01'].price + ' USD');
+		}
+		mfb_hideElement('summaryItemsCard_mlokAndKeymodRail_00200101_forBipod');
+	} else {
+		mfb_addClass('productCard_mlokAndKeymodRail_002001_forBipod','active');
+		if(b && b.variants['01']){
+			mfb_setText('productCardName_mlokAndKeymodRail_002001_forBipod', b.productTitle); 
+			mfb_setText('productCardPrice_mlokAndKeymodRail_002001_forBipod', '$' + b.variants['01'].price + ' USD');
+			
+			// Show summary card
+			const summaryName = mfb_getBrandB() + ' - ' + b.productTitle + ' for bipod';
+			mfb_showElement('summaryItemsCard_mlokAndKeymodRail_00200101_forBipod');
+			mfb_setText('summaryCardName_mlokAndKeymodRail_00200101_forBipod', summaryName);
+			mfb_setText('summaryCardPrice_mlokAndKeymodRail_00200101_forBipod', '$' + b.variants['01'].price + ' USD');
+		}
+		mfb_hideElement('summaryItemsCard_mlokAndKeymodRail_00100101_forBipod');
+	}
+}
+
+// ===== Event Listeners =====
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', function() {
+		setTimeout(setupProductCardListeners, 100);
+	});
+} else {
+	setTimeout(setupProductCardListeners, 100);
+}
+
+function setupProductCardListeners() {
+// MLOK A for bipod (00100101)
+	const aBtn = mfb_get('productCard_mlokAndKeymodRail_001001_forBipod');
+	if(aBtn){ 
+		aBtn.addEventListener('click', function(){ 
+			// Set variable terpisah (tetap 1, tidak peduli diklik berapa kali)
+			window.mlokAndKeymodRail00100101_forBipod_quantity = 1;
+			window.mlokAndKeymodRail00200101_forBipod_quantity = 0;
+			
+			// Update inventory quantity
+			updateInventoryQuantity_mlokAndKeymodRail();
+			
+			// Update UI (only MLOK for bipod, tidak mempengaruhi MLOK biasa)
+			uiData_mlokForBipod();
+			
+			// Update 3D model
+			const itemsID = "mlokAndKeymodRail00100101";
+handleMlokForBipodSelection(itemsID);
+		}, true);
+	}
+	
+	// MLOK B for bipod (00200101)
+	const bBtn = mfb_get('productCard_mlokAndKeymodRail_002001_forBipod');
+	if(bBtn){ 
+		bBtn.addEventListener('click', function(){ 
+			// Set variable terpisah (tetap 1, tidak peduli diklik berapa kali)
+			window.mlokAndKeymodRail00200101_forBipod_quantity = 1;
+			window.mlokAndKeymodRail00100101_forBipod_quantity = 0;
+			
+			// Update inventory quantity
+			updateInventoryQuantity_mlokAndKeymodRail();
+			
+			// Update UI (only MLOK for bipod, tidak mempengaruhi MLOK biasa)
+			uiData_mlokForBipod();
+			
+			// Update 3D model
+			const itemsID = "mlokAndKeymodRail00200101";
+handleMlokForBipodSelection(itemsID);
+		}, true);
+	}
+	
+}
+
+// ===== Start Button Listener =====
+// Reset all MLOK for bipod variables when start button is clicked
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', function() {
+		setTimeout(setupStartButtonListener, 100);
+	});
+} else {
+	setTimeout(setupStartButtonListener, 100);
+}
+
+function setupStartButtonListener() {
+	const btn = document.getElementById("loader-start-button");
+	if (btn) {
+		btn.addEventListener("click", function (e) {
+// Reset all MLOK for bipod variables to 0
+			window.mlokAndKeymodRail00100101_forBipod_quantity = 0;
+			window.mlokAndKeymodRail00200101_forBipod_quantity = 0;
+			
+			// Update inventory quantity
+			updateInventoryQuantity_mlokAndKeymodRail();
+			
+			// Update UI
+			uiData_mlokForBipod();
+			
+}, true);
+		
+}
+}
+
+// Make functions globally accessible
+window.uiData_mlokForBipod = uiData_mlokForBipod;

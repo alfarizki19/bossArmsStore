@@ -51,4 +51,4 @@ export function updateSummary_Trigger() {
 window.resetSummary_Trigger = resetSummary_Trigger;
 window.updateSummary_Trigger = updateSummary_Trigger;
 
-
+

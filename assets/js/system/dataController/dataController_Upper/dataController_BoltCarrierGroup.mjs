@@ -19,230 +19,405 @@ function bcg_removeClass(id, className) {
 	if (el) el.classList.remove(className);
 }
 
-function bcg_hideAllUpperImages() {
-	const ids = [
-		"partImgID_boltCarrierGroup00100101",
-		"partImgID_boltCarrierGroup00200101",
-		"partImgID_boltCarrierGroup00200201",
-	];
-	ids.forEach(function (id) { const el = document.getElementById(id); if (el) el.style.display = "none"; });
+function bcg_showElement(id) {
+	const el = document.getElementById(id);
+	if (el) el.style.display = "flex";
 }
 
-function bcg_hideProductImagesByGroup(groupSuffix) {
-	for (let i = 1; i <= 1; i++) {
-		const idx = ("" + i).padStart(2, "0");
-		const el = document.getElementById("productImgID_boltCarrierGroup" + groupSuffix + idx);
+function bcg_hideElement(id) {
+	const el = document.getElementById(id);
 		if (el) el.style.display = "none";
-	}
 }
 
-function bcg_hideAllProductImages() {
-	["001001", "002001", "002002"].forEach(function (suffix) { bcg_hideProductImagesByGroup(suffix); });
-}
-
-function bcg_showDefaultProductImages() {
-	const defaults = [
-		"productImgID_boltCarrierGroup00100101",
-		"productImgID_boltCarrierGroup00200101",
-		"productImgID_boltCarrierGroup00200201",
+function bcg_hideAllPartCardImages() {
+	const ids = [
+		"partCardImg_boltCarrierGroup00100101",
+		"partCardImg_boltCarrierGroup00200101",
+		"partCardImg_boltCarrierGroup00200201",
 	];
-	defaults.forEach(function (id) { const el = document.getElementById(id); if (el) el.style.display = "flex"; });
-}
-
-function bcg_clearVariantButtons(groupSuffix) {
-	for (let i = 1; i <= 1; i++) {
-		const idx = ("" + i).padStart(2, "0");
-		const btn = document.getElementById("buttonItems_boltCarrierGroup" + groupSuffix + idx);
-		if (btn) btn.classList.remove("active");
-	}
+	ids.forEach(function (id) { bcg_hideElement(id); });
 }
 
 export function uiReset_boltCarrierGroup001001() {
-	const product = window.part.boltCarrierGroup["001"].products["001"]; // 001001
+	const group = window.part.boltCarrierGroup["001"];
+	const product = group.products["001"]; // 001001
 	product.variants["01"].quantity = 0;
 
-	bcg_setText("productName_boltCarrierGroup001001", product.productTitle);
-	bcg_setText("productPricing_boltCarrierGroup001001", product.variants["01"].price + " USD");
-	bcg_removeClass("productHeader_boltCarrierGroup001001", "active");
-	bcg_removeClass("productButtonIcon_boltCarrierGroup001001", "active");
+	// Reset product card
+	bcg_setText("productCardName_boltCarrierGroup_00100101", product.productTitle);
+	bcg_setText("productCardPrice_boltCarrierGroup_00100101", "$" + product.variants["01"].price + " USD");
+	bcg_removeClass("productCard_boltCarrierGroup_00100101", "active");
 
-	bcg_hideProductImagesByGroup("001001");
-	bcg_hideAllUpperImages();
+	// Hide part card images
+	bcg_hideAllPartCardImages();
 
-	bcg_setText("partName_BoltCarrierGroup", "-----");
-	bcg_setText("partPrice_BoltCarrierGroup", "-----");
-	bcg_clearVariantButtons("001001");
+	// Reset part card
+	bcg_setText("partCardName_boltCarrierGroup", "--- --- ---");
+	bcg_setText("partCardPrice_boltCarrierGroup", "----- USD");
+
+	// Hide summary card
+	bcg_hideElement("summaryItemsCard_boltCarrierGroup_00100101");
 }
 
 export function uiReset_boltCarrierGroup002001() {
-	const product = window.part.boltCarrierGroup["002"].products["001"]; // 002001
+	const group = window.part.boltCarrierGroup["002"];
+	const product = group.products["001"]; // 002001
 	product.variants["01"].quantity = 0;
 
-	bcg_setText("productName_boltCarrierGroup002001", product.productTitle);
-	bcg_setText("productPricing_boltCarrierGroup002001", product.variants["01"].price + " USD");
-	bcg_removeClass("productHeader_boltCarrierGroup002001", "active");
-	bcg_removeClass("productButtonIcon_boltCarrierGroup002001", "active");
+	// Reset product card
+	bcg_setText("productCardName_boltCarrierGroup_00200101", product.productTitle);
+	bcg_setText("productCardPrice_boltCarrierGroup_00200101", "$" + product.variants["01"].price + " USD");
+	bcg_removeClass("productCard_boltCarrierGroup_00200101", "active");
 
-	bcg_hideProductImagesByGroup("002001");
-	bcg_hideAllUpperImages();
+	// Hide part card images
+	bcg_hideAllPartCardImages();
 
-	bcg_setText("partName_BoltCarrierGroup", "-----");
-	bcg_setText("partPrice_BoltCarrierGroup", "-----");
-	bcg_clearVariantButtons("002001");
+	// Reset part card
+	bcg_setText("partCardName_boltCarrierGroup", "--- --- ---");
+	bcg_setText("partCardPrice_boltCarrierGroup", "----- USD");
+
+	// Hide summary card
+	bcg_hideElement("summaryItemsCard_boltCarrierGroup_00200101");
 }
 
 export function uiReset_boltCarrierGroup002002() {
-	const product = window.part.boltCarrierGroup["002"].products["002"]; // 002002
+	const group = window.part.boltCarrierGroup["002"];
+	const product = group.products["002"]; // 002002
 	product.variants["01"].quantity = 0;
 
-	bcg_setText("productName_boltCarrierGroup002002", product.productTitle);
-	bcg_setText("productPricing_boltCarrierGroup002002", product.variants["01"].price + " USD");
-	bcg_removeClass("productHeader_boltCarrierGroup002002", "active");
-	bcg_removeClass("productButtonIcon_boltCarrierGroup002002", "active");
+	// Reset product card
+	bcg_setText("productCardName_boltCarrierGroup_00200201", product.productTitle);
+	bcg_setText("productCardPrice_boltCarrierGroup_00200201", "$" + product.variants["01"].price + " USD");
+	bcg_removeClass("productCard_boltCarrierGroup_00200201", "active");
 
-	bcg_hideProductImagesByGroup("002002");
-	bcg_hideAllUpperImages();
+	// Hide part card images
+	bcg_hideAllPartCardImages();
 
-	bcg_setText("partName_BoltCarrierGroup", "-----");
-	bcg_setText("partPrice_BoltCarrierGroup", "-----");
-	bcg_clearVariantButtons("002002");
+	// Reset part card
+	bcg_setText("partCardName_boltCarrierGroup", "--- --- ---");
+	bcg_setText("partCardPrice_boltCarrierGroup", "----- USD");
+
+	// Hide summary card
+	bcg_hideElement("summaryItemsCard_boltCarrierGroup_00200201");
+}
+
+// Function to update all product card names and prices from inventory
+function bcg_updateAllProductCards() {
+	// 001001
+	{
+		const group = window.part.boltCarrierGroup["001"];
+		const product = group.products["001"];
+		bcg_setText("productCardName_boltCarrierGroup_00100101", product.productTitle);
+		bcg_setText("productCardPrice_boltCarrierGroup_00100101", "$" + product.variants["01"].price + " USD");
+	}
+	// 002001
+	{
+		const group = window.part.boltCarrierGroup["002"];
+		const product = group.products["001"];
+		bcg_setText("productCardName_boltCarrierGroup_00200101", product.productTitle);
+		bcg_setText("productCardPrice_boltCarrierGroup_00200101", "$" + product.variants["01"].price + " USD");
+	}
+	// 002002
+	{
+		const group = window.part.boltCarrierGroup["002"];
+		const product = group.products["002"];
+		bcg_setText("productCardName_boltCarrierGroup_00200201", product.productTitle);
+		bcg_setText("productCardPrice_boltCarrierGroup_00200201", "$" + product.variants["01"].price + " USD");
+	}
 }
 
 export function uiData_BoltCarrierGroup() {
-	let selected = null; let headerSuffix = null; let productTitle = "";
+	let selected = null; let cardSuffix = null; let productTitle = ""; let brand = "";
 
+	// 001001
+	{
+		const group = window.part.boltCarrierGroup["001"];
+		const product = group.products["001"];
+		if (product.variants["01"].quantity === 1) {
+			selected = product.variants["01"]; 
+			cardSuffix = "00100101"; 
+			productTitle = product.productTitle;
+			brand = group.brand;
+		}
+	}
+	// 002001
+	{
+		const group = window.part.boltCarrierGroup["002"];
+		const product = group.products["001"];
+		if (product.variants["01"].quantity === 1) {
+			selected = product.variants["01"]; 
+			cardSuffix = "00200101"; 
+			productTitle = product.productTitle;
+			brand = group.brand;
+		}
+	}
+	// 002002
+	{
+		const group = window.part.boltCarrierGroup["002"];
+		const product = group.products["002"];
+		if (product.variants["01"].quantity === 1) {
+			selected = product.variants["01"]; 
+			cardSuffix = "00200201"; 
+			productTitle = product.productTitle;
+			brand = group.brand;
+		}
+	}
+
+	if (!selected || !cardSuffix) return;
+
+	// Update product card
+	const productCardId = "productCard_boltCarrierGroup_" + cardSuffix;
+	bcg_setText("productCardPrice_boltCarrierGroup_" + cardSuffix, "$" + selected.price + " USD");
+	bcg_addClass(productCardId, "active");
+
+	// Update part card images - show selected, hide others
+	bcg_hideAllPartCardImages();
+	const partCardImgId = "partCardImg_boltCarrierGroup" + cardSuffix;
+	bcg_showElement(partCardImgId);
+
+	// Update part card - format: brand + productTitle
+	bcg_setText("partCardName_boltCarrierGroup", brand + " - " + productTitle);
+	bcg_setText("partCardPrice_boltCarrierGroup", "$" + selected.price + " USD");
+
+	// Update summary cards - show selected, hide others
+	bcg_hideElement("summaryItemsCard_boltCarrierGroup_00100101");
+	bcg_hideElement("summaryItemsCard_boltCarrierGroup_00200101");
+	bcg_hideElement("summaryItemsCard_boltCarrierGroup_00200201");
+	
+	const summaryCardId = "summaryItemsCard_boltCarrierGroup_" + cardSuffix;
+	bcg_showElement(summaryCardId);
+	bcg_setText("summaryCardName_boltCarrierGroup_" + cardSuffix, brand + " - " + productTitle);
+	bcg_setText("summaryCardPrice_boltCarrierGroup_" + cardSuffix, "$" + selected.price + " USD");
+}
+
+// Function to update all summary cards from inventory data
+export function updateSummaryCards_BoltCarrierGroup() {
+	// Update all summary card names and prices from inventory
+	// 001001
+	{
+		const group = window.part.boltCarrierGroup["001"];
+		const product = group.products["001"];
+		const variant = product.variants["01"];
+		bcg_setText("summaryCardName_boltCarrierGroup_00100101", group.brand + " - " + product.productTitle);
+		bcg_setText("summaryCardPrice_boltCarrierGroup_00100101", "$" + variant.price + " USD");
+	}
+	// 002001
+	{
+		const group = window.part.boltCarrierGroup["002"];
+		const product = group.products["001"];
+		const variant = product.variants["01"];
+		bcg_setText("summaryCardName_boltCarrierGroup_00200101", group.brand + " - " + product.productTitle);
+		bcg_setText("summaryCardPrice_boltCarrierGroup_00200101", "$" + variant.price + " USD");
+	}
+	// 002002
+	{
+		const group = window.part.boltCarrierGroup["002"];
+		const product = group.products["002"];
+		const variant = product.variants["01"];
+		bcg_setText("summaryCardName_boltCarrierGroup_00200201", group.brand + " - " + product.productTitle);
+		bcg_setText("summaryCardPrice_boltCarrierGroup_00200201", "$" + variant.price + " USD");
+	}
+
+	// Show/hide summary cards based on quantity
 	// 001001
 	{
 		const product = window.part.boltCarrierGroup["001"].products["001"];
 		if (product.variants["01"].quantity === 1) {
-			selected = product.variants["01"]; headerSuffix = "001001"; productTitle = product.productTitle;
+			bcg_showElement("summaryItemsCard_boltCarrierGroup_00100101");
+		} else {
+			bcg_hideElement("summaryItemsCard_boltCarrierGroup_00100101");
 		}
 	}
 	// 002001
 	{
 		const product = window.part.boltCarrierGroup["002"].products["001"];
 		if (product.variants["01"].quantity === 1) {
-			selected = product.variants["01"]; headerSuffix = "002001"; productTitle = product.productTitle;
+			bcg_showElement("summaryItemsCard_boltCarrierGroup_00200101");
+		} else {
+			bcg_hideElement("summaryItemsCard_boltCarrierGroup_00200101");
 		}
 	}
 	// 002002
 	{
 		const product = window.part.boltCarrierGroup["002"].products["002"];
 		if (product.variants["01"].quantity === 1) {
-			selected = product.variants["01"]; headerSuffix = "002002"; productTitle = product.productTitle;
+			bcg_showElement("summaryItemsCard_boltCarrierGroup_00200201");
+		} else {
+			bcg_hideElement("summaryItemsCard_boltCarrierGroup_00200201");
 		}
 	}
-
-	if (!selected || !headerSuffix) return;
-
-	// Items header
-	bcg_setText("productPricing_boltCarrierGroup" + headerSuffix, selected.price + " USD");
-	bcg_addClass("productHeader_boltCarrierGroup" + headerSuffix, "active");
-	bcg_addClass("productButtonIcon_boltCarrierGroup" + headerSuffix, "active");
-
-	// Product images
-	bcg_hideProductImagesByGroup(headerSuffix);
-	const pImg = document.getElementById("productImgID_" + selected.id);
-	if (pImg) pImg.style.display = "flex";
-
-	// Ensure non-selected groups' default images are visible
-	const otherSuffixes = ["001001", "002001", "002002"].filter(s => s !== headerSuffix);
-	otherSuffixes.forEach(suffix => {
-		const otherDefault = document.getElementById("productImgID_boltCarrierGroup" + suffix + "01");
-		if (otherDefault) otherDefault.style.display = "flex";
-	});
-
-	// Upper menu
-	bcg_hideAllUpperImages();
-	const uImg = document.getElementById("partImgID_" + selected.id);
-	if (uImg) uImg.style.display = "flex";
-
-	const variantSuffix = (selected.variantTitle && selected.variantTitle.toLowerCase() !== "no variant") ? (" - " + selected.variantTitle) : "";
-	bcg_setText("productName_boltCarrierGroup" + headerSuffix, productTitle + variantSuffix);
-	bcg_setText("partName_BoltCarrierGroup", productTitle + variantSuffix);
-	bcg_setText("partPrice_BoltCarrierGroup", selected.price + " USD");
-
-	// Variant buttons active
-	bcg_clearVariantButtons(headerSuffix);
-	const btn = document.getElementById("buttonItems_" + selected.id);
-	if (btn) btn.classList.add("active");
 }
 
 // Start default -> 001001 variant 01
-{
-	const btn = document.getElementById("buttonModalStartMenu_StartButton");
+// Use DOMContentLoaded to ensure element exists
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupStartButtonListener);
+} else {
+	// DOM already loaded
+	setupStartButtonListener();
+}
+
+function setupStartButtonListener() {
+	const btn = document.getElementById("loader-start-button");
 	if (btn) {
-		btn.addEventListener("click", function () {
-			// Show defaults for all product groups
-			bcg_hideAllProductImages();
-			bcg_showDefaultProductImages();
+		// Keep existing onclick for hideLoader, but add our handler
+		// Use capture phase to run before onclick
+		btn.addEventListener("click", function (e) {
+// Check if data is available
+			if (!window.part || !window.part.boltCarrierGroup) {
+				console.error("❌ Bolt Carrier Group data not loaded yet");
+				return;
+			}
+			
+			// Update all product card names and prices from inventory
+			bcg_updateAllProductCards();
+			
+			// Reset all products (set quantity = 0, remove active class)
     uiReset_boltCarrierGroup001001();
     uiReset_boltCarrierGroup002001();
     uiReset_boltCarrierGroup002002();
+			
+			// Set default quantity = 1 for 00100101
         window.part.boltCarrierGroup["001"].products["001"].variants["01"].quantity = 1;
+			
+			// Update UI (will set active class and show/hide images)
         uiData_BoltCarrierGroup();
 			
 			// Update 3D model after UI update
 			updateModel_BoltCarrierGroup();
-});
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+			
+}, true); // Use capture phase
+		
+} else {
+		console.warn("⚠️ Bolt Carrier Group: loader-start-button not found");
 	}
 }
 
-// Variant listeners
-{
+// Product card click listeners
+// Use DOMContentLoaded to ensure elements exist
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupProductCardListeners);
+} else {
+	// DOM already loaded
+	setupProductCardListeners();
+}
+
+function setupProductCardListeners() {
 	// 001001 -> 01
-	const btn001001 = document.getElementById("buttonItems_boltCarrierGroup00100101");
-	if (btn001001) btn001001.addEventListener("click", function () {
-		// Show defaults for all product groups before applying selection
-		bcg_hideAllProductImages();
-		bcg_showDefaultProductImages();
+	const card001001 = document.getElementById("productCard_boltCarrierGroup_00100101");
+	if (card001001) {
+		// Use capture phase to run before onclick
+		card001001.addEventListener("click", function (e) {
+			// Reset all products
     uiReset_boltCarrierGroup001001();
     uiReset_boltCarrierGroup002001();
     uiReset_boltCarrierGroup002002();
+			
+			// Set quantity = 1 for selected product
         window.part.boltCarrierGroup["001"].products["001"].variants["01"].quantity = 1;
+			
+			// Update UI
         uiData_BoltCarrierGroup();
 		
 		// Update 3D model after UI update
 		const itemsID = "boltCarrierGroup00100101";
-		console.log(`🎯 Part button clicked: ${itemsID}`);
-		handleBoltCarrierGroupSelection(itemsID);
-	});
+handleBoltCarrierGroupSelection(itemsID);
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+		}, true); // Use capture phase
+	}
 
 	// 002001 -> 01
-	const btn002001 = document.getElementById("buttonItems_boltCarrierGroup00200101");
-	if (btn002001) btn002001.addEventListener("click", function () {
-		// Show defaults for all product groups before applying selection
-		bcg_hideAllProductImages();
-		bcg_showDefaultProductImages();
+	const card002001 = document.getElementById("productCard_boltCarrierGroup_00200101");
+	if (card002001) {
+		// Use capture phase to run before onclick
+		card002001.addEventListener("click", function (e) {
+			// Reset all products
     uiReset_boltCarrierGroup001001();
     uiReset_boltCarrierGroup002001();
     uiReset_boltCarrierGroup002002();
+			
+			// Set quantity = 1 for selected product
         window.part.boltCarrierGroup["002"].products["001"].variants["01"].quantity = 1;
+			
+			// Update UI
         uiData_BoltCarrierGroup();
 		
 		// Update 3D model after UI update
 		const itemsID = "boltCarrierGroup00200101";
-		console.log(`🎯 Part button clicked: ${itemsID}`);
-		handleBoltCarrierGroupSelection(itemsID);
-	});
+handleBoltCarrierGroupSelection(itemsID);
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+		}, true); // Use capture phase
+	}
 
 	// 002002 -> 01
-	const btn002002 = document.getElementById("buttonItems_boltCarrierGroup00200201");
-	if (btn002002) btn002002.addEventListener("click", function () {
-		// Show defaults for all product groups before applying selection
-		bcg_hideAllProductImages();
-		bcg_showDefaultProductImages();
+	const card002002 = document.getElementById("productCard_boltCarrierGroup_00200201");
+	if (card002002) {
+		// Use capture phase to run before onclick
+		card002002.addEventListener("click", function (e) {
+			// Reset all products
     uiReset_boltCarrierGroup001001();
     uiReset_boltCarrierGroup002001();
     uiReset_boltCarrierGroup002002();
+			
+			// Set quantity = 1 for selected product
         window.part.boltCarrierGroup["002"].products["002"].variants["01"].quantity = 1;
+			
+			// Update UI
         uiData_BoltCarrierGroup();
 		
 		// Update 3D model after UI update
 		const itemsID = "boltCarrierGroup00200201";
-		console.log(`🎯 Part button clicked: ${itemsID}`);
-		handleBoltCarrierGroupSelection(itemsID);
+handleBoltCarrierGroupSelection(itemsID);
+			
+			// Update total cost
+			if (window.renderTotals) {
+				setTimeout(() => {
+					window.renderTotals();
+				}, 100);
+			}
+		}, true); // Use capture phase
+	}
+	
+}
+
+// Summary chart button click listener
+// Use DOMContentLoaded to ensure element exists
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', setupSummaryChartButtonListener);
+} else {
+	// DOM already loaded
+	setupSummaryChartButtonListener();
+}
+
+function setupSummaryChartButtonListener() {
+	const btn = document.getElementById("summaryChartButton");
+	if (btn) {
+		btn.addEventListener("click", function () {
+			// Update all summary cards from inventory data
+			updateSummaryCards_BoltCarrierGroup();
 });
+} else {
+		console.warn("⚠️ Bolt Carrier Group: summaryChartButton not found");
+	}
 }
 
 export function getSelectedBoltCarrierGroup() {
