@@ -1,8 +1,6 @@
 // === dataController_Warden.mjs ===
 // Warden UI Controller (Upper Category) — part of Muzzle Device (001003)
 
-console.log("📦 Loading dataController_Warden.mjs...");
-
 // Import model controller functions
 import { updateModel_MuzzleDevice, handleMuzzleDeviceSelection } from '../../modelController/modelController_Upper/modelController_MuzzleDevice.mjs';
 
@@ -15,10 +13,7 @@ try {
 	updateModel_Warden = modelModule.updateModel_Warden || updateModel_Warden;
 	handleWardenSelection = modelModule.handleWardenSelection || handleWardenSelection;
 } catch(e) {
-	console.log("ℹ️ Warden: Model controller not found, using empty functions");
 }
-
-console.log("✅ dataController_Warden.mjs loaded");
 
 function wd_setText(id, text) {
 	const el = document.getElementById(id);
@@ -98,9 +93,7 @@ export function uiReset_warden() {
 
 // Update UI based on selected Warden
 export function uiData_Warden() {
-	console.log("🔧 Warden: uiData_Warden called");
-	
-	let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
+let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
 
 	// Check 00100301
 	{
@@ -112,8 +105,7 @@ export function uiData_Warden() {
 			productTitle = product.productTitle;
 			brand = group.brand;
 			variantTitle = selected.variantTitle;
-			console.log("✅ Warden: Found selected 00100301");
-		}
+}
 	}
 	
 	// Check 00100302
@@ -126,8 +118,7 @@ export function uiData_Warden() {
 			productTitle = product.productTitle;
 			brand = group.brand;
 			variantTitle = selected.variantTitle;
-			console.log("✅ Warden: Found selected 00100302");
-		}
+}
 	}
 
 	if (!selected || !cardSuffix) {
@@ -142,17 +133,13 @@ export function uiData_Warden() {
 		return;
 	}
 	
-	console.log(`✅ Warden: Processing selected item ${cardSuffix}`);
-
-	// Update selected product card - active
+// Update selected product card - active
 	// Reset all product cards first
 	wd_resetAllProductCards();
 	
 	if (cardSuffix === "00100301") {
 		wd_addClass("productCard_muzzleDevice00100301", "active");
-		console.log("✅ Warden: Set productCard_muzzleDevice00100301 active");
-		
-		// Update product card name and price
+// Update product card name and price
 		const group = window.part.muzzleDevice["001"];
 		const product = group.products["003"];
 		const displayName = product.productTitle + " (" + selected.variantTitle + ")";
@@ -160,9 +147,7 @@ export function uiData_Warden() {
 		wd_setText("productCardPrice_muzzleDevice00100301", "$" + selected.price + " USD");
 	} else if (cardSuffix === "00100302") {
 		wd_addClass("productCard_muzzleDevice00100302", "active");
-		console.log("✅ Warden: Set productCard_muzzleDevice00100302 active");
-		
-		// Update product card name and price
+// Update product card name and price
 		const group = window.part.muzzleDevice["001"];
 		const product = group.products["003"];
 		const displayName = product.productTitle + " (" + selected.variantTitle + ")";
@@ -188,9 +173,7 @@ export function uiData_Warden() {
 
 // Update summary cards based on quantity (called by summaryChartButton)
 export function updateSummaryCards_Warden() {
-	console.log("🔧 Warden: updateSummaryCards_Warden called");
-	
-	// 00100301
+// 00100301
 	{
 		const group = window.part.muzzleDevice["001"];
 		const product = group.products["003"];
@@ -224,17 +207,12 @@ if (document.readyState === 'loading') {
 }
 
 function setupProductCardListeners() {
-	console.log("🔧 Warden: Setting up product card listeners...");
-	
-	// No Selected - reset all Warden quantities
+// No Selected - reset all Warden quantities
 	const cardNoSelected = document.getElementById("productCard_NoSelected_warden");
 	if (cardNoSelected) {
-		console.log("✅ Warden: Found productCard_NoSelected_warden");
-		// Use capture phase to run before onclick
+// Use capture phase to run before onclick
 		cardNoSelected.addEventListener("click", function (e) {
-			console.log("🎯 Warden: productCard_NoSelected_warden clicked");
-			
-			// Reset all Warden quantities
+// Reset all Warden quantities
 			wd_zeroWardenQuantities();
 			
 			// Reset product cards
@@ -261,12 +239,9 @@ function setupProductCardListeners() {
 	// 00100301 - Black
 	const card00100301 = document.getElementById("productCard_muzzleDevice00100301");
 	if (card00100301) {
-		console.log("✅ Warden: Found productCard_muzzleDevice00100301");
-		// Use capture phase to run before onclick
+// Use capture phase to run before onclick
 		card00100301.addEventListener("click", function (e) {
-			console.log("🎯 Warden: productCard_muzzleDevice00100301 clicked");
-			
-			// Reset all Warden quantities
+// Reset all Warden quantities
 			wd_zeroWardenQuantities();
 			
 			// Set quantity = 1 for selected product
@@ -277,8 +252,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "muzzleDevice00100301";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
-			handleMuzzleDeviceSelection(itemsID);
+handleMuzzleDeviceSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -294,12 +268,9 @@ function setupProductCardListeners() {
 	// 00100302 - FDE
 	const card00100302 = document.getElementById("productCard_muzzleDevice00100302");
 	if (card00100302) {
-		console.log("✅ Warden: Found productCard_muzzleDevice00100302");
-		// Use capture phase to run before onclick
+// Use capture phase to run before onclick
 		card00100302.addEventListener("click", function (e) {
-			console.log("🎯 Warden: productCard_muzzleDevice00100302 clicked");
-			
-			// Reset all Warden quantities
+// Reset all Warden quantities
 			wd_zeroWardenQuantities();
 			
 			// Set quantity = 1 for selected product
@@ -310,8 +281,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "muzzleDevice00100302";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
-			handleMuzzleDeviceSelection(itemsID);
+handleMuzzleDeviceSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -324,7 +294,6 @@ function setupProductCardListeners() {
 		console.warn("⚠️ Warden: productCard_muzzleDevice00100302 not found");
 	}
 	
-	console.log("✅ Warden: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -344,10 +313,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_Warden();
-			console.log("✅ Warden: Summary cards updated");
-		});
-		console.log("✅ Warden: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Warden: summaryChartButton not found");
 	}
 }
@@ -378,5 +345,4 @@ export function getWardenTotalPrice() {
 // Make uiData_Warden and wd_updateAllProductCardsToDefault available globally for Muzzle Device to call
 window.uiData_Warden = uiData_Warden;
 window.wd_updateAllProductCardsToDefault = wd_updateAllProductCardsToDefault;
-
-console.log("✅ dataController_Warden.mjs: All functions defined, event listeners will be attached");
+

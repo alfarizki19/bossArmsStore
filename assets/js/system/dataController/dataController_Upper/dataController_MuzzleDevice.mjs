@@ -1,12 +1,8 @@
 // === dataController_MuzzleDevice.mjs ===
 // Muzzle Device UI Controller (Upper Category) — three products
 
-console.log("📦 Loading dataController_MuzzleDevice.mjs...");
-
 // Import model controller functions
 import { updateModel_MuzzleDevice, handleMuzzleDeviceSelection } from '../../modelController/modelController_Upper/modelController_MuzzleDevice.mjs';
-
-console.log("✅ dataController_MuzzleDevice.mjs loaded");
 
 function md_setText(id, text) {
 	const el = document.getElementById(id);
@@ -141,9 +137,7 @@ function md_zeroWardenQuantities() {
 }
 
 export function uiData_MuzzleDevice() {
-	console.log("🔧 Muzzle Device: uiData_MuzzleDevice called");
-	
-	let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
+let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
 
 	// Check 001001
 	{
@@ -155,8 +149,7 @@ export function uiData_MuzzleDevice() {
 			productTitle = product.productTitle;
 			brand = group.brand;
 			variantTitle = selected.variantTitle;
-			console.log("✅ Muzzle Device: Found selected 00100101");
-		}
+}
 	}
 	
 	// Check 001002
@@ -169,8 +162,7 @@ export function uiData_MuzzleDevice() {
 			productTitle = product.productTitle;
 			brand = group.brand;
 			variantTitle = selected.variantTitle;
-			console.log("✅ Muzzle Device: Found selected 00100201");
-		}
+}
 	}
 	
 	// Check 002002 variants
@@ -185,8 +177,7 @@ export function uiData_MuzzleDevice() {
 				productTitle = product.productTitle;
 				brand = group.brand;
 				variantTitle = selected.variantTitle;
-				console.log(`✅ Muzzle Device: Found selected 002002${k}`);
-				break;
+break;
 			}
 		}
 	}
@@ -196,9 +187,7 @@ export function uiData_MuzzleDevice() {
 		return;
 	}
 	
-	console.log(`✅ Muzzle Device: Processing selected item ${cardSuffix}`);
-
-	const productGroup = cardSuffix.substring(0, 6); // "001001", "001002", or "002002"
+const productGroup = cardSuffix.substring(0, 6); // "001001", "001002", or "002002"
 	const variantNum = cardSuffix.substring(6, 8); // "01", "02", etc.
 
 	// Update selected product card - set active
@@ -208,23 +197,19 @@ export function uiData_MuzzleDevice() {
 		md_resetProductCardToDefault_002002();
 		// Set active for selected
 		md_addClass("productCard_muzzleDevice001001", "active");
-		console.log("✅ Muzzle Device: Set productCard_muzzleDevice001001 active");
-	} else if (productGroup === "001002") {
+} else if (productGroup === "001002") {
 		// Reset other product cards first
 		md_removeClass("productCard_muzzleDevice001001", "active");
 		md_resetProductCardToDefault_002002();
 		// Set active for selected
 		md_addClass("productCard_muzzleDevice001002", "active");
-		console.log("✅ Muzzle Device: Set productCard_muzzleDevice001002 active");
-	} else if (productGroup === "002002") {
+} else if (productGroup === "002002") {
 		// Reset other product cards first
 		md_removeClass("productCard_muzzleDevice001001", "active");
 		md_removeClass("productCard_muzzleDevice001002", "active");
 		// Set active for selected
 		md_addClass("productCard_muzzleDevice002002", "active");
-		console.log("✅ Muzzle Device: Set productCard_muzzleDevice002002 active");
-		
-		// Update product card image for 002002
+// Update product card image for 002002
 		md_hideAllProductCardImages_002002();
 		const selectedImgId = "productCardImg_muzzleDevice" + cardSuffix;
 		const selectedImg = document.getElementById(selectedImgId);
@@ -239,8 +224,7 @@ export function uiData_MuzzleDevice() {
 	const partCardImg = document.getElementById(partCardImgId);
 	if (partCardImg) {
 		partCardImg.style.display = "block";
-		console.log(`✅ Muzzle Device: Showing part card image ${partCardImgId}`);
-	} else {
+} else {
 		console.warn(`⚠️ Muzzle Device: partCardImg ${partCardImgId} not found`);
 	}
 
@@ -370,9 +354,7 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Muzzle Device: Start button clicked");
-			
-			// Check if data is available
+// Check if data is available
 			if (!window.part || !window.part.muzzleDevice) {
 				console.error("❌ Muzzle Device data not loaded yet");
 				return;
@@ -392,8 +374,7 @@ function setupStartButtonListener() {
 			if (window.wd_updateAllProductCardsToDefault) {
 				try {
 					window.wd_updateAllProductCardsToDefault();
-					console.log("✅ Muzzle Device: Warden product cards updated to default");
-				} catch(e) {
+} catch(e) {
 					console.warn("⚠️ Muzzle Device: wd_updateAllProductCardsToDefault not available", e);
 				}
 			}
@@ -422,11 +403,9 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Muzzle Device: Initialized with default 00100101");
-		}, true); // Use capture phase
+}, true); // Use capture phase
 		
-		console.log("✅ Muzzle Device: Start button listener attached");
-	} else {
+} else {
 		console.warn("⚠️ Muzzle Device: loader-start-button not found");
 	}
 }
@@ -443,17 +422,12 @@ if (document.readyState === 'loading') {
 }
 
 function setupProductCardListeners() {
-	console.log("🔧 Muzzle Device: Setting up product card listeners...");
-	
-	// 001001 -> 01 (only 1 variant, select from product card)
+// 001001 -> 01 (only 1 variant, select from product card)
 	const card001001 = document.getElementById("productCard_muzzleDevice001001");
 	if (card001001) {
-		console.log("✅ Muzzle Device: Found productCard_muzzleDevice001001");
-		// Use capture phase to run before onclick
+// Use capture phase to run before onclick
 		card001001.addEventListener("click", function (e) {
-			console.log("🎯 Muzzle Device: productCard_muzzleDevice001001 clicked");
-			
-			// Check if already selected
+// Check if already selected
 			const currentQty = window.part.muzzleDevice["001"].products["001"].variants["01"].quantity || 0;
 			const isAlreadySelected = currentQty === 1;
 			
@@ -466,8 +440,7 @@ function setupProductCardListeners() {
 				// Set quantity = 1 for selected product
 				window.part.muzzleDevice["001"].products["001"].variants["01"].quantity = 1;
 			} else {
-				console.log("✅ Muzzle Device 001001 already selected, skipping reset");
-			}
+}
 			
 			// Always hide warden when base muzzle device is selected
 			md_zeroWardenQuantities();
@@ -477,8 +450,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "muzzleDevice00100101";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
-			handleMuzzleDeviceSelection(itemsID);
+handleMuzzleDeviceSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -494,12 +466,9 @@ function setupProductCardListeners() {
 	// 001002 -> 01 (only 1 variant, select from product card)
 	const card001002 = document.getElementById("productCard_muzzleDevice001002");
 	if (card001002) {
-		console.log("✅ Muzzle Device: Found productCard_muzzleDevice001002");
-		// Use capture phase to run before onclick
+// Use capture phase to run before onclick
 		card001002.addEventListener("click", function (e) {
-			console.log("🎯 Muzzle Device: productCard_muzzleDevice001002 clicked");
-			
-			// Check if already selected
+// Check if already selected
 			const currentQty = window.part.muzzleDevice["001"].products["002"].variants["01"].quantity || 0;
 			const isAlreadySelected = currentQty === 1;
 			
@@ -512,8 +481,7 @@ function setupProductCardListeners() {
 				// Set quantity = 1 for selected product
 				window.part.muzzleDevice["001"].products["002"].variants["01"].quantity = 1;
 			} else {
-				console.log("✅ Muzzle Device 001002 already selected, skipping reset");
-			}
+}
 			
 			// Always hide warden when base muzzle device is selected
 			md_zeroWardenQuantities();
@@ -523,8 +491,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "muzzleDevice00100201";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
-			handleMuzzleDeviceSelection(itemsID);
+handleMuzzleDeviceSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -537,7 +504,6 @@ function setupProductCardListeners() {
 		console.warn("⚠️ Muzzle Device: productCard_muzzleDevice001002 not found");
 	}
 	
-	console.log("✅ Muzzle Device: Product card listeners attached");
 }
 
 // Variant card click listeners
@@ -552,20 +518,15 @@ if (document.readyState === 'loading') {
 }
 
 function setupVariantCardListeners() {
-	console.log("🔧 Muzzle Device: Setting up variant card listeners...");
-	
-	// 002002 variants (2 variants)
+// 002002 variants (2 variants)
 	for (let i = 1; i <= 2; i++) {
 		const k = ("" + i).padStart(2, "0");
 		const variantCardId = "variantCard_muzzleDevice_002002" + k;
 		const card = document.getElementById(variantCardId);
 		if (card) {
-			console.log(`✅ Muzzle Device: Found ${variantCardId}`);
-			// Use capture phase to run before onclick
+// Use capture phase to run before onclick
 			card.addEventListener("click", function (e) {
-				console.log(`🎯 Muzzle Device: ${variantCardId} clicked`);
-				
-				// Reset all products
+// Reset all products
 				uiReset_muzzleDevice001001();
 				uiReset_muzzleDevice001002();
 				uiReset_muzzleDevice002002();
@@ -581,8 +542,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "muzzleDevice002002" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleMuzzleDeviceSelection(itemsID);
+handleMuzzleDeviceSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -596,7 +556,6 @@ function setupVariantCardListeners() {
 		}
 	}
 	
-	console.log("✅ Muzzle Device: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -614,10 +573,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_MuzzleDevice();
-			console.log("✅ Muzzle Device: Summary cards updated");
-		});
-		console.log("✅ Muzzle Device: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Muzzle Device: summaryChartButton not found");
 	}
 }
@@ -654,5 +611,4 @@ export function getMuzzleDeviceTotalPrice() {
 	const v = getSelectedMuzzleDevice();
 	return v ? v.price : 0;
 }
-
-console.log("✅ dataController_MuzzleDevice.mjs: All functions defined, event listeners will be attached");
+

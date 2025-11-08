@@ -1,12 +1,8 @@
 // === dataController_EjectionPortCover.mjs ===
 // Ejection Port Cover UI Controller (Upper Category) — one product with many variants
 
-console.log("📦 Loading dataController_EjectionPortCover.mjs...");
-
 // Import model controller functions
 import { updateModel_EjectionPortCover, handleEjectionPortCoverSelection } from '../../modelController/modelController_Upper/modelController_EjectionPortCover.mjs';
-
-console.log("✅ dataController_EjectionPortCover.mjs loaded");
 
 function epc_setText(id, text) {
 	const el = document.getElementById(id);
@@ -233,9 +229,7 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Ejection Port Cover: Start button clicked");
-			
-			// Validate viewer is ready before configuration
+// Validate viewer is ready before configuration
 			if (!window.sketchfabViewerReady) {
 				console.warn("❌ Ejection Port Cover: Cannot configure - Sketchfab viewer is not ready yet");
 				return;
@@ -269,11 +263,9 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Ejection Port Cover: Initialized with default 00100101");
-		}, true); // Use capture phase
+}, true); // Use capture phase
 		
-		console.log("✅ Ejection Port Cover: Start button listener attached");
-	} else {
+} else {
 		console.warn("⚠️ Ejection Port Cover: loader-start-button not found");
 	}
 }
@@ -307,8 +299,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "ejectionPortCover001001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleEjectionPortCoverSelection(itemsID);
+handleEjectionPortCoverSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -320,7 +311,6 @@ function setupVariantCardListeners() {
 		}
 	}
 	
-	console.log("✅ Ejection Port Cover: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -338,10 +328,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_EjectionPortCover();
-			console.log("✅ Ejection Port Cover: Summary cards updated");
-		});
-		console.log("✅ Ejection Port Cover: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Ejection Port Cover: summaryChartButton not found");
 	}
 }
@@ -363,4 +351,4 @@ export function getSelectedEjectionPortCover() {
 export function getEjectionPortCoverTotalPrice() {
 	const v = getSelectedEjectionPortCover();
 	return v ? v.price : 0;
-}
+}

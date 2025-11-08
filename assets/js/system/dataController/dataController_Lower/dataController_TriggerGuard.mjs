@@ -1,12 +1,8 @@
 // === dataController_TriggerGuard.mjs ===
 // Trigger Guard UI Controller (Lower Category) — two products with many variants
 
-console.log("📦 Loading dataController_TriggerGuard.mjs...");
-
 // Import model controller functions
 import { updateModel_TriggerGuard, handleTriggerGuardSelection } from '../../modelController/modelController_Lower/modelController_TriggerGuard.mjs';
-
-console.log("✅ dataController_TriggerGuard.mjs loaded");
 
 function tg_setText(id, text) {
 	const el = document.getElementById(id);
@@ -230,16 +226,14 @@ export function uiData_TriggerGuard() {
 		const el001001 = document.getElementById("productCardImg_triggerGuard001001");
 		if (el001001) {
 			el001001.style.display = "block";
-			console.log(`✅ Trigger Guard: Showing product card image productCardImg_triggerGuard001001`);
-		}
+}
 	} else {
 		// Show variant-specific image
 		const selectedImgId = "productCardImg_triggerGuard" + cardSuffix;
 		const selectedImg = document.getElementById(selectedImgId);
 		if (selectedImg) {
 			selectedImg.style.display = "block";
-			console.log(`✅ Trigger Guard: Showing product card image ${selectedImgId}`);
-		} else {
+} else {
 			console.warn(`⚠️ Trigger Guard: productCardImg ${selectedImgId} not found`);
 		}
 	}
@@ -259,8 +253,7 @@ export function uiData_TriggerGuard() {
 	const partCardImg = document.getElementById(partCardImgId);
 	if (partCardImg) {
 		partCardImg.style.display = "block";
-		console.log(`✅ Trigger Guard: Showing part card image ${partCardImgId}`);
-	} else {
+} else {
 		console.warn(`⚠️ Trigger Guard: partCardImg ${partCardImgId} not found`);
 	}
 
@@ -374,9 +367,7 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Trigger Guard: Start button clicked");
-			
-			// Validate viewer is ready before configuration
+// Validate viewer is ready before configuration
 			if (!window.sketchfabViewerReady) {
 				console.warn("❌ Trigger Guard: Cannot configure - Sketchfab viewer is not ready yet");
 				return;
@@ -411,11 +402,9 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Trigger Guard: Initialized with default 00100101");
-		}, true); // Use capture phase
+}, true); // Use capture phase
 		
-		console.log("✅ Trigger Guard: Start button listener attached");
-	} else {
+} else {
 		console.warn("⚠️ Trigger Guard: loader-start-button not found");
 	}
 }
@@ -450,8 +439,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "triggerGuard001001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleTriggerGuardSelection(itemsID);
+handleTriggerGuardSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -483,8 +471,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "triggerGuard002001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleTriggerGuardSelection(itemsID);
+handleTriggerGuardSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -496,7 +483,6 @@ function setupVariantCardListeners() {
 		}
 	}
 	
-	console.log("✅ Trigger Guard: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -514,10 +500,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_TriggerGuard();
-			console.log("✅ Trigger Guard: Summary cards updated");
-		});
-		console.log("✅ Trigger Guard: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Trigger Guard: summaryChartButton not found");
 	}
 }
@@ -550,4 +534,3 @@ export function getTriggerGuardTotalPrice() {
 	const v = getSelectedTriggerGuard();
 	return v ? v.price : 0;
 }
-

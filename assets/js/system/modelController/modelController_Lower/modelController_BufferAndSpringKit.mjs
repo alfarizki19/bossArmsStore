@@ -3,13 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Buffer and Spring Kit model controller loaded (implemented version)');
-
 // Update Buffer and Spring Kit model based on current selection
 export function updateModel_BufferAndSpringKit() {
-  console.log('🔧 Buffer and Spring Kit model update - checking current selection');
-  
-  // Get current selected buffer and spring kit from dataController
+// Get current selected buffer and spring kit from dataController
   const selected = getSelectedBufferAndSpringKit();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -19,28 +15,23 @@ export function updateModel_BufferAndSpringKit() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Buffer and Spring Kit: ${selected.id} -> ${modelID}`);
-    }
+}
   } else {
     // No selection, hide all variants
     hideAllBufferAndSpringKitVariants();
-    console.log('👁️‍🗨️ No Buffer and Spring Kit selected - hiding all variants');
-  }
+}
 }
 
 // Handle Buffer and Spring Kit selection from UI
 export function handleBufferAndSpringKitSelection(itemsID) {
-  console.log(`🎯 Buffer and Spring Kit selection: ${itemsID}`);
-  
-  // Hide all buffer and spring kit variants first
+// Hide all buffer and spring kit variants first
   hideAllBufferAndSpringKitVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Buffer and Spring Kit: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Buffer and Spring Kit: ${itemsID}`);
   }
 }

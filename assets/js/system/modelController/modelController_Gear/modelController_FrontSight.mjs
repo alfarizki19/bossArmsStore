@@ -3,8 +3,6 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Front Sight model controller loaded (implemented version)');
-
 // Global state for tracking current front sight state
 let currentFrontSightState = {
   selected: null, // 'frontSight00100101' or 'frontSight00200101'
@@ -13,9 +11,7 @@ let currentFrontSightState = {
 
 // Update Front Sight model based on current selection
 export function updateModel_FrontSight() {
-  console.log('🔧 Front Sight model update - checking current selection');
-  
-  // Get current selected front sight from dataController
+// Get current selected front sight from dataController
   const selected = getSelectedFrontSight();
   if (selected) {
     // Check if this is the same front sight that's already selected
@@ -25,10 +21,8 @@ export function updateModel_FrontSight() {
     if (!isAlreadySelected) {
       currentFrontSightState.selected = selected.id;
       currentFrontSightState.mode = 'B'; // Default to open (B) only for new selection
-      console.log(`🔄 New front sight selected: ${selected.id}, setting default mode B`);
-    } else {
-      console.log(`✅ Front sight already selected: ${selected.id}, keeping current mode: ${currentFrontSightState.mode}`);
-    }
+} else {
+}
     
     // Hide all front sight variants first
     hideAllFrontSightVariants();
@@ -36,9 +30,7 @@ export function updateModel_FrontSight() {
     // Show selected variant in current mode (or default B if new selection)
     const modelID = `modelID_${selected.id}_${currentFrontSightState.mode}`;
     showModel(modelID);
-    console.log(`✅ Showing Front Sight: ${selected.id} -> ${modelID} (mode ${currentFrontSightState.mode})`);
-    
-    // Update button states
+// Update button states
     updateFrontSightButtonStates();
   } else {
     // No selection, hide all variants
@@ -46,25 +38,20 @@ export function updateModel_FrontSight() {
     currentFrontSightState.mode = 'B';
     hideAllFrontSightVariants();
     clearFrontSightButtonStates();
-    console.log('👁️‍🗨️ No Front Sight selected - hiding all variants');
-  }
+}
 }
 
 // Handle Front Sight selection from UI
 export function handleFrontSightSelection(itemsID) {
-  console.log(`🎯 Front Sight selection: ${itemsID}`);
-  
-  // Check if this is the same front sight that's already selected
+// Check if this is the same front sight that's already selected
   const isAlreadySelected = currentFrontSightState.selected === itemsID;
   
   // Only set default mode if this is a new selection
   if (!isAlreadySelected) {
     currentFrontSightState.selected = itemsID;
     currentFrontSightState.mode = 'B'; // Default to open (B) only for new selection
-    console.log(`🔄 New front sight selected: ${itemsID}, setting default mode B`);
-  } else {
-    console.log(`✅ Front sight already selected: ${itemsID}, keeping current mode: ${currentFrontSightState.mode}`);
-  }
+} else {
+}
   
   // Hide all front sight variants first
   hideAllFrontSightVariants();
@@ -72,27 +59,20 @@ export function handleFrontSightSelection(itemsID) {
   // Show selected variant in current mode (or default B if new selection)
   const modelID = `modelID_${itemsID}_${currentFrontSightState.mode}`;
   showModel(modelID);
-  console.log(`✅ Showing Front Sight: ${itemsID} -> ${modelID} (mode ${currentFrontSightState.mode})`);
-  
-  // Update button states
+// Update button states
   updateFrontSightButtonStates();
 }
 
 // Handle Front Sight Open/Folded toggle
 export function handleFrontSightToggle(itemsID, mode) {
-  console.log(`🔄 Front Sight toggle: ${itemsID}${mode ? ` -> mode ${mode}` : ''}`);
-  console.log(`🔍 Current state - selected: ${currentFrontSightState.selected}, mode: ${currentFrontSightState.mode}`);
-  
-  // If mode is provided, use it directly
+// If mode is provided, use it directly
   let targetMode = mode;
   
   // If no mode provided, toggle between A and B
   if (!targetMode) {
     // If no front sight is selected, try to select the one being toggled
     if (!currentFrontSightState.selected) {
-      console.log(`🔧 No front sight selected, attempting to select: ${itemsID}`);
-      
-      // Check if this front sight exists in the data
+// Check if this front sight exists in the data
       const selected = getSelectedFrontSight();
       if (!selected || selected.id !== itemsID) {
         console.warn(`⚠️ Cannot toggle ${itemsID} - not selected in data controller`);
@@ -107,9 +87,7 @@ export function handleFrontSightToggle(itemsID, mode) {
       hideAllFrontSightVariants();
       const modelID = `modelID_${itemsID}_B`;
       showModel(modelID);
-      console.log(`✅ Showing Front Sight: ${itemsID} -> ${modelID} (default open mode)`);
-      
-      // Update button states
+// Update button states
       updateFrontSightButtonStates();
       return;
     }
@@ -141,8 +119,7 @@ export function handleFrontSightToggle(itemsID, mode) {
     return;
   }
   
-  console.log(`🔄 Setting mode to: ${targetMode}`);
-  currentFrontSightState.mode = targetMode;
+currentFrontSightState.mode = targetMode;
   
   // Hide all front sight variants first
   hideAllFrontSightVariants();
@@ -150,9 +127,7 @@ export function handleFrontSightToggle(itemsID, mode) {
   // Show selected variant in new mode
   const modelID = `modelID_${currentFrontSightState.selected}_${targetMode}`;
   showModel(modelID);
-  console.log(`✅ Showing Front Sight: ${currentFrontSightState.selected} -> ${modelID} (${targetMode === 'A' ? 'folded' : 'open'} mode)`);
-  
-  // Update button states
+// Update button states
   updateFrontSightButtonStates();
 }
 
@@ -174,9 +149,7 @@ function hideAllFrontSightVariants() {
 
 // Helper function to update button states
 function updateFrontSightButtonStates() {
-  console.log(`🔧 Updating button states for: ${currentFrontSightState.selected}, mode: ${currentFrontSightState.mode}`);
-  
-  if (!currentFrontSightState.selected) {
+if (!currentFrontSightState.selected) {
     clearFrontSightButtonStates();
     return;
   }
@@ -187,27 +160,20 @@ function updateFrontSightButtonStates() {
   const buttonA = document.getElementById(buttonA_ID);
   const buttonB = document.getElementById(buttonB_ID);
   
-  console.log(`🔍 Looking for buttons: ${buttonA_ID}, ${buttonB_ID}`);
-  console.log(`🔍 Button A found: ${!!buttonA}, Button B found: ${!!buttonB}`);
-  
-  // Clear all states first
+// Clear all states first
   if (buttonA) {
     buttonA.classList.remove('active');
-    console.log(`🔘 Cleared button A: ${buttonA_ID}`);
-  }
+}
   if (buttonB) {
     buttonB.classList.remove('active');
-    console.log(`🔘 Cleared button B: ${buttonB_ID}`);
-  }
+}
   
   // Set active state based on current mode
   if (currentFrontSightState.mode === 'A' && buttonA) {
     buttonA.classList.add('active');
-    console.log(`🔘 Updated button state: ${buttonA_ID} -> active (folded mode)`);
-  } else if (currentFrontSightState.mode === 'B' && buttonB) {
+} else if (currentFrontSightState.mode === 'B' && buttonB) {
     buttonB.classList.add('active');
-    console.log(`🔘 Updated button state: ${buttonB_ID} -> active (open mode)`);
-  } else {
+} else {
     console.warn(`⚠️ Could not set button state - mode: ${currentFrontSightState.mode}, buttonA: ${!!buttonA}, buttonB: ${!!buttonB}`);
   }
 }

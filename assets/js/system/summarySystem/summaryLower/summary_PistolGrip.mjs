@@ -51,4 +51,4 @@ export function updateSummary_PistolGrip() {
 window.resetSummary_PistolGrip = resetSummary_PistolGrip;
 window.updateSummary_PistolGrip = updateSummary_PistolGrip;
 
-
+

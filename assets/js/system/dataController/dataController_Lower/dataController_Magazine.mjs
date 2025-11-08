@@ -1,12 +1,8 @@
 // === dataController_Magazine.mjs ===
 // Magazine UI Controller (Lower Category)
 
-console.log("📦 Loading dataController_Magazine.mjs...");
-
 // Import model controller functions
 import { updateModel_Magazine, handleMagazineSelection } from '../../modelController/modelController_Lower/modelController_Magazine.mjs';
-
-console.log("✅ dataController_Magazine.mjs loaded");
 
 function mag_setText(id, text) {
 	const el = document.getElementById(id);
@@ -209,9 +205,7 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Magazine: Start button clicked");
-			
-			// Check if data is available
+// Check if data is available
 			if (!window.part || !window.part.magazine) {
 				console.error("❌ Magazine data not loaded yet");
 				return;
@@ -240,11 +234,9 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Magazine: Initialized with default 00100101");
-		}, true); // Use capture phase
+}, true); // Use capture phase
 		
-		console.log("✅ Magazine: Start button listener attached");
-	} else {
+} else {
 		console.warn("⚠️ Magazine: loader-start-button not found");
 	}
 }
@@ -276,8 +268,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "magazine00100101";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
-			handleMagazineSelection(itemsID);
+handleMagazineSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -305,8 +296,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "magazine00200101";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
-			handleMagazineSelection(itemsID);
+handleMagazineSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -317,7 +307,6 @@ function setupProductCardListeners() {
 		}, true); // Use capture phase
 	}
 	
-	console.log("✅ Magazine: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -335,10 +324,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_Magazine();
-			console.log("✅ Magazine: Summary cards updated");
-		});
-		console.log("✅ Magazine: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Magazine: summaryChartButton not found");
 	}
 }
@@ -355,4 +342,4 @@ export function getMagazineTotalPrice() {
 	const v = getSelectedMagazine();
 	return v ? v.price : 0;
 }
-
+

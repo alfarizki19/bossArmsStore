@@ -14,5 +14,3 @@ export function initSummaryNavigation_LowerReceiver() {
 }
 
 document.addEventListener('DOMContentLoaded', initSummaryNavigation_LowerReceiver);
-
-

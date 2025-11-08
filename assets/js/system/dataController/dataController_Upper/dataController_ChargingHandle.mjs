@@ -1,12 +1,8 @@
 // === dataController_ChargingHandle.mjs ===
 // Charging Handle UI Controller (Upper Category) — four products with variants
 
-console.log("📦 Loading dataController_ChargingHandle.mjs...");
-
 // Import model controller functions
 import { updateModel_ChargingHandle, handleChargingHandleSelection } from '../../modelController/modelController_Upper/modelController_ChargingHandle.mjs';
-
-console.log("✅ dataController_ChargingHandle.mjs loaded");
 
 function ch_setText(id, text) {
 	const el = document.getElementById(id);
@@ -520,9 +516,7 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Charging Handle: Start button clicked");
-			
-			// Validate viewer is ready before configuration
+// Validate viewer is ready before configuration
 			if (!window.sketchfabViewerReady) {
 				console.warn("❌ Charging Handle: Cannot configure - Sketchfab viewer is not ready yet");
 				return;
@@ -559,11 +553,9 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Charging Handle: Initialized with default 00100101");
-		}, true); // Use capture phase
+}, true); // Use capture phase
 		
-		console.log("✅ Charging Handle: Start button listener attached");
-	} else {
+} else {
 		console.warn("⚠️ Charging Handle: loader-start-button not found");
 	}
 }
@@ -600,8 +592,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "chargingHandle001001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleChargingHandleSelection(itemsID);
+handleChargingHandleSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -635,8 +626,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "chargingHandle003001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleChargingHandleSelection(itemsID);
+handleChargingHandleSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -670,8 +660,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "chargingHandle004001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleChargingHandleSelection(itemsID);
+handleChargingHandleSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -683,7 +672,6 @@ function setupVariantCardListeners() {
 		}
 	}
 	
-	console.log("✅ Charging Handle: Variant card listeners attached");
 }
 
 // Product card click listeners (for products with only 1 variant)
@@ -716,8 +704,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "chargingHandle00200101";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
-			handleChargingHandleSelection(itemsID);
+handleChargingHandleSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -730,7 +717,6 @@ function setupProductCardListeners() {
 		console.warn("⚠️ Charging Handle: productCard_chargingHandle_00200101 not found");
 	}
 	
-	console.log("✅ Charging Handle: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -748,10 +734,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_ChargingHandle();
-			console.log("✅ Charging Handle: Summary cards updated");
-		});
-		console.log("✅ Charging Handle: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Charging Handle: summaryChartButton not found");
 	}
 }
@@ -803,4 +787,4 @@ export function getSelectedChargingHandle() {
 export function getChargingHandleTotalPrice() {
 	const v = getSelectedChargingHandle();
 	return v ? v.price : 0;
-}
+}

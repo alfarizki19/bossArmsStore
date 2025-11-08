@@ -15,4 +15,4 @@ export function initSummaryNavigation_HandguardRailSystem() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_HandguardRailSystem);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_HandguardRailSystem);

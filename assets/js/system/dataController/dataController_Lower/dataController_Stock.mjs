@@ -1,12 +1,8 @@
 // === dataController_Stock.mjs ===
 // Stock UI Controller (Lower Category) — two products with many variants
 
-console.log("📦 Loading dataController_Stock.mjs...");
-
 // Import model controller functions
 import { updateModel_Stock, handleStockSelection } from '../../modelController/modelController_Lower/modelController_Stock.mjs';
-
-console.log("✅ dataController_Stock.mjs loaded");
 
 function st_setText(id, text) {
 	const el = document.getElementById(id);
@@ -326,9 +322,7 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Stock: Start button clicked");
-			
-			// Validate viewer is ready before configuration
+// Validate viewer is ready before configuration
 			if (!window.sketchfabViewerReady) {
 				console.warn("❌ Stock: Cannot configure - Sketchfab viewer is not ready yet");
 				return;
@@ -363,11 +357,9 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Stock: Initialized with default 00100101");
-		}, true); // Use capture phase
+}, true); // Use capture phase
 		
-		console.log("✅ Stock: Start button listener attached");
-	} else {
+} else {
 		console.warn("⚠️ Stock: loader-start-button not found");
 	}
 }
@@ -402,8 +394,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "stock001001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleStockSelection(itemsID);
+handleStockSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -435,8 +426,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "stock002001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleStockSelection(itemsID);
+handleStockSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -448,7 +438,6 @@ function setupVariantCardListeners() {
 		}
 	}
 	
-	console.log("✅ Stock: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -466,10 +455,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_Stock();
-			console.log("✅ Stock: Summary cards updated");
-		});
-		console.log("✅ Stock: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Stock: summaryChartButton not found");
 	}
 }
@@ -502,4 +489,4 @@ export function getStockTotalPrice() {
 	const v = getSelectedStock();
 	return v ? v.price : 0;
 }
-
+

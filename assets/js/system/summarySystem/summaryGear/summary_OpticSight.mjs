@@ -51,4 +51,4 @@ window.resetSummary_OpticSight = resetSummary_OpticSight;
 window.updateSummary_OpticSight = updateSummary_OpticSight;
 
 
-
+

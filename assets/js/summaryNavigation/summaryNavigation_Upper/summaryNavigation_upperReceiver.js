@@ -13,4 +13,4 @@ export function initSummaryNavigation_UpperReceiver() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_UpperReceiver);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_UpperReceiver);

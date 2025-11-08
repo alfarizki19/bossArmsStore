@@ -1,14 +1,10 @@
 // === dataController_Barrel.mjs ===
 // Barrel UI Controller (Upper Category)
 
-console.log("📦 Loading dataController_Barrel.mjs...");
-
 // Import model controller functions (if exists)
 // Note: Model controller may not exist yet
 let updateModel_Barrel = () => {};
 let handleBarrelSelection = () => {};
-
-console.log("✅ dataController_Barrel.mjs loaded");
 
 function brl_setText(id, text) {
 	const el = document.getElementById(id);
@@ -106,8 +102,7 @@ export function uiData_Barrel() {
 	const productCard = document.getElementById(productCardId);
 	if (productCard) {
 		brl_addClass(productCardId, "active");
-		console.log("✅ Barrel: Added active class to", productCardId);
-	} else {
+} else {
 		console.warn("⚠️ Barrel: productCard_barrel002001 not found");
 	}
 	// Also try alternative ID if exists
@@ -115,8 +110,7 @@ export function uiData_Barrel() {
 	const altCard = document.getElementById(altProductCardId);
 	if (altCard) {
 		brl_addClass(altProductCardId, "active");
-		console.log("✅ Barrel: Added active class to", altProductCardId);
-	}
+}
 	
 	// Update product card name and price
 	// Note: HTML uses productCardName_barel_00200101 and productCardPrice_barel_00200101
@@ -194,9 +188,7 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Barrel: Start button clicked");
-			
-			// Check if data is available
+// Check if data is available
 			if (!window.part || !window.part.barel) {
 				console.error("❌ Barrel data not loaded yet");
 				return;
@@ -224,11 +216,9 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Barrel: Initialized with default 00200101");
-		}, true); // Use capture phase
+}, true); // Use capture phase
 		
-		console.log("✅ Barrel: Start button listener attached");
-	} else {
+} else {
 		console.warn("⚠️ Barrel: loader-start-button not found");
 	}
 }
@@ -260,8 +250,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "barel00200101";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
-			handleBarrelSelection(itemsID);
+handleBarrelSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -272,7 +261,6 @@ function setupProductCardListeners() {
 		}, true); // Use capture phase
 	}
 	
-	console.log("✅ Barrel: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -290,10 +278,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_Barrel();
-			console.log("✅ Barrel: Summary cards updated");
-		});
-		console.log("✅ Barrel: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Barrel: summaryChartButton not found");
 	}
 }

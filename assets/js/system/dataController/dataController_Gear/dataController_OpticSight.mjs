@@ -1,8 +1,6 @@
 // === dataController_OpticSight.mjs ===
 // Optic Sight UI Controller (Gear Category) — 1 product with "No Selected" option
 
-console.log("📦 Loading dataController_OpticSight.mjs...");
-
 // Import model controller functions (if exists)
 let updateModel_OpticSight = () => {};
 let handleOpticSightSelection = () => {};
@@ -12,10 +10,7 @@ try {
 	updateModel_OpticSight = modelModule.updateModel_OpticSight || updateModel_OpticSight;
 	handleOpticSightSelection = modelModule.handleOpticSightSelection || handleOpticSightSelection;
 } catch(e) {
-	console.log("ℹ️ Optic Sight: Model controller not found, using empty functions");
 }
-
-console.log("✅ dataController_OpticSight.mjs loaded");
 
 function os_setText(id, text) {
 	const el = document.getElementById(id);
@@ -85,9 +80,7 @@ export function uiReset_opticSight() {
 
 // Update UI based on selected OpticSight
 export function uiData_OpticSight() {
-	console.log("🔧 Optic Sight: uiData_OpticSight called");
-	
-	let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
+let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
 
 	// Check 00100101
 	{
@@ -99,8 +92,7 @@ export function uiData_OpticSight() {
 			productTitle = product.productTitle;
 			brand = group.brand;
 			variantTitle = selected.variantTitle;
-			console.log("✅ Optic Sight: Found selected 00100101");
-		}
+}
 	}
 
 	if (!selected || !cardSuffix) {
@@ -120,16 +112,12 @@ export function uiData_OpticSight() {
 		return;
 	}
 	
-	console.log(`✅ Optic Sight: Processing selected item ${cardSuffix}`);
-
-	// Update selected product card - active
+// Update selected product card - active
 	// Reset all product cards first
 	os_resetAllProductCards();
 	
 	os_addClass("productCard_opticSight_001001", "active");
-	console.log("✅ Optic Sight: Set productCard_opticSight_001001 active");
-	
-	// Update product card name and price
+// Update product card name and price
 	const group = window.part.opticSight["001"];
 	const product = group.products["001"];
 	os_setText("productCardName_opticSight_001001", product.productTitle);
@@ -139,8 +127,7 @@ export function uiData_OpticSight() {
 	const partCardImg = document.getElementById("partCardImg_opticSight00100101");
 	if (partCardImg) {
 		partCardImg.style.display = "block";
-		console.log("✅ Optic Sight: Showing part card image");
-	} else {
+} else {
 		console.warn("⚠️ Optic Sight: partCardImg_opticSight00100101 not found");
 	}
 
@@ -163,9 +150,7 @@ export function uiData_OpticSight() {
 
 // Update summary cards based on quantity (called by summaryChartButton)
 export function updateSummaryCards_OpticSight() {
-	console.log("🔧 Optic Sight: updateSummaryCards_OpticSight called");
-	
-	// 00100101
+// 00100101
 	{
 		const group = window.part.opticSight["001"];
 		const product = group.products["001"];
@@ -194,9 +179,7 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Optic Sight: Start button clicked");
-			
-			// Check if data is available
+// Check if data is available
 			if (!window.part || !window.part.opticSight) {
 				console.error("❌ Optic Sight data not loaded yet");
 				return;
@@ -221,11 +204,9 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Optic Sight: Initialized with default No Selected");
-		}, true); // Use capture phase
+}, true); // Use capture phase
 		
-		console.log("✅ Optic Sight: Start button listener attached");
-	} else {
+} else {
 		console.warn("⚠️ Optic Sight: loader-start-button not found");
 	}
 }
@@ -242,17 +223,12 @@ if (document.readyState === 'loading') {
 }
 
 function setupProductCardListeners() {
-	console.log("🔧 Optic Sight: Setting up product card listeners...");
-	
-	// No Selected - reset all OpticSight quantities
+// No Selected - reset all OpticSight quantities
 	const cardNoSelected = document.getElementById("productCard_NoSelected_opticSight");
 	if (cardNoSelected) {
-		console.log("✅ Optic Sight: Found productCard_NoSelected_opticSight");
-		// Use capture phase to run before onclick
+// Use capture phase to run before onclick
 		cardNoSelected.addEventListener("click", function (e) {
-			console.log("🎯 Optic Sight: productCard_NoSelected_opticSight clicked");
-			
-			// Reset all OpticSight quantities
+// Reset all OpticSight quantities
 			os_zeroOpticSightQuantities();
 			
 			// Reset product cards
@@ -279,12 +255,9 @@ function setupProductCardListeners() {
 	// 00100101 - Holosun HS510C
 	const card001001 = document.getElementById("productCard_opticSight_001001");
 	if (card001001) {
-		console.log("✅ Optic Sight: Found productCard_opticSight_001001");
-		// Use capture phase to run before onclick
+// Use capture phase to run before onclick
 		card001001.addEventListener("click", function (e) {
-			console.log("🎯 Optic Sight: productCard_opticSight_001001 clicked");
-			
-			// Reset all OpticSight quantities
+// Reset all OpticSight quantities
 			os_zeroOpticSightQuantities();
 			
 			// Set quantity = 1 for selected product
@@ -295,8 +268,7 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "opticSight00100101";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
-			handleOpticSightSelection(itemsID);
+handleOpticSightSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -309,7 +281,6 @@ function setupProductCardListeners() {
 		console.warn("⚠️ Optic Sight: productCard_opticSight_001001 not found");
 	}
 	
-	console.log("✅ Optic Sight: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -329,10 +300,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_OpticSight();
-			console.log("✅ Optic Sight: Summary cards updated");
-		});
-		console.log("✅ Optic Sight: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Optic Sight: summaryChartButton not found");
 	}
 }
@@ -352,5 +321,4 @@ export function getOpticSightTotalPrice() {
 	const v = getSelectedOpticSight();
 	return v ? v.price : 0;
 }
-
-console.log("✅ dataController_OpticSight.mjs: All functions defined, event listeners will be attached");
+

@@ -50,4 +50,4 @@ export function renderHandguardSummary() {
 
 // Expose to window only (core will trigger this)
 window.renderHandguardSummary = renderHandguardSummary;
-
+

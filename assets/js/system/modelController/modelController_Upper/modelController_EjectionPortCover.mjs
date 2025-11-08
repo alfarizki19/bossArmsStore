@@ -3,13 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Ejection Port Cover model controller loaded (implemented version)');
-
 // Update Ejection Port Cover model based on current selection
 export function updateModel_EjectionPortCover() {
-  console.log('🔧 Ejection Port Cover model update - checking current selection');
-  
-  // Get current selected ejection port cover from dataController
+// Get current selected ejection port cover from dataController
   const selected = getSelectedEjectionPortCover();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -19,28 +15,23 @@ export function updateModel_EjectionPortCover() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Ejection Port Cover: ${selected.id} -> ${modelID}`);
-    }
+}
   } else {
     // No selection, hide all variants
     hideAllEjectionPortCoverVariants();
-    console.log('👁️‍🗨️ No Ejection Port Cover selected - hiding all variants');
-  }
+}
 }
 
 // Handle Ejection Port Cover selection from UI
 export function handleEjectionPortCoverSelection(itemsID) {
-  console.log(`🎯 Ejection Port Cover selection: ${itemsID}`);
-  
-  // Hide all ejection port cover variants first
+// Hide all ejection port cover variants first
   hideAllEjectionPortCoverVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Ejection Port Cover: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Ejection Port Cover: ${itemsID}`);
   }
 }

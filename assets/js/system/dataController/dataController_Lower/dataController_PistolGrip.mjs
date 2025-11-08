@@ -1,15 +1,11 @@
 // === dataController_PistolGrip.mjs ===
 // Pistol Grip UI Controller (Lower Category) — two products with many variants
 
-console.log("📦 Loading dataController_PistolGrip.mjs...");
-
 // Import model controller functions
 import { updateModel_PistolGrip, handlePistolGripSelection } from '../../modelController/modelController_Lower/modelController_PistolGrip.mjs';
 
 // Import trigger guard functions
 import { uiData_TriggerGuard, updateSummaryCards_TriggerGuard } from './dataController_TriggerGuard.mjs';
-
-console.log("✅ dataController_PistolGrip.mjs loaded");
 
 function pg_setText(id, text) {
 	const el = document.getElementById(id);
@@ -329,9 +325,7 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Pistol Grip: Start button clicked");
-			
-			// Validate viewer is ready before configuration
+// Validate viewer is ready before configuration
 			if (!window.sketchfabViewerReady) {
 				console.warn("❌ Pistol Grip: Cannot configure - Sketchfab viewer is not ready yet");
 				return;
@@ -369,11 +363,9 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Pistol Grip: Initialized with default 00100101");
-		}, true); // Use capture phase
+}, true); // Use capture phase
 		
-		console.log("✅ Pistol Grip: Start button listener attached");
-	} else {
+} else {
 		console.warn("⚠️ Pistol Grip: loader-start-button not found");
 	}
 }
@@ -408,8 +400,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "pistolGrip001001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handlePistolGripSelection(itemsID);
+handlePistolGripSelection(itemsID);
 				
 				// Handle trigger guard based on pistol grip selection
 				handleTriggerGuardForPistolGrip(itemsID);
@@ -444,8 +435,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "pistolGrip002001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handlePistolGripSelection(itemsID);
+handlePistolGripSelection(itemsID);
 				
 				// Handle trigger guard based on pistol grip selection
 				handleTriggerGuardForPistolGrip(itemsID);
@@ -460,18 +450,13 @@ function setupVariantCardListeners() {
 		}
 	}
 	
-	console.log("✅ Pistol Grip: Variant card listeners attached");
 }
 
 // Handle trigger guard based on pistol grip selection
 function handleTriggerGuardForPistolGrip(itemsID) {
-	console.log(`🔧 Handling trigger guard for pistol grip: ${itemsID}`);
-	
-	if (itemsID.startsWith('pistolGrip001001')) {
+if (itemsID.startsWith('pistolGrip001001')) {
 		// pistolGrip001001: NO TRIGGER GUARD needed (integrated trigger guard)
-		console.log('🚫 Pistol Grip 001001 - Setting all trigger guard quantity to 0');
-		
-		// Set all trigger guard quantity to 0
+// Set all trigger guard quantity to 0
 		if (window.part && window.part.triggerGuard) {
 			// 001001 variants
 			const group001 = window.part.triggerGuard["001"];
@@ -493,8 +478,7 @@ function handleTriggerGuardForPistolGrip(itemsID) {
 		const partCard = document.getElementById('partCard_triggerGuard');
 		if (partCard) {
 			partCard.style.display = 'none';
-			console.log('✅ Hidden part card trigger guard');
-		}
+}
 		
 		// Hide all summary items cards trigger guard
 		for (let i = 1; i <= 7; i++) {
@@ -524,9 +508,7 @@ function handleTriggerGuardForPistolGrip(itemsID) {
 		
 	} else if (itemsID.startsWith('pistolGrip002001')) {
 		// pistolGrip002001: TRIGGER GUARD needed (separate trigger guard)
-		console.log('✅ Pistol Grip 002001 - Setting default trigger guard (triggerGuard00100101)');
-		
-		// Set all trigger guard quantity to 0 first
+// Set all trigger guard quantity to 0 first
 		if (window.part && window.part.triggerGuard) {
 			// 001001 variants
 			const group001 = window.part.triggerGuard["001"];
@@ -549,16 +531,14 @@ function handleTriggerGuardForPistolGrip(itemsID) {
 			const group001 = window.part.triggerGuard["001"];
 			if (group001.products && group001.products["001"] && group001.products["001"].variants["01"]) {
 				group001.products["001"].variants["01"].quantity = 1;
-				console.log('✅ Set triggerGuard00100101 quantity = 1');
-			}
+}
 		}
 		
 		// Show part card trigger guard
 		const partCard = document.getElementById('partCard_triggerGuard');
 		if (partCard) {
 			partCard.style.display = 'flex';
-			console.log('✅ Shown part card trigger guard');
-		}
+}
 		
 		// Update trigger guard UI
 		if (uiData_TriggerGuard) {
@@ -592,10 +572,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_PistolGrip();
-			console.log("✅ Pistol Grip: Summary cards updated");
-		});
-		console.log("✅ Pistol Grip: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Pistol Grip: summaryChartButton not found");
 	}
 }
@@ -628,4 +606,3 @@ export function getPistolGripTotalPrice() {
 	const v = getSelectedPistolGrip();
 	return v ? v.price : 0;
 }
-

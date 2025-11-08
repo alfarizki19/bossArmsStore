@@ -3,13 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Muzzle Device model controller loaded (implemented version)');
-
 // Update Muzzle Device model based on current selection
 export function updateModel_MuzzleDevice() {
-  console.log('🔧 Muzzle Device model update - checking current selection');
-  
-  // Get current selected base muzzle device and warden
+// Get current selected base muzzle device and warden
   const selectedBase = getSelectedBaseMuzzleDevice();
   const selectedWarden = getSelectedWarden();
   
@@ -21,8 +17,7 @@ export function updateModel_MuzzleDevice() {
     const modelID = getModelIDFromItemsID(selectedBase.id);
     if (modelID) {
       showModel(modelID);
-      console.log(`✅ Showing Base Muzzle Device: ${selectedBase.id} -> ${modelID}`);
-    }
+}
   }
   
   // Show selected warden (additional part)
@@ -30,20 +25,16 @@ export function updateModel_MuzzleDevice() {
     const wardenModelID = getModelIDFromItemsID(selectedWarden.id);
     if (wardenModelID) {
       showModel(wardenModelID);
-      console.log(`✅ Showing Warden: ${selectedWarden.id} -> ${wardenModelID}`);
-    }
+}
   } else {
     // No warden selected, hide all warden variants
     hideAllWardenVariants();
-    console.log('👁️‍🗨️ No Warden selected - hiding all warden variants');
-  }
+}
 }
 
 // Handle Muzzle Device selection from UI
 export function handleMuzzleDeviceSelection(itemsID) {
-  console.log(`🎯 Muzzle Device selection: ${itemsID}`);
-  
-  // Check if this is a base muzzle device or warden
+// Check if this is a base muzzle device or warden
   if (isBaseMuzzleDevice(itemsID)) {
     handleBaseMuzzleDeviceSelection(itemsID);
   } else if (isWarden(itemsID)) {
@@ -55,17 +46,14 @@ export function handleMuzzleDeviceSelection(itemsID) {
 
 // Handle base muzzle device selection
 function handleBaseMuzzleDeviceSelection(itemsID) {
-  console.log(`🎯 Base Muzzle Device selection: ${itemsID}`);
-  
-  // Hide all base muzzle devices first
+// Hide all base muzzle devices first
   hideAllBaseMuzzleDevices();
   
   // Show selected base muzzle device
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Base Muzzle Device: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Base Muzzle Device: ${itemsID}`);
   }
   
@@ -73,22 +61,18 @@ function handleBaseMuzzleDeviceSelection(itemsID) {
   // Warden is only compatible with 001001 and 001002, but we hide it for all base devices
   // to ensure clean state. User can re-select warden if needed.
   hideAllWardenVariants();
-  console.log('👁️‍🗨️ Base Muzzle Device selected - hiding all warden variants');
 }
 
 // Handle warden selection
 function handleWardenSelection(itemsID) {
-  console.log(`🎯 Warden selection: ${itemsID}`);
-  
-  // Hide all warden variants first
+// Hide all warden variants first
   hideAllWardenVariants();
   
   // Show selected warden
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Warden: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Warden: ${itemsID}`);
   }
   
@@ -98,8 +82,7 @@ function handleWardenSelection(itemsID) {
     const baseModelID = getModelIDFromItemsID(selectedBase.id);
     if (baseModelID) {
       showModel(baseModelID);
-      console.log(`✅ Ensuring Base Muzzle Device still shown: ${selectedBase.id} -> ${baseModelID}`);
-    }
+}
   }
 }
 

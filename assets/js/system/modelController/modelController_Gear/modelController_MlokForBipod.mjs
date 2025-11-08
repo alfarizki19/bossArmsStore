@@ -3,13 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 M-LOK for Bipod model controller loaded (implemented version)');
-
 // Update M-LOK for Bipod model based on current selection
 export function updateModel_MlokForBipod() {
-  console.log('🔧 M-LOK for Bipod model update - checking current selection');
-  
-  // Get current selected M-LOK for Bipod from dataController
+// Get current selected M-LOK for Bipod from dataController
   const selected = getSelectedMlokForBipod();
   if (selected) {
     // Hide all M-LOK for Bipod variants first
@@ -18,25 +14,20 @@ export function updateModel_MlokForBipod() {
     // Show selected variant - M-LOK for Bipod always uses _B suffix
     const modelID = `modelID_${selected.id}_B`;
     showModel(modelID);
-    console.log(`✅ Showing M-LOK for Bipod: ${selected.id} -> ${modelID}`);
-  } else {
+} else {
     // No selection, hide all M-LOK for Bipod variants
     hideAllMlokForBipodVariants();
-    console.log('👁️‍🗨️ No M-LOK for Bipod selected - hiding all variants');
-  }
+}
 }
 
 // Handle M-LOK for Bipod selection from UI
 export function handleMlokForBipodSelection(itemsID) {
-  console.log(`🎯 M-LOK for Bipod selection: ${itemsID}`);
-  
-  // Hide all M-LOK for Bipod variants first
+// Hide all M-LOK for Bipod variants first
   hideAllMlokForBipodVariants();
   
   // Show selected variant - M-LOK for Bipod always uses _B suffix
   const modelID = `modelID_${itemsID}_B`;
   showModel(modelID);
-  console.log(`✅ Showing M-LOK for Bipod: ${itemsID} -> ${modelID}`);
 }
 
 // Helper function to hide all M-LOK for Bipod variants

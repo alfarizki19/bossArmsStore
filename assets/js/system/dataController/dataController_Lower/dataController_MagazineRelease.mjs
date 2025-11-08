@@ -1,12 +1,8 @@
 // === dataController_MagazineRelease.mjs ===
 // Magazine Release UI Controller (Lower Category) — two products with many variants
 
-console.log("📦 Loading dataController_MagazineRelease.mjs...");
-
 // Import model controller functions
 import { updateModel_MagazineRelease, handleMagazineReleaseSelection } from '../../modelController/modelController_Lower/modelController_MagazineRelease.mjs';
-
-console.log("✅ dataController_MagazineRelease.mjs loaded");
 
 function mr_setText(id, text) {
 	const el = document.getElementById(id);
@@ -326,9 +322,7 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Magazine Release: Start button clicked");
-			
-			// Validate viewer is ready before configuration
+// Validate viewer is ready before configuration
 			if (!window.sketchfabViewerReady) {
 				console.warn("❌ Magazine Release: Cannot configure - Sketchfab viewer is not ready yet");
 				return;
@@ -363,11 +357,9 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Magazine Release: Initialized with default 00100101");
-		}, true); // Use capture phase
+}, true); // Use capture phase
 		
-		console.log("✅ Magazine Release: Start button listener attached");
-	} else {
+} else {
 		console.warn("⚠️ Magazine Release: loader-start-button not found");
 	}
 }
@@ -402,8 +394,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "magazineRelease001001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleMagazineReleaseSelection(itemsID);
+handleMagazineReleaseSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -435,8 +426,7 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "magazineRelease002001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
-				handleMagazineReleaseSelection(itemsID);
+handleMagazineReleaseSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -448,7 +438,6 @@ function setupVariantCardListeners() {
 		}
 	}
 	
-	console.log("✅ Magazine Release: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -466,10 +455,8 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_MagazineRelease();
-			console.log("✅ Magazine Release: Summary cards updated");
-		});
-		console.log("✅ Magazine Release: Summary chart button listener attached");
-	} else {
+});
+} else {
 		console.warn("⚠️ Magazine Release: summaryChartButton not found");
 	}
 }
@@ -502,4 +489,4 @@ export function getMagazineReleaseTotalPrice() {
 	const v = getSelectedMagazineRelease();
 	return v ? v.price : 0;
 }
-
+

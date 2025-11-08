@@ -3,16 +3,11 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Trigger Guard model controller loaded (implemented version)');
-
 // Update Trigger Guard model based on current selection
 export function updateModel_TriggerGuard() {
-  console.log('🔧 Trigger Guard model update - checking current selection');
-  
-  // Check if current pistol grip requires trigger guard
+// Check if current pistol grip requires trigger guard
   if (!shouldShowTriggerGuard()) {
-    console.log('🚫 Current pistol grip does not require trigger guard - hiding all variants');
-    hideAllTriggerGuardVariants();
+hideAllTriggerGuardVariants();
     return;
   }
   
@@ -26,23 +21,18 @@ export function updateModel_TriggerGuard() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Trigger Guard: ${selected.id} -> ${modelID}`);
-    }
+}
   } else {
     // No selection, hide all variants
     hideAllTriggerGuardVariants();
-    console.log('👁️‍🗨️ No Trigger Guard selected - hiding all variants');
-  }
+}
 }
 
 // Handle Trigger Guard selection from UI
 export function handleTriggerGuardSelection(itemsID) {
-  console.log(`🎯 Trigger Guard selection: ${itemsID}`);
-  
-  // Check if current pistol grip requires trigger guard
+// Check if current pistol grip requires trigger guard
   if (!shouldShowTriggerGuard()) {
-    console.log('🚫 Current pistol grip does not require trigger guard - ignoring selection');
-    return;
+return;
   }
   
   // Hide all trigger guard variants first
@@ -52,8 +42,7 @@ export function handleTriggerGuardSelection(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Trigger Guard: ${itemsID} -> ${modelID}`);
-  } else {
+} else {
     console.warn(`⚠️ Model ID not found for Trigger Guard: ${itemsID}`);
   }
 }

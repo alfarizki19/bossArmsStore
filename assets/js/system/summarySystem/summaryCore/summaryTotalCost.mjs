@@ -1,7 +1,5 @@
 // Total cost calculator: sums quantity * price from window.part across all categories
 
-console.log("📦 Loading summaryTotalCost.mjs...");
-
 function formatUsd(n) {
     const num = Number(n);
     if (!isFinite(num)) return "0.00 USD";
@@ -59,9 +57,7 @@ export function renderTotals() {
     // Format with $ prefix for new UI
     const formattedWithDollar = "$" + totals.subtotal.toFixed(2);
 
-    console.log("💰 Rendering totals:", totals.subtotal, formattedWithDollar);
-
-    // Old IDs (if exist)
+// Old IDs (if exist)
     const elA = document.getElementById("summaryTextTotalBelanja");
     if (elA) elA.textContent = formatted;
 
@@ -72,16 +68,14 @@ export function renderTotals() {
     const elC = document.getElementById("summaryTotalPrice");
     if (elC) {
         elC.textContent = formattedWithDollar;
-        console.log("✅ Updated summaryTotalPrice:", formattedWithDollar);
-    } else {
+} else {
         console.warn("⚠️ summaryTotalPrice element not found");
     }
 
     const elD = document.getElementById("summarySideMenuTotalPrice");
     if (elD) {
         elD.textContent = formattedWithDollar;
-        console.log("✅ Updated summarySideMenuTotalPrice:", formattedWithDollar);
-    } else {
+} else {
         console.warn("⚠️ summarySideMenuTotalPrice element not found");
     }
 }
@@ -157,17 +151,13 @@ function attachTotalCostTriggers() {
 
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
-        console.log("✅ summaryTotalCost: DOM ready, attaching triggers");
-        attachTotalCostTriggers();
+attachTotalCostTriggers();
         try { renderTotals(); } catch (e) { console.error("❌ Error rendering totals:", e); }
     });
 } else {
-    console.log("✅ summaryTotalCost: DOM already ready, attaching triggers");
-    attachTotalCostTriggers();
+attachTotalCostTriggers();
     try { renderTotals(); } catch (e) { console.error("❌ Error rendering totals:", e); }
 }
-
-console.log("✅ summaryTotalCost.mjs loaded");
 
 // Expose to window for manual triggering
 window.renderTotals = renderTotals;

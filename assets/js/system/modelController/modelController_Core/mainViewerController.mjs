@@ -21,9 +21,7 @@ function initSketchfabViewer() {
         success: function onSuccess(api) {
             api.start();
             api.addEventListener('viewerready', function () {
-                console.log('🚀 M4 Rifle Configurator (M4_v6) ready');
-
-                // Initialize Sketchfab API
+// Initialize Sketchfab API
                 initSketchfab(api);
                 
                 // Wait a bit for API to be fully ready
@@ -45,10 +43,7 @@ function initSketchfabViewer() {
                         debugCheckModelsInScene();
                     }, 500);
                     
-                    console.log('✅ Basic Model Controller system initialized');
-                    console.log('📋 Ready for simple 3D interactions');
-                    console.log('🎯 START button listener ready');
-                }, 1000); // 1 second delay
+}, 1000); // 1 second delay
             });
         },
         error: function onError() {

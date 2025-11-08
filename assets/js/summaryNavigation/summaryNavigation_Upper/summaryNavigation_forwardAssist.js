@@ -13,4 +13,4 @@ export function initSummaryNavigation_ForwardAssist() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_ForwardAssist);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_ForwardAssist);

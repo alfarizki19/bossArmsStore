@@ -28,4 +28,4 @@ export function initSummaryNavigation_MlokAndKeymodRail() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_MlokAndKeymodRail);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_MlokAndKeymodRail);
