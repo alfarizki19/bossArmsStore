@@ -261,3 +261,9 @@ function getSelectedFrontSight() {
 window.updateModel_FrontSight = updateModel_FrontSight;
 window.handleFrontSightSelection = handleFrontSightSelection;
 window.handleFrontSightToggle = handleFrontSightToggle;
+
+// Function called when "no selected" is clicked
+window.noFrontSight = function() {
+  console.log('👁️‍🗨️ No Front Sight selected - calling updateModel_FrontSight');
+  updateModel_FrontSight();
+};

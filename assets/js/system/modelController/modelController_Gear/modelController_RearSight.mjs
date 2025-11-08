@@ -261,3 +261,9 @@ function getSelectedRearSight() {
 window.updateModel_RearSight = updateModel_RearSight;
 window.handleRearSightSelection = handleRearSightSelection;
 window.handleRearSightToggle = handleRearSightToggle;
+
+// Function called when "no selected" is clicked
+window.noRearSight = function() {
+  console.log('👁️‍🗨️ No Rear Sight selected - calling updateModel_RearSight');
+  updateModel_RearSight();
+};
