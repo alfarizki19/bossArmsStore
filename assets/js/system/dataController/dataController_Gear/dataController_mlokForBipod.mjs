@@ -8,7 +8,7 @@ let updateModel_MlokForBipod = () => {};
 let handleMlokForBipodSelection = () => {};
 
 try {
-	const modelModule = await import('../../modelController/modelController_Gear/modelController_MLOKForBipod.mjs');
+	const modelModule = await import('../../modelController/modelController_Gear/modelController_MlokForBipod.mjs');
 	updateModel_MlokForBipod = modelModule.updateModel_MlokForBipod || modelModule.updateModel_MLOKForBipod || updateModel_MlokForBipod;
 	handleMlokForBipodSelection = modelModule.handleMlokForBipodSelection || modelModule.handleMLOKForBipodSelection || handleMlokForBipodSelection;
 } catch(e) {
