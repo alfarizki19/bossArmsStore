@@ -421,6 +421,7 @@ function goBackToMagazineReleaseVariantMenu002001() {
     updatePartMenuVisibility();
 }
 
+
 // Select variant function
 function selectVariant(variantId, variantName) {
     // No functionality - backend will handle this

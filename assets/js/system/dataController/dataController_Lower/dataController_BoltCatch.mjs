@@ -1,10 +1,14 @@
 // === dataController_BoltCatch.mjs ===
 // Bolt Catch Assembly UI Controller (Lower Category)
 
+console.log("📦 Loading dataController_BoltCatch.mjs...");
+
 // Import model controller functions (if exists)
 // Note: Model controller may not exist yet
 let updateModel_BoltCatch = () => {};
 let handleBoltCatchSelection = () => {};
+
+console.log("✅ dataController_BoltCatch.mjs loaded");
 
 function bca_setText(id, text) {
 	const el = document.getElementById(id);
@@ -102,7 +106,8 @@ export function uiData_BoltCatch() {
 	const productCard = document.getElementById(productCardId);
 	if (productCard) {
 		bca_addClass(productCardId, "active");
-} else {
+		console.log("✅ Bolt Catch: Added active class to", productCardId);
+	} else {
 		console.warn("⚠️ Bolt Catch: productCard_boltCatch_00100101 not found");
 	}
 	
@@ -180,7 +185,9 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-// Check if data is available
+			console.log("🎯 Bolt Catch: Start button clicked");
+			
+			// Check if data is available
 			if (!window.part || !window.part.boltCatch) {
 				console.error("❌ Bolt Catch data not loaded yet");
 				return;
@@ -208,9 +215,11 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-}, true); // Use capture phase
+			console.log("✅ Bolt Catch: Initialized with default 00100101");
+		}, true); // Use capture phase
 		
-} else {
+		console.log("✅ Bolt Catch: Start button listener attached");
+	} else {
 		console.warn("⚠️ Bolt Catch: loader-start-button not found");
 	}
 }
@@ -242,7 +251,8 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "boltCatch00100101";
-handleBoltCatchSelection(itemsID);
+			console.log(`🎯 Product card clicked: ${itemsID}`);
+			handleBoltCatchSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -253,6 +263,7 @@ handleBoltCatchSelection(itemsID);
 		}, true); // Use capture phase
 	}
 	
+	console.log("✅ Bolt Catch: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -270,8 +281,10 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_BoltCatch();
-});
-} else {
+			console.log("✅ Bolt Catch: Summary cards updated");
+		});
+		console.log("✅ Bolt Catch: Summary chart button listener attached");
+	} else {
 		console.warn("⚠️ Bolt Catch: summaryChartButton not found");
 	}
 }
@@ -285,4 +298,4 @@ export function getSelectedBoltCatch() {
 export function getBoltCatchTotalPrice() {
 	const v = getSelectedBoltCatch();
 	return v ? v.price : 0;
-}
+}

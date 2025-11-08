@@ -51,4 +51,4 @@ export function updateSummary_MagazineRelease() {
 window.resetSummary_MagazineRelease = resetSummary_MagazineRelease;
 window.updateSummary_MagazineRelease = updateSummary_MagazineRelease;
 
-
+

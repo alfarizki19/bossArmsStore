@@ -51,4 +51,4 @@ export function updateSummary_EndPlate() {
 window.resetSummary_EndPlate = resetSummary_EndPlate;
 window.updateSummary_EndPlate = updateSummary_EndPlate;
 
-
+

@@ -1,8 +1,12 @@
 // === dataController_LowerReceiver.mjs ===
 // Lower Receiver UI Controller (Lower Category) — one product with variants
 
+console.log("📦 Loading dataController_LowerReceiver.mjs...");
+
 // Import model controller functions
 import { updateModel_LowerReceiver, handleLowerReceiverSelection } from '../../modelController/modelController_Lower/modelController_LowerReceiver.mjs';
+
+console.log("✅ dataController_LowerReceiver.mjs loaded");
 
 function lr_setText(id, text) {
 	const el = document.getElementById(id);
@@ -141,7 +145,8 @@ export function uiData_LowerReceiver() {
 	const productCard = document.getElementById(productCardId);
 	if (productCard) {
 		lr_addClass(productCardId, "active");
-} else {
+		console.log("✅ Lower Receiver: Added active class to", productCardId);
+	} else {
 		console.warn("⚠️ Lower Receiver: productCard not found:", productCardId);
 	}
 	
@@ -243,7 +248,9 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-// Check if data is available
+			console.log("🎯 Lower Receiver: Start button clicked");
+			
+			// Check if data is available
 			if (!window.part || !window.part.lowerReceiver) {
 				console.error("❌ Lower Receiver data not loaded yet");
 				return;
@@ -271,9 +278,11 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-}, true); // Use capture phase
+			console.log("✅ Lower Receiver: Initialized with default 00100101");
+		}, true); // Use capture phase
 		
-} else {
+		console.log("✅ Lower Receiver: Start button listener attached");
+	} else {
 		console.warn("⚠️ Lower Receiver: loader-start-button not found");
 	}
 }
@@ -307,7 +316,8 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "lowerReceiver001001" + k;
-handleLowerReceiverSelection(itemsID);
+				console.log(`🎯 Variant card clicked: ${itemsID}`);
+				handleLowerReceiverSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -319,6 +329,7 @@ handleLowerReceiverSelection(itemsID);
 		}
 	}
 	
+	console.log("✅ Lower Receiver: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -336,8 +347,10 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_LowerReceiver();
-});
-} else {
+			console.log("✅ Lower Receiver: Summary cards updated");
+		});
+		console.log("✅ Lower Receiver: Summary chart button listener attached");
+	} else {
 		console.warn("⚠️ Lower Receiver: summaryChartButton not found");
 	}
 }
@@ -356,4 +369,4 @@ export function getSelectedLowerReceiver() {
 export function getLowerReceiverTotalPrice() {
 	const v = getSelectedLowerReceiver();
 	return v ? v.price : 0;
-}
+}

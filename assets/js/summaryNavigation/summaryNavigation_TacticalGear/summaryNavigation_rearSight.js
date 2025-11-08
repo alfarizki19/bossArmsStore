@@ -13,4 +13,4 @@ export function initSummaryNavigation_RearSight() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_RearSight);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_RearSight);

@@ -1,8 +1,12 @@
 // === dataController_Trigger.mjs ===
 // Trigger UI Controller (Lower Category) — two products with variants
 
+console.log("📦 Loading dataController_Trigger.mjs...");
+
 // Import model controller functions
 import { updateModel_Trigger, handleTriggerSelection } from '../../modelController/modelController_Lower/modelController_Trigger.mjs';
+
+console.log("✅ dataController_Trigger.mjs loaded");
 
 function tr_setText(id, text) {
 	const el = document.getElementById(id);
@@ -322,7 +326,9 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-// Check if data is available
+			console.log("🎯 Trigger: Start button clicked");
+			
+			// Check if data is available
 			if (!window.part || !window.part.trigger) {
 				console.error("❌ Trigger data not loaded yet");
 				return;
@@ -351,9 +357,11 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-}, true); // Use capture phase
+			console.log("✅ Trigger: Initialized with default 00100101");
+		}, true); // Use capture phase
 		
-} else {
+		console.log("✅ Trigger: Start button listener attached");
+	} else {
 		console.warn("⚠️ Trigger: loader-start-button not found");
 	}
 }
@@ -385,7 +393,8 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "trigger00100101";
-handleTriggerSelection(itemsID);
+			console.log(`🎯 Product card clicked: ${itemsID}`);
+			handleTriggerSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -396,6 +405,7 @@ handleTriggerSelection(itemsID);
 		}, true); // Use capture phase
 	}
 	
+	console.log("✅ Trigger: Product card listeners attached");
 }
 
 // Variant card click listeners
@@ -428,7 +438,8 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "trigger002001" + k;
-handleTriggerSelection(itemsID);
+				console.log(`🎯 Variant card clicked: ${itemsID}`);
+				handleTriggerSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -440,6 +451,7 @@ handleTriggerSelection(itemsID);
 		}
 	}
 	
+	console.log("✅ Trigger: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -457,8 +469,10 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_Trigger();
-});
-} else {
+			console.log("✅ Trigger: Summary cards updated");
+		});
+		console.log("✅ Trigger: Summary chart button listener attached");
+	} else {
 		console.warn("⚠️ Trigger: summaryChartButton not found");
 	}
 }
@@ -491,4 +505,4 @@ export function getTriggerTotalPrice() {
 	const v = getSelectedTrigger();
 	return v ? v.price : 0;
 }
-
+

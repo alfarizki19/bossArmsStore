@@ -3,9 +3,13 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
+console.log('📋 Forward Assist model controller loaded (implemented version)');
+
 // Update Forward Assist model based on current selection
 export function updateModel_ForwardAssists() {
-// Get current selected forward assist from dataController
+  console.log('🔧 Forward Assist model update - checking current selection');
+  
+  // Get current selected forward assist from dataController
   const selected = getSelectedForwardAssists();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -15,23 +19,28 @@ export function updateModel_ForwardAssists() {
       
       // Show selected variant
       showModel(modelID);
-}
+      console.log(`✅ Showing Forward Assist: ${selected.id} -> ${modelID}`);
+    }
   } else {
     // No selection, hide all variants
     hideAllForwardAssistsVariants();
-}
+    console.log('👁️‍🗨️ No Forward Assist selected - hiding all variants');
+  }
 }
 
 // Handle Forward Assist selection from UI
 export function handleForwardAssistsSelection(itemsID) {
-// Hide all forward assist variants first
+  console.log(`🎯 Forward Assist selection: ${itemsID}`);
+  
+  // Hide all forward assist variants first
   hideAllForwardAssistsVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-} else {
+    console.log(`✅ Showing Forward Assist: ${itemsID} -> ${modelID}`);
+  } else {
     console.warn(`⚠️ Model ID not found for Forward Assist: ${itemsID}`);
   }
 }

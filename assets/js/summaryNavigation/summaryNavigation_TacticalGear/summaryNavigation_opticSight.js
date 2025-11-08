@@ -12,4 +12,4 @@ export function initSummaryNavigation_OpticSight() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_OpticSight);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_OpticSight);

@@ -46,4 +46,4 @@ window.part.magazine = {
             }
         }
     }
-};
+};

@@ -1,12 +1,16 @@
 // === dataController_HandguardRailSystem.mjs ===
 // Handguard Rail System UI Controller (Upper Category) — two products with variants
 
+console.log("📦 Loading dataController_HandguardRailSystem.mjs...");
+
 // Import model controller functions
 import { updateModel_Handguard, handleHandguardSelection } from '../../modelController/modelController_Upper/modelController_Handguard.mjs';
 
 // Map to expected function names
 let updateModel_HandguardRailSystem = updateModel_Handguard;
 let handleHandguardRailSystemSelection = handleHandguardSelection;
+
+console.log("✅ dataController_HandguardRailSystem.mjs loaded");
 
 function hrs_setText(id, text) {
 	const el = document.getElementById(id);
@@ -201,7 +205,9 @@ export function uiData_HandguardRailSystem() {
 		return;
 	}
 	
-const productGroup = cardSuffix.substring(0, 6); // "001001" or "001002"
+	console.log("🎯 Handguard Rail System: Updating UI for", cardSuffix);
+
+	const productGroup = cardSuffix.substring(0, 6); // "001001" or "001002"
 	
 	// Map productGroup to HTML ID
 	// HTML uses 002001 for product 001002 (inventory)
@@ -347,7 +353,9 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-// Check if data is available
+			console.log("🎯 Handguard Rail System: Start button clicked");
+			
+			// Check if data is available
 			if (!window.part || !window.part.handguardRailSystem) {
 				console.error("❌ Handguard Rail System data not loaded yet");
 				return;
@@ -386,9 +394,11 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-}, true); // Use capture phase
+			console.log("✅ Handguard Rail System: Initialized with default 00100101");
+		}, true); // Use capture phase
 		
-} else {
+		console.log("✅ Handguard Rail System: Start button listener attached");
+	} else {
 		console.warn("⚠️ Handguard Rail System: loader-start-button not found");
 	}
 }
@@ -410,7 +420,8 @@ function setupVariantCardListeners() {
 		const variantCardId = "variantCard_handguardRailSystem001001" + k;
 		const card = document.getElementById(variantCardId);
 		if (card) {
-// Use capture phase to run before onclick
+			console.log("✅ Handguard Rail System: Found variant card", variantCardId);
+			// Use capture phase to run before onclick
 			card.addEventListener("click", function (e) {
 				// Reset all products
 				uiReset_handguardRailSystem001001();
@@ -424,7 +435,8 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "handguardRailSystem001001" + k;
-handleHandguardRailSystemSelection(itemsID);
+				console.log(`🎯 Variant card clicked: ${itemsID}`);
+				handleHandguardRailSystemSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -443,7 +455,8 @@ handleHandguardRailSystemSelection(itemsID);
 		const variantCardId = "variantCard_handguardRailSystem_001002" + k;
 		const card = document.getElementById(variantCardId);
 		if (card) {
-// Use capture phase to run before onclick
+			console.log("✅ Handguard Rail System: Found variant card", variantCardId);
+			// Use capture phase to run before onclick
 			card.addEventListener("click", function (e) {
 				// Reset all products
 				uiReset_handguardRailSystem001001();
@@ -458,7 +471,8 @@ handleHandguardRailSystemSelection(itemsID);
 				// Update 3D model after UI update
 				// Note: itemsID uses inventory format (001002), not HTML format (002001)
 				const itemsID = "handguardRailSystem001002" + k;
-handleHandguardRailSystemSelection(itemsID);
+				console.log(`🎯 Variant card clicked: ${itemsID}`);
+				handleHandguardRailSystemSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -470,6 +484,7 @@ handleHandguardRailSystemSelection(itemsID);
 		}
 	}
 	
+	console.log("✅ Handguard Rail System: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -487,8 +502,10 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_HandguardRailSystem();
-});
-} else {
+			console.log("✅ Handguard Rail System: Summary cards updated");
+		});
+		console.log("✅ Handguard Rail System: Summary chart button listener attached");
+	} else {
 		console.warn("⚠️ Handguard Rail System: summaryChartButton not found");
 	}
 }

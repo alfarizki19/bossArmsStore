@@ -21,4 +21,4 @@ export function initSummaryNavigation_EjectionPortCover() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_EjectionPortCover);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_EjectionPortCover);

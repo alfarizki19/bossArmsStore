@@ -1,10 +1,14 @@
 // === dataController_BufferAndSpringKit.mjs ===
 // Buffer And Spring Kit UI Controller (Lower Category)
 
+console.log("📦 Loading dataController_BufferAndSpringKit.mjs...");
+
 // Import model controller functions (if exists)
 // Note: Model controller may not exist yet
 let updateModel_BufferAndSpringKit = () => {};
 let handleBufferAndSpringKitSelection = () => {};
+
+console.log("✅ dataController_BufferAndSpringKit.mjs loaded");
 
 function bask_setText(id, text) {
 	const el = document.getElementById(id);
@@ -102,7 +106,8 @@ export function uiData_BufferAndSpringKit() {
 	const productCard = document.getElementById(productCardId);
 	if (productCard) {
 		bask_addClass(productCardId, "active");
-} else {
+		console.log("✅ Buffer And Spring Kit: Added active class to", productCardId);
+	} else {
 		console.warn("⚠️ Buffer And Spring Kit: productCard_bufferAndSpringKit_00100101 not found");
 	}
 	
@@ -180,7 +185,9 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-// Check if data is available
+			console.log("🎯 Buffer And Spring Kit: Start button clicked");
+			
+			// Check if data is available
 			if (!window.part || !window.part.bufferAndSpringKit) {
 				console.error("❌ Buffer And Spring Kit data not loaded yet");
 				return;
@@ -208,9 +215,11 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-}, true); // Use capture phase
+			console.log("✅ Buffer And Spring Kit: Initialized with default 00100101");
+		}, true); // Use capture phase
 		
-} else {
+		console.log("✅ Buffer And Spring Kit: Start button listener attached");
+	} else {
 		console.warn("⚠️ Buffer And Spring Kit: loader-start-button not found");
 	}
 }
@@ -242,7 +251,8 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "bufferAndSpringKit00100101";
-handleBufferAndSpringKitSelection(itemsID);
+			console.log(`🎯 Product card clicked: ${itemsID}`);
+			handleBufferAndSpringKitSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -253,6 +263,7 @@ handleBufferAndSpringKitSelection(itemsID);
 		}, true); // Use capture phase
 	}
 	
+	console.log("✅ Buffer And Spring Kit: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -270,8 +281,10 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_BufferAndSpringKit();
-});
-} else {
+			console.log("✅ Buffer And Spring Kit: Summary cards updated");
+		});
+		console.log("✅ Buffer And Spring Kit: Summary chart button listener attached");
+	} else {
 		console.warn("⚠️ Buffer And Spring Kit: summaryChartButton not found");
 	}
 }
@@ -285,4 +298,4 @@ export function getSelectedBufferAndSpringKit() {
 export function getBufferAndSpringKitTotalPrice() {
 	const v = getSelectedBufferAndSpringKit();
 	return v ? v.price : 0;
-}
+}

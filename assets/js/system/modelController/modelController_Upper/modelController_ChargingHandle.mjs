@@ -3,9 +3,13 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
+console.log('📋 Charging Handle model controller loaded (implemented version)');
+
 // Update Charging Handle model based on current selection
 export function updateModel_ChargingHandle() {
-// Get current selected charging handle from dataController
+  console.log('🔧 Charging Handle model update - checking current selection');
+  
+  // Get current selected charging handle from dataController
   const selected = getSelectedChargingHandle();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -15,23 +19,28 @@ export function updateModel_ChargingHandle() {
       
       // Show selected variant
       showModel(modelID);
-}
+      console.log(`✅ Showing Charging Handle: ${selected.id} -> ${modelID}`);
+    }
   } else {
     // No selection, hide all variants
     hideAllChargingHandleVariants();
-}
+    console.log('👁️‍🗨️ No Charging Handle selected - hiding all variants');
+  }
 }
 
 // Handle Charging Handle selection from UI
 export function handleChargingHandleSelection(itemsID) {
-// Hide all charging handle variants first
+  console.log(`🎯 Charging Handle selection: ${itemsID}`);
+  
+  // Hide all charging handle variants first
   hideAllChargingHandleVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-} else {
+    console.log(`✅ Showing Charging Handle: ${itemsID} -> ${modelID}`);
+  } else {
     console.warn(`⚠️ Model ID not found for Charging Handle: ${itemsID}`);
   }
 }

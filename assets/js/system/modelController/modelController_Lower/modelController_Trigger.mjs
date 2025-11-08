@@ -3,9 +3,13 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
+console.log('📋 Trigger model controller loaded (implemented version)');
+
 // Update Trigger model based on current selection
 export function updateModel_Trigger() {
-// Check if Sketchfab API is ready
+  console.log('🔧 Trigger model update - checking current selection');
+  
+  // Check if Sketchfab API is ready
   if (!window.sketchfabViewerReady) {
     console.warn('⚠️ Trigger: Cannot update model - Sketchfab viewer is not ready yet');
     return;
@@ -21,18 +25,22 @@ export function updateModel_Trigger() {
       
       // Show selected variant
       showModel(modelID);
-} else {
+      console.log(`✅ Showing Trigger: ${selected.id} -> ${modelID}`);
+    } else {
       console.warn(`⚠️ Model ID not found for Trigger: ${selected.id}`);
     }
   } else {
     // No selection, hide all variants
     hideAllTriggerVariants();
-}
+    console.log('👁️‍🗨️ No Trigger selected - hiding all variants');
+  }
 }
 
 // Handle Trigger selection from UI
 export function handleTriggerSelection(itemsID) {
-// Check if Sketchfab API is ready
+  console.log(`🎯 Trigger selection: ${itemsID}`);
+  
+  // Check if Sketchfab API is ready
   if (!window.sketchfabViewerReady) {
     console.warn('⚠️ Trigger: Cannot update model - Sketchfab viewer is not ready yet');
     return;
@@ -45,7 +53,8 @@ export function handleTriggerSelection(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-} else {
+    console.log(`✅ Showing Trigger: ${itemsID} -> ${modelID}`);
+  } else {
     console.warn(`⚠️ Model ID not found for Trigger: ${itemsID}`);
   }
 }

@@ -3,6 +3,8 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
+console.log('📋 Bipod model controller loaded (implemented version)');
+
 // Global state for tracking current bipod state
 let currentBipodState = {
   selected: null, // 'bipod00100101' or null
@@ -11,7 +13,9 @@ let currentBipodState = {
 
 // Update Bipod model based on current selection
 export function updateModel_Bipod() {
-// Get current selected bipod from dataController
+  console.log('🔧 Bipod model update - checking current selection');
+  
+  // Get current selected bipod from dataController
   const selected = getSelectedBipod();
   if (selected) {
     // Check if this is the same bipod that's already selected
@@ -21,8 +25,10 @@ export function updateModel_Bipod() {
     if (!isAlreadySelected) {
       currentBipodState.selected = selected.id;
       currentBipodState.mode = 'A'; // Default to A (Folded Long) only for new selection
-} else {
-}
+      console.log(`🔄 New bipod selected: ${selected.id}, setting default mode A`);
+    } else {
+      console.log(`✅ Bipod already selected: ${selected.id}, keeping current mode: ${currentBipodState.mode}`);
+    }
     
     // Hide all bipod variants first
     hideAllBipodVariants();
@@ -30,7 +36,9 @@ export function updateModel_Bipod() {
     // Show selected variant in current mode (or default A if new selection)
     const modelID = `modelID_${selected.id}_${currentBipodState.mode}`;
     showModel(modelID);
-// Show M-LOK for Bipod (always shown with bipod)
+    console.log(`✅ Showing Bipod: ${selected.id} -> ${modelID} (mode ${currentBipodState.mode})`);
+    
+    // Show M-LOK for Bipod (always shown with bipod)
     showMlokForBipod();
     
     // Update button states
@@ -42,20 +50,25 @@ export function updateModel_Bipod() {
     hideAllBipodVariants();
     hideMlokForBipod();
     clearBipodButtonStates();
-}
+    console.log('👁️‍🗨️ No Bipod selected - hiding all variants');
+  }
 }
 
 // Handle Bipod selection from UI
 export function handleBipodSelection(itemsID) {
-// Check if this is the same bipod that's already selected
+  console.log(`🎯 Bipod selection: ${itemsID}`);
+  
+  // Check if this is the same bipod that's already selected
   const isAlreadySelected = currentBipodState.selected === itemsID;
   
   // Only set default mode if this is a new selection
   if (!isAlreadySelected) {
     currentBipodState.selected = itemsID;
     currentBipodState.mode = 'A'; // Default to A (Folded Long) only for new selection
-} else {
-}
+    console.log(`🔄 New bipod selected: ${itemsID}, setting default mode A`);
+  } else {
+    console.log(`✅ Bipod already selected: ${itemsID}, keeping current mode: ${currentBipodState.mode}`);
+  }
   
   // Hide all bipod variants first
   hideAllBipodVariants();
@@ -63,7 +76,9 @@ export function handleBipodSelection(itemsID) {
   // Show selected variant in current mode (or default A if new selection)
   const modelID = `modelID_${itemsID}_${currentBipodState.mode}`;
   showModel(modelID);
-// Show M-LOK for Bipod (always shown with bipod)
+  console.log(`✅ Showing Bipod: ${itemsID} -> ${modelID} (mode ${currentBipodState.mode})`);
+  
+  // Show M-LOK for Bipod (always shown with bipod)
   showMlokForBipod();
   
   // Update button states
@@ -72,7 +87,10 @@ export function handleBipodSelection(itemsID) {
 
 // Handle Bipod state toggle (A, B, C, D)
 export function handleBipodToggle(itemsID, mode) {
-if (!currentBipodState.selected) {
+  console.log(`🔄 Bipod toggle: ${itemsID} -> mode ${mode}`);
+  console.log(`🔍 Current state - selected: ${currentBipodState.selected}, mode: ${currentBipodState.mode}`);
+  
+  if (!currentBipodState.selected) {
     // No bipod selected, try to auto-select the bipod being toggled
     const selected = getSelectedBipod();
     if (!selected || selected.id !== itemsID) {
@@ -83,13 +101,17 @@ if (!currentBipodState.selected) {
     // Auto-select the bipod being toggled
     currentBipodState.selected = itemsID;
     currentBipodState.mode = mode;
-// Hide all bipod variants first
+    console.log(`🔄 Auto-selecting bipod: ${itemsID} with mode: ${mode}`);
+    
+    // Hide all bipod variants first
     hideAllBipodVariants();
     
     // Show selected variant in new mode
     const modelID = `modelID_${itemsID}_${mode}`;
     showModel(modelID);
-// Update button states
+    console.log(`✅ Showing Bipod: ${itemsID} -> ${modelID} (mode ${mode})`);
+    
+    // Update button states
     updateBipodButtonStates();
     return;
   }
@@ -102,13 +124,17 @@ if (!currentBipodState.selected) {
   
   // Set new mode
   currentBipodState.mode = mode;
-// Hide all bipod variants first
+  console.log(`🔄 Switching to mode: ${mode}`);
+  
+  // Hide all bipod variants first
   hideAllBipodVariants();
   
   // Show selected variant in new mode
   const modelID = `modelID_${currentBipodState.selected}_${mode}`;
   showModel(modelID);
-// Update button states
+  console.log(`✅ Showing Bipod: ${currentBipodState.selected} -> ${modelID} (mode ${mode})`);
+  
+  // Update button states
   updateBipodButtonStates();
 }
 
@@ -139,7 +165,8 @@ function setDefaultMlokForBipod() {
         const variants = group001.products["001"].variants;
         if (variants["01"]) {
           variants["01"].quantity = 1;
-}
+          console.log(`✅ Set default M-LOK for Bipod: mlokAndKeymodRail00100101`);
+        }
       }
     }
   }
@@ -183,11 +210,13 @@ function showMlokForBipod() {
   // Use M-LOK for Bipod model controller to show the selected variant
   if (window.updateModel_MlokForBipod) {
     window.updateModel_MlokForBipod();
-} else {
+    console.log(`✅ Showing M-LOK for Bipod via model controller`);
+  } else {
     // Fallback: Show default M-LOK for Bipod
     const mlokModelID = 'modelID_mlokAndKeymodRail00100101_B';
     showModel(mlokModelID);
-}
+    console.log(`✅ Showing M-LOK for Bipod (fallback): ${mlokModelID}`);
+  }
 }
 
 // Helper function to hide M-LOK for Bipod
@@ -204,7 +233,9 @@ function hideMlokForBipod() {
 
 // Helper function to update button states
 function updateBipodButtonStates() {
-if (!currentBipodState.selected) {
+  console.log(`🔧 Updating button states for: ${currentBipodState.selected}, mode: ${currentBipodState.mode}`);
+  
+  if (!currentBipodState.selected) {
     clearBipodButtonStates();
     return;
   }
@@ -220,18 +251,23 @@ if (!currentBipodState.selected) {
   const buttonC = document.getElementById(buttonC_ID);
   const buttonD = document.getElementById(buttonD_ID);
   
-// Clear all states first
+  console.log(`🔍 Looking for buttons: ${buttonA_ID}, ${buttonB_ID}, ${buttonC_ID}, ${buttonD_ID}`);
+  console.log(`🔍 Buttons found: A=${!!buttonA}, B=${!!buttonB}, C=${!!buttonC}, D=${!!buttonD}`);
+  
+  // Clear all states first
   [buttonA, buttonB, buttonC, buttonD].forEach((button, index) => {
     if (button) {
       button.classList.remove('active');
-}
+      console.log(`🔘 Cleared button ${String.fromCharCode(65 + index)}: ${button.id}`);
+    }
   });
   
   // Set active state based on current mode
   const activeButton = { 'A': buttonA, 'B': buttonB, 'C': buttonC, 'D': buttonD }[currentBipodState.mode];
   if (activeButton) {
     activeButton.classList.add('active');
-} else {
+    console.log(`🔘 Updated button state: ${activeButton.id} -> active (mode ${currentBipodState.mode})`);
+  } else {
     console.warn(`⚠️ Could not set button state - mode: ${currentBipodState.mode}`);
   }
 }

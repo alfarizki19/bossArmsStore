@@ -14,3 +14,5 @@ export function initSummaryNavigation_Magazine() {
 }
 
 document.addEventListener('DOMContentLoaded', initSummaryNavigation_Magazine);
+
+

@@ -51,4 +51,4 @@ export function updateSummary_TriggerGuard() {
 window.resetSummary_TriggerGuard = resetSummary_TriggerGuard;
 window.updateSummary_TriggerGuard = updateSummary_TriggerGuard;
 
-
+
