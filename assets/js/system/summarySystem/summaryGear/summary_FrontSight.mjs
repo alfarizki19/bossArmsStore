@@ -51,4 +51,4 @@ export function updateSummary_FrontSight() {
 window.resetSummary_FrontSight = resetSummary_FrontSight;
 window.updateSummary_FrontSight = updateSummary_FrontSight;
 
-
+

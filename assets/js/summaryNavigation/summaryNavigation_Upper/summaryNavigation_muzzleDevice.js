@@ -30,4 +30,4 @@ export function initSummaryNavigation_MuzzleDevice() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_MuzzleDevice);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_MuzzleDevice);

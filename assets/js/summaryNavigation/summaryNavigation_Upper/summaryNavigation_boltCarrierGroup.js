@@ -14,4 +14,4 @@ export function initSummaryNavigation_BoltCarrierGroup() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', initSummaryNavigation_BoltCarrierGroup);
+document.addEventListener('DOMContentLoaded', initSummaryNavigation_BoltCarrierGroup);

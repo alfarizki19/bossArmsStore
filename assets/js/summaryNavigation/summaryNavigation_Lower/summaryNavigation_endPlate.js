@@ -29,3 +29,5 @@ export function initSummaryNavigation_EndPlate() {
 }
 
 document.addEventListener('DOMContentLoaded', initSummaryNavigation_EndPlate);
+
+

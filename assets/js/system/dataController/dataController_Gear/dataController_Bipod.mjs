@@ -1,6 +1,8 @@
 // === dataController_Bipod.mjs ===
 // Gear & Acc: Bipod controller (with MLOK-for-Bipod linkage)
 
+console.log("📦 Loading dataController_Bipod.mjs...");
+
 // Import model controller functions (if exists)
 let updateModel_Bipod = () => {};
 let handleBipodSelection = () => {};
@@ -12,7 +14,10 @@ try {
 	handleBipodSelection = modelModule.handleBipodSelection || handleBipodSelection;
 	handleBipodToggle = modelModule.handleBipodToggle || handleBipodToggle;
 } catch(e) {
+	console.log("ℹ️ Bipod: Model controller not found, using empty functions");
 }
+
+console.log("✅ dataController_Bipod.mjs loaded");
 
 // Helper functions
 function bp_get(id){ return document.getElementById(id); }
@@ -134,7 +139,9 @@ if (document.readyState === 'loading') {
 }
 
 function setupProductCardListeners() {
-// No bipod
+	console.log("🔧 Bipod: Setting up product card listeners...");
+	
+	// No bipod
 	const noBtn = bp_get('productCard_NoSelected_bipod');
 	if(noBtn){ 
 		noBtn.addEventListener('click', function(){ 
@@ -236,10 +243,12 @@ function setupProductCardListeners() {
 			
 			// Update 3D model
 			const itemsID = "bipod00100101";
-handleBipodSelection(itemsID);
+			console.log(`🎯 Part button clicked: ${itemsID}`);
+			handleBipodSelection(itemsID);
 		}, true);
 	}
 	
+	console.log("✅ Bipod: Product card listeners attached");
 }
 
 // ===== Start Button Listener =====
@@ -256,7 +265,9 @@ function setupStartButtonListener() {
 	const btn = document.getElementById("loader-start-button");
 	if (btn) {
 		btn.addEventListener("click", function (e) {
-// Reset bipod quantity
+			console.log("🎯 Bipod: Start button clicked - Resetting variables");
+			
+			// Reset bipod quantity
 			const p = bp_getBipod();
 			if(p && p.variants['01']) {
 				p.variants['01'].quantity = 0;
@@ -277,7 +288,10 @@ function setupStartButtonListener() {
 				window.uiData_mlokForBipod();
 			}
 			
-}, true);
+			console.log("✅ Bipod: Variables reset");
+		}, true);
 		
+		console.log("✅ Bipod: Start button listener attached");
+	}
 }
-}
+

@@ -51,4 +51,4 @@ export function updateSummary_LowerReceiver() {
 window.resetSummary_LowerReceiver = resetSummary_LowerReceiver;
 window.updateSummary_LowerReceiver = updateSummary_LowerReceiver;
 
-
+

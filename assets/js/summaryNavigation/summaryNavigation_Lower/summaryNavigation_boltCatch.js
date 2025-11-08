@@ -9,3 +9,5 @@ export function initSummaryNavigation_BoltCatch() {
 }
 
 document.addEventListener('DOMContentLoaded', initSummaryNavigation_BoltCatch);
+
+

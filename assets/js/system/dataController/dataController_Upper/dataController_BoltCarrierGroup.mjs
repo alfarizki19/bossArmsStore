@@ -1,8 +1,12 @@
 // === dataController_BoltCarrierGroup.mjs ===
 // Bolt Carrier Group UI Controller (Upper Category)
 
+console.log("📦 Loading dataController_BoltCarrierGroup.mjs...");
+
 // Import model controller functions
 import { updateModel_BoltCarrierGroup, handleBoltCarrierGroupSelection } from '../../modelController/modelController_Upper/modelController_BoltCarrierGroup.mjs';
+
+console.log("✅ dataController_BoltCarrierGroup.mjs loaded");
 
 function bcg_setText(id, text) {
 	const el = document.getElementById(id);
@@ -263,7 +267,9 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-// Check if data is available
+			console.log("🎯 Bolt Carrier Group: Start button clicked");
+			
+			// Check if data is available
 			if (!window.part || !window.part.boltCarrierGroup) {
 				console.error("❌ Bolt Carrier Group data not loaded yet");
 				return;
@@ -293,9 +299,11 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-}, true); // Use capture phase
+			console.log("✅ Bolt Carrier Group: Initialized with default 00100101");
+		}, true); // Use capture phase
 		
-} else {
+		console.log("✅ Bolt Carrier Group: Start button listener attached");
+	} else {
 		console.warn("⚠️ Bolt Carrier Group: loader-start-button not found");
 	}
 }
@@ -328,7 +336,8 @@ function setupProductCardListeners() {
 		
 		// Update 3D model after UI update
 		const itemsID = "boltCarrierGroup00100101";
-handleBoltCarrierGroupSelection(itemsID);
+			console.log(`🎯 Product card clicked: ${itemsID}`);
+		handleBoltCarrierGroupSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -357,7 +366,8 @@ handleBoltCarrierGroupSelection(itemsID);
 		
 		// Update 3D model after UI update
 		const itemsID = "boltCarrierGroup00200101";
-handleBoltCarrierGroupSelection(itemsID);
+			console.log(`🎯 Product card clicked: ${itemsID}`);
+		handleBoltCarrierGroupSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -386,7 +396,8 @@ handleBoltCarrierGroupSelection(itemsID);
 		
 		// Update 3D model after UI update
 		const itemsID = "boltCarrierGroup00200201";
-handleBoltCarrierGroupSelection(itemsID);
+			console.log(`🎯 Product card clicked: ${itemsID}`);
+		handleBoltCarrierGroupSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -397,6 +408,7 @@ handleBoltCarrierGroupSelection(itemsID);
 		}, true); // Use capture phase
 	}
 	
+	console.log("✅ Bolt Carrier Group: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -414,8 +426,10 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_BoltCarrierGroup();
-});
-} else {
+			console.log("✅ Bolt Carrier Group: Summary cards updated");
+		});
+		console.log("✅ Bolt Carrier Group: Summary chart button listener attached");
+	} else {
 		console.warn("⚠️ Bolt Carrier Group: summaryChartButton not found");
 	}
 }

@@ -34,3 +34,5 @@ function showSummaryMainMenu() {
 window.openSummaryMenu = openSummaryMenu;
 // eslint-disable-next-line no-undef
 window.showSummaryMainMenu = showSummaryMainMenu;
+
+

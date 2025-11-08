@@ -51,4 +51,4 @@ export function updateSummary_Safety() {
 window.resetSummary_Safety = resetSummary_Safety;
 window.updateSummary_Safety = updateSummary_Safety;
 
-
+

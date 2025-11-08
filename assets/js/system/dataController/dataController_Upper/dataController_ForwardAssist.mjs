@@ -1,8 +1,12 @@
 // === dataController_ForwardAssist.mjs ===
 // Forward Assist UI Controller (Upper Category) — one product with variants
 
+console.log("📦 Loading dataController_ForwardAssist.mjs...");
+
 // Import model controller functions
 import { updateModel_ForwardAssists, handleForwardAssistsSelection } from '../../modelController/modelController_Upper/modelController_ForwardAssists.mjs';
+
+console.log("✅ dataController_ForwardAssist.mjs loaded");
 
 function fa_setText(id, text) {
 	const el = document.getElementById(id);
@@ -139,7 +143,8 @@ export function uiData_ForwardAssist() {
 	const productCard = document.getElementById(productCardId);
 	if (productCard) {
 		fa_addClass(productCardId, "active");
-} else {
+		console.log("✅ Forward Assist: Added active class to", productCardId);
+	} else {
 		console.warn("⚠️ Forward Assist: productCard not found:", productCardId);
 	}
 	
@@ -237,7 +242,9 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-// Check if data is available
+			console.log("🎯 Forward Assist: Start button clicked");
+			
+			// Check if data is available
 			if (!window.part || !window.part.forwardAssist) {
 				console.error("❌ Forward Assist data not loaded yet");
 				return;
@@ -265,9 +272,11 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-}, true); // Use capture phase
+			console.log("✅ Forward Assist: Initialized with default 00100101");
+		}, true); // Use capture phase
 		
-} else {
+		console.log("✅ Forward Assist: Start button listener attached");
+	} else {
 		console.warn("⚠️ Forward Assist: loader-start-button not found");
 	}
 }
@@ -302,7 +311,8 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "forwardAssists001001" + k;
-handleForwardAssistsSelection(itemsID);
+				console.log(`🎯 Variant card clicked: ${itemsID}`);
+				handleForwardAssistsSelection(itemsID);
 				
 				// Update total cost
 				if (window.renderTotals) {
@@ -314,6 +324,7 @@ handleForwardAssistsSelection(itemsID);
 		}
 	}
 	
+	console.log("✅ Forward Assist: Variant card listeners attached");
 }
 
 // Summary chart button click listener
@@ -331,8 +342,10 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_ForwardAssist();
-});
-} else {
+			console.log("✅ Forward Assist: Summary cards updated");
+		});
+		console.log("✅ Forward Assist: Summary chart button listener attached");
+	} else {
 		console.warn("⚠️ Forward Assist: summaryChartButton not found");
 	}
 }
@@ -355,4 +368,4 @@ export function getForwardAssistTotalPrice() {
 	const v = getSelectedForwardAssist();
 	return v ? v.price : 0;
 }
-
+

@@ -51,4 +51,4 @@ window.resetSummary_RearSight = resetSummary_RearSight;
 window.updateSummary_RearSight = updateSummary_RearSight;
 
 
-
+

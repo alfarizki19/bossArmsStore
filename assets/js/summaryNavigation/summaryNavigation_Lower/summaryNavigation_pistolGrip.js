@@ -22,3 +22,5 @@ export function initSummaryNavigation_PistolGrip() {
 }
 
 document.addEventListener('DOMContentLoaded', initSummaryNavigation_PistolGrip);
+
+

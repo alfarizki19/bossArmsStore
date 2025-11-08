@@ -1,6 +1,8 @@
 // === dataController_RearSight.mjs ===
 // Rear Sight UI Controller (Gear Category) — 2 products with "No Selected" option
 
+console.log("📦 Loading dataController_RearSight.mjs...");
+
 // Import model controller functions (if exists)
 let updateModel_RearSight = () => {};
 let handleRearSightSelection = () => {};
@@ -10,7 +12,10 @@ try {
 	updateModel_RearSight = modelModule.updateModel_RearSight || updateModel_RearSight;
 	handleRearSightSelection = modelModule.handleRearSightSelection || handleRearSightSelection;
 } catch(e) {
+	console.log("ℹ️ Rear Sight: Model controller not found, using empty functions");
 }
+
+console.log("✅ dataController_RearSight.mjs loaded");
 
 function rs_setText(id, text) {
 	const el = document.getElementById(id);
@@ -102,7 +107,9 @@ export function uiReset_rearSight() {
 
 // Update UI based on selected RearSight
 export function uiData_RearSight() {
-let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
+	console.log("🔧 Rear Sight: uiData_RearSight called");
+	
+	let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
 
 	// Check 00100101
 	{
@@ -114,7 +121,8 @@ let selected = null; let cardSuffix = null; let productTitle = ""; let brand = "
 			productTitle = product.productTitle;
 			brand = group.brand;
 			variantTitle = selected.variantTitle;
-}
+			console.log("✅ Rear Sight: Found selected 00100101");
+		}
 	}
 	
 	// Check 00200101
@@ -127,7 +135,8 @@ let selected = null; let cardSuffix = null; let productTitle = ""; let brand = "
 			productTitle = product.productTitle;
 			brand = group.brand;
 			variantTitle = selected.variantTitle;
-}
+			console.log("✅ Rear Sight: Found selected 00200101");
+		}
 	}
 
 	if (!selected || !cardSuffix) {
@@ -147,14 +156,18 @@ let selected = null; let cardSuffix = null; let productTitle = ""; let brand = "
 		return;
 	}
 	
-const productGroup = cardSuffix.substring(0, 6); // "001001" or "002001"
+	console.log(`✅ Rear Sight: Processing selected item ${cardSuffix}`);
+
+	const productGroup = cardSuffix.substring(0, 6); // "001001" or "002001"
 
 	// Update selected product card - active
 	// Reset all product cards first
 	rs_resetAllProductCards();
 	
 	rs_addClass("productCard_rearSight_" + productGroup, "active");
-// Update product card name and price
+	console.log(`✅ Rear Sight: Set productCard_rearSight_${productGroup} active`);
+	
+	// Update product card name and price
 	const group = window.part.rearSight[productGroup.substring(0, 3)];
 	const product = group.products[productGroup.substring(3, 6)];
 	rs_setText("productCardName_rearSight_" + productGroup, product.productTitle);
@@ -181,7 +194,8 @@ const productGroup = cardSuffix.substring(0, 6); // "001001" or "002001"
 	const partCardImg = document.getElementById(partCardImgId);
 	if (partCardImg) {
 		partCardImg.style.display = "block";
-} else {
+		console.log(`✅ Rear Sight: Showing part card image ${partCardImgId}`);
+	} else {
 		console.warn(`⚠️ Rear Sight: partCardImg ${partCardImgId} not found`);
 	}
 
@@ -205,7 +219,9 @@ const productGroup = cardSuffix.substring(0, 6); // "001001" or "002001"
 
 // Update summary cards based on quantity (called by summaryChartButton)
 export function updateSummaryCards_RearSight() {
-// 00100101
+	console.log("🔧 Rear Sight: updateSummaryCards_RearSight called");
+	
+	// 00100101
 	{
 		const product = window.part.rearSight["001"].products["001"];
 		if (product.variants["01"].quantity === 1) {
@@ -242,7 +258,9 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-// Check if data is available
+			console.log("🎯 Rear Sight: Start button clicked");
+			
+			// Check if data is available
 			if (!window.part || !window.part.rearSight) {
 				console.error("❌ Rear Sight data not loaded yet");
 				return;
@@ -267,9 +285,11 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-}, true); // Use capture phase
+			console.log("✅ Rear Sight: Initialized with default No Selected");
+		}, true); // Use capture phase
 		
-} else {
+		console.log("✅ Rear Sight: Start button listener attached");
+	} else {
 		console.warn("⚠️ Rear Sight: loader-start-button not found");
 	}
 }
@@ -286,12 +306,17 @@ if (document.readyState === 'loading') {
 }
 
 function setupProductCardListeners() {
-// No Selected - reset all RearSight quantities
+	console.log("🔧 Rear Sight: Setting up product card listeners...");
+	
+	// No Selected - reset all RearSight quantities
 	const cardNoSelected = document.getElementById("productCard_NoSelected_rearSight");
 	if (cardNoSelected) {
-// Use capture phase to run before onclick
+		console.log("✅ Rear Sight: Found productCard_NoSelected_rearSight");
+		// Use capture phase to run before onclick
 		cardNoSelected.addEventListener("click", function (e) {
-// Reset all RearSight quantities
+			console.log("🎯 Rear Sight: productCard_NoSelected_rearSight clicked");
+			
+			// Reset all RearSight quantities
 			rs_zeroRearSightQuantities();
 			
 			// Reset product cards
@@ -322,9 +347,12 @@ function setupProductCardListeners() {
 	// 00100101 - Rear Folding Battle Sight Dioptic
 	const card001001 = document.getElementById("productCard_rearSight_001001");
 	if (card001001) {
-// Use capture phase to run before onclick
+		console.log("✅ Rear Sight: Found productCard_rearSight_001001");
+		// Use capture phase to run before onclick
 		card001001.addEventListener("click", function (e) {
-// Reset all RearSight quantities
+			console.log("🎯 Rear Sight: productCard_rearSight_001001 clicked");
+			
+			// Reset all RearSight quantities
 			rs_zeroRearSightQuantities();
 			
 			// Set quantity = 1 for selected product
@@ -335,7 +363,8 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "rearSight00100101";
-handleRearSightSelection(itemsID);
+			console.log(`🎯 Product card clicked: ${itemsID}`);
+			handleRearSightSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -351,9 +380,12 @@ handleRearSightSelection(itemsID);
 	// 00200101 - QDS Same Plane Rear Sight YHM 5010
 	const card002001 = document.getElementById("productCard_rearSight_002001");
 	if (card002001) {
-// Use capture phase to run before onclick
+		console.log("✅ Rear Sight: Found productCard_rearSight_002001");
+		// Use capture phase to run before onclick
 		card002001.addEventListener("click", function (e) {
-// Reset all RearSight quantities
+			console.log("🎯 Rear Sight: productCard_rearSight_002001 clicked");
+			
+			// Reset all RearSight quantities
 			rs_zeroRearSightQuantities();
 			
 			// Set quantity = 1 for selected product
@@ -364,7 +396,8 @@ handleRearSightSelection(itemsID);
 			
 			// Update 3D model after UI update
 			const itemsID = "rearSight00200101";
-handleRearSightSelection(itemsID);
+			console.log(`🎯 Product card clicked: ${itemsID}`);
+			handleRearSightSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -377,6 +410,7 @@ handleRearSightSelection(itemsID);
 		console.warn("⚠️ Rear Sight: productCard_rearSight_002001 not found");
 	}
 	
+	console.log("✅ Rear Sight: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -396,8 +430,10 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_RearSight();
-});
-} else {
+			console.log("✅ Rear Sight: Summary cards updated");
+		});
+		console.log("✅ Rear Sight: Summary chart button listener attached");
+	} else {
 		console.warn("⚠️ Rear Sight: summaryChartButton not found");
 	}
 }
@@ -424,4 +460,5 @@ export function getRearSightTotalPrice() {
 	const v = getSelectedRearSight();
 	return v ? v.price : 0;
 }
-
+
+console.log("✅ dataController_RearSight.mjs: All functions defined, event listeners will be attached");

@@ -51,4 +51,4 @@ window.resetSummary_LaserSight = resetSummary_LaserSight;
 window.updateSummary_LaserSight = updateSummary_LaserSight;
 
 
-
+

@@ -21,4 +21,4 @@ export function initSummaryNavigation_Stock() {
 
 document.addEventListener('DOMContentLoaded', initSummaryNavigation_Stock);
 
-
+

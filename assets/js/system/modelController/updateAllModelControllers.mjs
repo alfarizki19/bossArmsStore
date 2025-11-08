@@ -215,4 +215,7 @@ export function getAllModelIDsForPart(partName) {
     
     return Array.from(modelIDs);
 }
-
+
+console.log('✅ Model ID mapping updated with correct Blender mesh names');
+console.log('📋 Available model IDs:', Object.keys(correctModelIDs).length);
+console.log('🔧 Use getCorrectModelID(itemsID) to get the correct model ID for any items ID');

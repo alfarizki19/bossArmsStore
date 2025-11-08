@@ -94,6 +94,7 @@ export function hideLoader() {
     // Viewer is ready, proceed with hiding loader
     if (startButton) startButton.classList.add('hidden');
     overlay.classList.add('hidden');
+    console.log('✅ Starting configurator - viewer is ready');
 }
 
 // Wait for Sketchfab 3D viewer to load
@@ -119,7 +120,8 @@ function waitForSketchfabViewer() {
                 clearInterval(progressInterval);
                 window.removeEventListener('sketchfab-viewer-ready', readyHandler);
                 window.removeEventListener('sketchfab-viewer-progress', progressHandler);
-resolve();
+                console.log('✅ Sketchfab viewer is ready');
+                resolve();
             }
         };
 
@@ -224,7 +226,8 @@ export async function runInitialLoadingSequence() {
     const maxModelRetries = 30; // 30 seconds max wait for model
     
     while (!window.initialModelsReady && modelRetryCount < maxModelRetries) {
-await delay(1000);
+        console.log(`⏳ Waiting for 3D model to be ready... (${modelRetryCount + 1}/${maxModelRetries})`);
+        await delay(1000);
         modelRetryCount++;
     }
     
@@ -271,13 +274,15 @@ await delay(1000);
         }
     }
     
-await delay(finalizingDelay);
+    console.log(`⏳ Finalizing... (${Math.round(finalizingDelay / 1000)}s)`);
+    await delay(finalizingDelay);
     
     setLoaderProgress(100);
 
     // Stage 10 — Show start button (only after everything is confirmed ready)
     if (window.sketchfabViewerReady && window.initialModelsReady) {
-await hideLoaderWithDelay('Configurator Ready!', 'Click START to begin configuring your M4 rifle');
+        console.log('✅ Viewer and 3D model confirmed ready, showing START button');
+        await hideLoaderWithDelay('Configurator Ready!', 'Click START to begin configuring your M4 rifle');
     } else {
         // This should not happen, but just in case
         console.error('❌ Viewer or model not ready after all checks - this should not happen');
@@ -297,4 +302,4 @@ document.addEventListener('DOMContentLoaded', () => {
     window.hideLoader = hideLoader;
 });
 
-
+

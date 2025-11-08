@@ -1,6 +1,8 @@
 // === dataController_LaserSight.mjs ===
 // Laser Sight UI Controller (Gear Category) — 1 product with "No Selected" option
 
+console.log("📦 Loading dataController_LaserSight.mjs...");
+
 // Import model controller functions (if exists)
 let updateModel_LaserSight = () => {};
 let handleLaserSightSelection = () => {};
@@ -10,7 +12,10 @@ try {
 	updateModel_LaserSight = modelModule.updateModel_LaserSight || updateModel_LaserSight;
 	handleLaserSightSelection = modelModule.handleLaserSightSelection || handleLaserSightSelection;
 } catch(e) {
+	console.log("ℹ️ Laser Sight: Model controller not found, using empty functions");
 }
+
+console.log("✅ dataController_LaserSight.mjs loaded");
 
 function ls_setText(id, text) {
 	const el = document.getElementById(id);
@@ -80,7 +85,9 @@ export function uiReset_laserSight() {
 
 // Update UI based on selected LaserSight
 export function uiData_LaserSight() {
-let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
+	console.log("🔧 Laser Sight: uiData_LaserSight called");
+	
+	let selected = null; let cardSuffix = null; let productTitle = ""; let brand = ""; let variantTitle = "";
 
 	// Check 00100101
 	{
@@ -92,7 +99,8 @@ let selected = null; let cardSuffix = null; let productTitle = ""; let brand = "
 			productTitle = product.productTitle;
 			brand = group.brand;
 			variantTitle = selected.variantTitle;
-}
+			console.log("✅ Laser Sight: Found selected 00100101");
+		}
 	}
 
 	if (!selected || !cardSuffix) {
@@ -112,12 +120,16 @@ let selected = null; let cardSuffix = null; let productTitle = ""; let brand = "
 		return;
 	}
 	
-// Update selected product card - active
+	console.log(`✅ Laser Sight: Processing selected item ${cardSuffix}`);
+
+	// Update selected product card - active
 	// Reset all product cards first
 	ls_resetAllProductCards();
 	
 	ls_addClass("productCard_laserSight_001001", "active");
-// Update product card name and price
+	console.log("✅ Laser Sight: Set productCard_laserSight_001001 active");
+	
+	// Update product card name and price
 	const group = window.part.laserSight["001"];
 	const product = group.products["001"];
 	ls_setText("productCardName_laserSight_001001", product.productTitle);
@@ -127,7 +139,8 @@ let selected = null; let cardSuffix = null; let productTitle = ""; let brand = "
 	const partCardImg = document.getElementById("partCardImg_laserSight00100101");
 	if (partCardImg) {
 		partCardImg.style.display = "block";
-} else {
+		console.log("✅ Laser Sight: Showing part card image");
+	} else {
 		console.warn("⚠️ Laser Sight: partCardImg_laserSight00100101 not found");
 	}
 
@@ -150,7 +163,9 @@ let selected = null; let cardSuffix = null; let productTitle = ""; let brand = "
 
 // Update summary cards based on quantity (called by summaryChartButton)
 export function updateSummaryCards_LaserSight() {
-// 00100101
+	console.log("🔧 Laser Sight: updateSummaryCards_LaserSight called");
+	
+	// 00100101
 	{
 		const product = window.part.laserSight["001"].products["001"];
 		if (product.variants["01"].quantity === 1) {
@@ -178,7 +193,9 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-// Check if data is available
+			console.log("🎯 Laser Sight: Start button clicked");
+			
+			// Check if data is available
 			if (!window.part || !window.part.laserSight) {
 				console.error("❌ Laser Sight data not loaded yet");
 				return;
@@ -203,9 +220,11 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-}, true); // Use capture phase
+			console.log("✅ Laser Sight: Initialized with default No Selected");
+		}, true); // Use capture phase
 		
-} else {
+		console.log("✅ Laser Sight: Start button listener attached");
+	} else {
 		console.warn("⚠️ Laser Sight: loader-start-button not found");
 	}
 }
@@ -222,12 +241,17 @@ if (document.readyState === 'loading') {
 }
 
 function setupProductCardListeners() {
-// No Selected - reset all LaserSight quantities
+	console.log("🔧 Laser Sight: Setting up product card listeners...");
+	
+	// No Selected - reset all LaserSight quantities
 	const cardNoSelected = document.getElementById("productCard_NoSelected_laserSight");
 	if (cardNoSelected) {
-// Use capture phase to run before onclick
+		console.log("✅ Laser Sight: Found productCard_NoSelected_laserSight");
+		// Use capture phase to run before onclick
 		cardNoSelected.addEventListener("click", function (e) {
-// Reset all LaserSight quantities
+			console.log("🎯 Laser Sight: productCard_NoSelected_laserSight clicked");
+			
+			// Reset all LaserSight quantities
 			ls_zeroLaserSightQuantities();
 			
 			// Reset product cards
@@ -254,9 +278,12 @@ function setupProductCardListeners() {
 	// 00100101 - Tactical Device Laser Sight LS321
 	const card001001 = document.getElementById("productCard_laserSight_001001");
 	if (card001001) {
-// Use capture phase to run before onclick
+		console.log("✅ Laser Sight: Found productCard_laserSight_001001");
+		// Use capture phase to run before onclick
 		card001001.addEventListener("click", function (e) {
-// Reset all LaserSight quantities
+			console.log("🎯 Laser Sight: productCard_laserSight_001001 clicked");
+			
+			// Reset all LaserSight quantities
 			ls_zeroLaserSightQuantities();
 			
 			// Set quantity = 1 for selected product
@@ -267,7 +294,8 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "laserSight00100101";
-handleLaserSightSelection(itemsID);
+			console.log(`🎯 Product card clicked: ${itemsID}`);
+			handleLaserSightSelection(itemsID);
 			
 			// Update total cost
 			if (window.renderTotals) {
@@ -280,6 +308,7 @@ handleLaserSightSelection(itemsID);
 		console.warn("⚠️ Laser Sight: productCard_laserSight_001001 not found");
 	}
 	
+	console.log("✅ Laser Sight: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -299,8 +328,10 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_LaserSight();
-});
-} else {
+			console.log("✅ Laser Sight: Summary cards updated");
+		});
+		console.log("✅ Laser Sight: Summary chart button listener attached");
+	} else {
 		console.warn("⚠️ Laser Sight: summaryChartButton not found");
 	}
 }
@@ -320,4 +351,5 @@ export function getLaserSightTotalPrice() {
 	const v = getSelectedLaserSight();
 	return v ? v.price : 0;
 }
-
+
+console.log("✅ dataController_LaserSight.mjs: All functions defined, event listeners will be attached");

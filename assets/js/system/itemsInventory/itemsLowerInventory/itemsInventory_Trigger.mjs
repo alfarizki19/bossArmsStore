@@ -66,4 +66,4 @@ window.part.trigger = {
             }
         }
     }
-};
+};

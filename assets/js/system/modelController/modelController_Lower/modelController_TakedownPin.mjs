@@ -3,9 +3,13 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
+console.log('📋 Takedown Pin model controller loaded (implemented version)');
+
 // Update Takedown Pin model based on current selection
 export function updateModel_TakedownPin() {
-// Get current selected takedown pin from dataController
+  console.log('🔧 Takedown Pin model update - checking current selection');
+  
+  // Get current selected takedown pin from dataController
   const selected = getSelectedTakedownPinSet();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -15,23 +19,28 @@ export function updateModel_TakedownPin() {
       
       // Show selected variant
       showModel(modelID);
-}
+      console.log(`✅ Showing Takedown Pin: ${selected.id} -> ${modelID}`);
+    }
   } else {
     // No selection, hide all variants
     hideAllTakedownPinVariants();
-}
+    console.log('👁️‍🗨️ No Takedown Pin selected - hiding all variants');
+  }
 }
 
 // Handle Takedown Pin selection from UI
 export function handleTakedownPinSelection(itemsID) {
-// Hide all takedown pin variants first
+  console.log(`🎯 Takedown Pin selection: ${itemsID}`);
+  
+  // Hide all takedown pin variants first
   hideAllTakedownPinVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-} else {
+    console.log(`✅ Showing Takedown Pin: ${itemsID} -> ${modelID}`);
+  } else {
     console.warn(`⚠️ Model ID not found for Takedown Pin: ${itemsID}`);
   }
 }

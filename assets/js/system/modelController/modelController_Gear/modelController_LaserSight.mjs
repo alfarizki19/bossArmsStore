@@ -3,9 +3,13 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
+console.log('📋 Laser Sight model controller loaded (implemented version)');
+
 // Update Laser Sight model based on current selection
 export function updateModel_LaserSight() {
-// Get current selected laser sight from dataController
+  console.log('🔧 Laser Sight model update - checking current selection');
+  
+  // Get current selected laser sight from dataController
   const selected = getSelectedLaserSight();
   if (selected) {
     const modelID = getModelIDFromItemsID(selected.id);
@@ -15,23 +19,28 @@ export function updateModel_LaserSight() {
       
       // Show selected variant
       showModel(modelID);
-}
+      console.log(`✅ Showing Laser Sight: ${selected.id} -> ${modelID}`);
+    }
   } else {
     // No selection, hide all variants
     hideAllLaserSightVariants();
-}
+    console.log('👁️‍🗨️ No Laser Sight selected - hiding all variants');
+  }
 }
 
 // Handle Laser Sight selection from UI
 export function handleLaserSightSelection(itemsID) {
-// Hide all laser sight variants first
+  console.log(`🎯 Laser Sight selection: ${itemsID}`);
+  
+  // Hide all laser sight variants first
   hideAllLaserSightVariants();
   
   // Show selected variant
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-} else {
+    console.log(`✅ Showing Laser Sight: ${itemsID} -> ${modelID}`);
+  } else {
     console.warn(`⚠️ Model ID not found for Laser Sight: ${itemsID}`);
   }
 }
