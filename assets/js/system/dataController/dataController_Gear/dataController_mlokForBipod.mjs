@@ -69,6 +69,26 @@ function updateInventoryQuantity_mlokAndKeymodRail() {
 	}
 }
 
+// Function to update all product card names and prices from inventory
+function mfb_updateAllProductCards() {
+	// 001001 (A)
+	{
+		const a = mfb_getProdA();
+		if (a && a.variants['01']) {
+			mfb_setText('productCardName_mlokAndKeymodRail_001001_forBipod', a.productTitle);
+			mfb_setText('productCardPrice_mlokAndKeymodRail_001001_forBipod', '$' + a.variants['01'].price + ' USD');
+		}
+	}
+	// 002001 (B)
+	{
+		const b = mfb_getProdB();
+		if (b && b.variants['01']) {
+			mfb_setText('productCardName_mlokAndKeymodRail_002001_forBipod', b.productTitle);
+			mfb_setText('productCardPrice_mlokAndKeymodRail_002001_forBipod', '$' + b.variants['01'].price + ' USD');
+		}
+	}
+}
+
 // ===== Update UI based on variable terpisah =====
 // UI dikontrol oleh variable terpisah (0 = default/hide, 1 = active/show)
 export function uiData_mlokForBipod(){
@@ -198,6 +218,15 @@ function setupStartButtonListener() {
 	if (btn) {
 		btn.addEventListener("click", function (e) {
 			console.log("🎯 MLOK for Bipod: Start button clicked - Resetting variables");
+			
+			// Check if data is available
+			if (!window.part || !window.part.mlokAndKeymodRail) {
+				console.error("❌ MLOK for Bipod data not loaded yet");
+				return;
+			}
+			
+			// Update all product card names and prices from inventory
+			mfb_updateAllProductCards();
 			
 			// Reset all MLOK for bipod variables to 0
 			window.mlokAndKeymodRail00100101_forBipod_quantity = 0;

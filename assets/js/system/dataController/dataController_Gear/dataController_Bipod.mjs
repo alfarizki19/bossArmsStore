@@ -73,6 +73,18 @@ function updateInventoryQuantity_mlokAndKeymodRail() {
 	}
 }
 
+// Function to update all product card names and prices from inventory
+function bp_updateAllProductCards() {
+	// 001001
+	{
+		const p = bp_getBipod();
+		if (p && p.variants['01']) {
+			bp_setText('productCardName_bipod_001001', p.productTitle);
+			bp_setText('productCardPrice_bipod_001001', '$' + p.variants['01'].price + ' USD');
+		}
+	}
+}
+
 // ===== Update UI based on selected Bipod =====
 export function uiData_Bipod(){ 
 	const p=bp_getBipod(); 
@@ -266,6 +278,15 @@ function setupStartButtonListener() {
 	if (btn) {
 		btn.addEventListener("click", function (e) {
 			console.log("🎯 Bipod: Start button clicked - Resetting variables");
+			
+			// Check if data is available
+			if (!window.part || !window.part.bipod) {
+				console.error("❌ Bipod data not loaded yet");
+				return;
+			}
+			
+			// Update all product card names and prices from inventory
+			bp_updateAllProductCards();
 			
 			// Reset bipod quantity
 			const p = bp_getBipod();
