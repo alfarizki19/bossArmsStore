@@ -1,12 +1,10 @@
 // === dataController_TakedownPinSet.mjs ===
 // Takedown Pin Set UI Controller (Lower Category) — three products with variants
 
-console.log("📦 Loading dataController_TakedownPinSet.mjs...");
 
 // Import model controller functions
 import { updateModel_TakedownPin, handleTakedownPinSelection } from '../../modelController/modelController_Lower/modelController_TakedownPin.mjs';
 
-console.log("✅ dataController_TakedownPinSet.mjs loaded");
 
 function tps_setText(id, text) {
 	const el = document.getElementById(id);
@@ -421,7 +419,6 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Takedown Pin Set: Start button clicked");
 			
 			// Validate viewer is ready before configuration
 			if (!window.sketchfabViewerReady) {
@@ -459,10 +456,8 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Takedown Pin Set: Initialized with default 00100101");
 		}, true); // Use capture phase
 		
-		console.log("✅ Takedown Pin Set: Start button listener attached");
 	} else {
 		console.warn("⚠️ Takedown Pin Set: loader-start-button not found");
 	}
@@ -499,7 +494,6 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "takedownPinSet001001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
 				handleTakedownPinSelection(itemsID);
 				
 				// Update total cost
@@ -533,7 +527,6 @@ function setupVariantCardListeners() {
 				
 				// Update 3D model after UI update
 				const itemsID = "takedownPinSet002001" + k;
-				console.log(`🎯 Variant card clicked: ${itemsID}`);
 				handleTakedownPinSelection(itemsID);
 				
 				// Update total cost
@@ -546,7 +539,6 @@ function setupVariantCardListeners() {
 		}
 	}
 	
-	console.log("✅ Takedown Pin Set: Variant card listeners attached");
 }
 
 // Product card click listeners (for products with only 1 variant)
@@ -577,7 +569,6 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "takedownPinSet00300101";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
 			handleTakedownPinSelection(itemsID);
 			
 			// Update total cost
@@ -589,7 +580,6 @@ function setupProductCardListeners() {
 		}, true); // Use capture phase
 	}
 	
-	console.log("✅ Takedown Pin Set: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -607,9 +597,7 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_TakedownPinSet();
-			console.log("✅ Takedown Pin Set: Summary cards updated");
 		});
-		console.log("✅ Takedown Pin Set: Summary chart button listener attached");
 	} else {
 		console.warn("⚠️ Takedown Pin Set: summaryChartButton not found");
 	}

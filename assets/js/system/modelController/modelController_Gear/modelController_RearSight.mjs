@@ -3,7 +3,6 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Rear Sight model controller loaded (implemented version)');
 
 // Global state for tracking current rear sight state
 let currentRearSightState = {
@@ -13,7 +12,6 @@ let currentRearSightState = {
 
 // Update Rear Sight model based on current selection
 export function updateModel_RearSight() {
-  console.log('🔧 Rear Sight model update - checking current selection');
   
   // Get current selected rear sight from dataController
   const selected = getSelectedRearSight();
@@ -25,9 +23,7 @@ export function updateModel_RearSight() {
     if (!isAlreadySelected) {
       currentRearSightState.selected = selected.id;
       currentRearSightState.mode = 'A'; // Default to open (A) only for new selection
-      console.log(`🔄 New rear sight selected: ${selected.id}, setting default mode A`);
     } else {
-      console.log(`✅ Rear sight already selected: ${selected.id}, keeping current mode: ${currentRearSightState.mode}`);
     }
     
     // Hide all rear sight variants first
@@ -36,7 +32,6 @@ export function updateModel_RearSight() {
     // Show selected variant in current mode (or default A if new selection)
     const modelID = `modelID_${selected.id}_${currentRearSightState.mode}`;
     showModel(modelID);
-    console.log(`✅ Showing Rear Sight: ${selected.id} -> ${modelID} (mode ${currentRearSightState.mode})`);
     
     // Update button states
     updateRearSightButtonStates();
@@ -46,13 +41,11 @@ export function updateModel_RearSight() {
     currentRearSightState.mode = 'A';
     hideAllRearSightVariants();
     clearRearSightButtonStates();
-    console.log('👁️‍🗨️ No Rear Sight selected - hiding all variants');
   }
 }
 
 // Handle Rear Sight selection from UI
 export function handleRearSightSelection(itemsID) {
-  console.log(`🎯 Rear Sight selection: ${itemsID}`);
   
   // Check if this is the same rear sight that's already selected
   const isAlreadySelected = currentRearSightState.selected === itemsID;
@@ -61,9 +54,7 @@ export function handleRearSightSelection(itemsID) {
   if (!isAlreadySelected) {
     currentRearSightState.selected = itemsID;
     currentRearSightState.mode = 'A'; // Default to open (A) only for new selection
-    console.log(`🔄 New rear sight selected: ${itemsID}, setting default mode A`);
   } else {
-    console.log(`✅ Rear sight already selected: ${itemsID}, keeping current mode: ${currentRearSightState.mode}`);
   }
   
   // Hide all rear sight variants first
@@ -72,7 +63,6 @@ export function handleRearSightSelection(itemsID) {
   // Show selected variant in current mode (or default A if new selection)
   const modelID = `modelID_${itemsID}_${currentRearSightState.mode}`;
   showModel(modelID);
-  console.log(`✅ Showing Rear Sight: ${itemsID} -> ${modelID} (mode ${currentRearSightState.mode})`);
   
   // Update button states
   updateRearSightButtonStates();
@@ -80,8 +70,6 @@ export function handleRearSightSelection(itemsID) {
 
 // Handle Rear Sight Open/Folded toggle
 export function handleRearSightToggle(itemsID, mode) {
-  console.log(`🔄 Rear Sight toggle: ${itemsID}${mode ? ` -> mode ${mode}` : ''}`);
-  console.log(`🔍 Current state - selected: ${currentRearSightState.selected}, mode: ${currentRearSightState.mode}`);
   
   // If mode is provided, use it directly
   let targetMode = mode;
@@ -90,7 +78,6 @@ export function handleRearSightToggle(itemsID, mode) {
   if (!targetMode) {
     // If no rear sight is selected, try to select the one being toggled
     if (!currentRearSightState.selected) {
-      console.log(`🔧 No rear sight selected, attempting to select: ${itemsID}`);
       
       // Check if this rear sight exists in the data
       const selected = getSelectedRearSight();
@@ -107,7 +94,6 @@ export function handleRearSightToggle(itemsID, mode) {
       hideAllRearSightVariants();
       const modelID = `modelID_${itemsID}_A`;
       showModel(modelID);
-      console.log(`✅ Showing Rear Sight: ${itemsID} -> ${modelID} (default open mode)`);
       
       // Update button states
       updateRearSightButtonStates();
@@ -141,7 +127,6 @@ export function handleRearSightToggle(itemsID, mode) {
     return;
   }
   
-  console.log(`🔄 Setting mode to: ${targetMode}`);
   currentRearSightState.mode = targetMode;
   
   // Hide all rear sight variants first
@@ -150,7 +135,6 @@ export function handleRearSightToggle(itemsID, mode) {
   // Show selected variant in new mode
   const modelID = `modelID_${currentRearSightState.selected}_${targetMode}`;
   showModel(modelID);
-  console.log(`✅ Showing Rear Sight: ${currentRearSightState.selected} -> ${modelID} (${targetMode === 'A' ? 'open' : 'folded'} mode)`);
   
   // Update button states
   updateRearSightButtonStates();
@@ -174,7 +158,6 @@ function hideAllRearSightVariants() {
 
 // Helper function to update button states
 function updateRearSightButtonStates() {
-  console.log(`🔧 Updating button states for: ${currentRearSightState.selected}, mode: ${currentRearSightState.mode}`);
   
   if (!currentRearSightState.selected) {
     clearRearSightButtonStates();
@@ -187,26 +170,20 @@ function updateRearSightButtonStates() {
   const buttonA = document.getElementById(buttonA_ID);
   const buttonB = document.getElementById(buttonB_ID);
   
-  console.log(`🔍 Looking for buttons: ${buttonA_ID}, ${buttonB_ID}`);
-  console.log(`🔍 Button A found: ${!!buttonA}, Button B found: ${!!buttonB}`);
   
   // Clear all states first
   if (buttonA) {
     buttonA.classList.remove('active');
-    console.log(`🔘 Cleared button A: ${buttonA_ID}`);
   }
   if (buttonB) {
     buttonB.classList.remove('active');
-    console.log(`🔘 Cleared button B: ${buttonB_ID}`);
   }
   
   // Set active state based on current mode
   if (currentRearSightState.mode === 'A' && buttonA) {
     buttonA.classList.add('active');
-    console.log(`🔘 Updated button state: ${buttonA_ID} -> active (open mode)`);
   } else if (currentRearSightState.mode === 'B' && buttonB) {
     buttonB.classList.add('active');
-    console.log(`🔘 Updated button state: ${buttonB_ID} -> active (folded mode)`);
   } else {
     console.warn(`⚠️ Could not set button state - mode: ${currentRearSightState.mode}, buttonA: ${!!buttonA}, buttonB: ${!!buttonB}`);
   }
@@ -264,6 +241,5 @@ window.handleRearSightToggle = handleRearSightToggle;
 
 // Function called when "no selected" is clicked
 window.noRearSight = function() {
-  console.log('👁️‍🗨️ No Rear Sight selected - calling updateModel_RearSight');
   updateModel_RearSight();
 };

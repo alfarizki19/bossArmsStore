@@ -5,7 +5,6 @@ import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHide
 
 // Setup basic model controllers
 export function setupModelControllers() {
-  console.log('🔧 Setting up basic model controllers for M4_v6');
   
   // Setup START button listener
   setupStartButtonListener();
@@ -13,7 +12,6 @@ export function setupModelControllers() {
   // Setup button model controller click handlers
   setupButtonModelControllerHandlers();
   
-  console.log('✅ Basic model controllers initialized');
 }
 
 // Setup START button listener
@@ -22,37 +20,30 @@ function setupStartButtonListener() {
   
   if (startButton) {
     startButton.addEventListener('click', function() {
-      console.log('🎯 START button clicked - initializing default 3D models');
       
       // Wait for dataController and API to be ready
       setTimeout(() => {
         // Check if API is ready before updating models
         if (window.sketchfabAPIReady) {
           // Debug: Log all available Sketchfab resources
-          console.log("🔍 Running debug check...");
           debugSketchfabResources();
           
           // Apply show/hide system to display initial parts
           objectShowHideSystem();
-          console.log("✅ Default 3D models initialized");
         } else {
-          console.log("⚠️ API not ready yet, retrying in 1 second...");
           setTimeout(() => {
             if (window.sketchfabAPIReady) {
               // Debug: Log all available Sketchfab resources
-              console.log("🔍 Running debug check (retry)...");
               debugSketchfabResources();
               
               // Apply show/hide system to display initial parts
               objectShowHideSystem();
-              console.log("✅ Default 3D models initialized (retry)");
             }
           }, 1000);
         }
       }, 2000);
     });
     
-    console.log('✅ START button listener setup complete');
   } else {
     console.warn('⚠️ START button not found - listener not setup');
   }
@@ -63,7 +54,6 @@ export function showModelByItemsID(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing model: ${itemsID} -> ${modelID}`);
   } else {
     console.warn(`⚠️ Model ID not found for itemsID: ${itemsID}`);
   }
@@ -74,7 +64,6 @@ export function hideModelByItemsID(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     hideModel(modelID);
-    console.log(`👁️‍🗨️ Hiding model: ${itemsID} -> ${modelID}`);
   } else {
     console.warn(`⚠️ Model ID not found for itemsID: ${itemsID}`);
   }
@@ -90,7 +79,6 @@ export function toggleModelByItemsID(itemsID) {
     } else {
       showModel(modelID);
     }
-    console.log(`🔄 Toggled model: ${itemsID} -> ${modelID}`);
   } else {
     console.warn(`⚠️ Model ID not found for itemsID: ${itemsID}`);
   }
@@ -98,7 +86,6 @@ export function toggleModelByItemsID(itemsID) {
 
 // Setup button model controller click handlers
 function setupButtonModelControllerHandlers() {
-  console.log('🔧 Setting up button model controller handlers');
   
   // Wait for DOM to be ready
   function setupHandlers() {
@@ -111,7 +98,6 @@ function setupButtonModelControllerHandlers() {
     // Rear Sight button handlers
     setupRearSightButtonHandlers();
     
-    console.log('✅ Button model controller handlers setup complete');
   }
   
   if (document.readyState === 'loading') {
@@ -134,7 +120,6 @@ function setupBipodButtonHandlers() {
     const button = document.getElementById(id);
     if (button) {
       button.addEventListener('click', function() {
-        console.log(`🔘 Bipod button clicked: ${id} -> ${itemsID} mode ${mode}`);
         if (window.handleBipodToggle) {
           window.handleBipodToggle(itemsID, mode);
         } else {
@@ -158,7 +143,6 @@ function setupFrontSightButtonHandlers() {
     const button = document.getElementById(id);
     if (button) {
       button.addEventListener('click', function() {
-        console.log(`🔘 Front Sight button clicked: ${id} -> ${itemsID} mode ${mode}`);
         if (window.handleFrontSightToggle) {
           // Pass mode directly to set specific mode
           window.handleFrontSightToggle(itemsID, mode);
@@ -183,7 +167,6 @@ function setupRearSightButtonHandlers() {
     const button = document.getElementById(id);
     if (button) {
       button.addEventListener('click', function() {
-        console.log(`🔘 Rear Sight button clicked: ${id} -> ${itemsID} mode ${mode}`);
         if (window.handleRearSightToggle) {
           // Pass mode directly to set specific mode
           window.handleRearSightToggle(itemsID, mode);

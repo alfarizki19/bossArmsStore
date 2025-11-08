@@ -3,11 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 End Plate model controller loaded (implemented version)');
 
 // Update End Plate model based on current selection
 export function updateModel_EndPlate() {
-  console.log('🔧 End Plate model update - checking current selection');
   
   // Get current selected end plate from dataController
   const selected = getSelectedEndPlate();
@@ -19,18 +17,15 @@ export function updateModel_EndPlate() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing End Plate: ${selected.id} -> ${modelID}`);
     }
   } else {
     // No selection, hide all variants
     hideAllEndPlateVariants();
-    console.log('👁️‍🗨️ No End Plate selected - hiding all variants');
   }
 }
 
 // Handle End Plate selection from UI
 export function handleEndPlateSelection(itemsID) {
-  console.log(`🎯 End Plate selection: ${itemsID}`);
   
   // Hide all end plate variants first
   hideAllEndPlateVariants();
@@ -39,7 +34,6 @@ export function handleEndPlateSelection(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing End Plate: ${itemsID} -> ${modelID}`);
   } else {
     console.warn(`⚠️ Model ID not found for End Plate: ${itemsID}`);
   }

@@ -120,7 +120,6 @@ export function uiData_ForwardAssists() {
 			
 			// Update 3D model after UI update
 			const itemsID = "forwardAssists001001" + v;
-			console.log(`🎯 Part button clicked: ${itemsID}`);
 			handleForwardAssistsSelection(itemsID);
 		});
 	});

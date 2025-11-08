@@ -1,14 +1,12 @@
 // === dataController_BufferTube.mjs ===
 // Buffer Tube UI Controller (Lower Category)
 
-console.log("📦 Loading dataController_BufferTube.mjs...");
 
 // Import model controller functions (if exists)
 // Note: Model controller may not exist yet
 let updateModel_BufferTube = () => {};
 let handleBufferTubeSelection = () => {};
 
-console.log("✅ dataController_BufferTube.mjs loaded");
 
 function bt_setText(id, text) {
 	const el = document.getElementById(id);
@@ -106,7 +104,6 @@ export function uiData_BufferTube() {
 	const productCard = document.getElementById(productCardId);
 	if (productCard) {
 		bt_addClass(productCardId, "active");
-		console.log("✅ Buffer Tube: Added active class to", productCardId);
 	} else {
 		console.warn("⚠️ Buffer Tube: productCard_bufferTube_00100101 not found");
 	}
@@ -185,7 +182,6 @@ function setupStartButtonListener() {
 		// Keep existing onclick for hideLoader, but add our handler
 		// Use capture phase to run before onclick
 		btn.addEventListener("click", function (e) {
-			console.log("🎯 Buffer Tube: Start button clicked");
 			
 			// Check if data is available
 			if (!window.part || !window.part.bufferTube) {
@@ -215,10 +211,8 @@ function setupStartButtonListener() {
 				}, 100);
 			}
 			
-			console.log("✅ Buffer Tube: Initialized with default 00100101");
 		}, true); // Use capture phase
 		
-		console.log("✅ Buffer Tube: Start button listener attached");
 	} else {
 		console.warn("⚠️ Buffer Tube: loader-start-button not found");
 	}
@@ -251,7 +245,6 @@ function setupProductCardListeners() {
 			
 			// Update 3D model after UI update
 			const itemsID = "bufferTube00100101";
-			console.log(`🎯 Product card clicked: ${itemsID}`);
 			handleBufferTubeSelection(itemsID);
 			
 			// Update total cost
@@ -263,7 +256,6 @@ function setupProductCardListeners() {
 		}, true); // Use capture phase
 	}
 	
-	console.log("✅ Buffer Tube: Product card listeners attached");
 }
 
 // Summary chart button click listener
@@ -281,9 +273,7 @@ function setupSummaryChartButtonListener() {
 		btn.addEventListener("click", function () {
 			// Update all summary cards from inventory data
 			updateSummaryCards_BufferTube();
-			console.log("✅ Buffer Tube: Summary cards updated");
 		});
-		console.log("✅ Buffer Tube: Summary chart button listener attached");
 	} else {
 		console.warn("⚠️ Buffer Tube: summaryChartButton not found");
 	}

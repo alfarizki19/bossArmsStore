@@ -3,11 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Handguard model controller loaded (implemented version)');
 
 // Update Handguard model based on current selection
 export function updateModel_Handguard() {
-  console.log('🔧 Handguard model update - checking current selection');
   
   // Get current selected handguard from dataController
   const selected = getSelectedHandguardRailSystem();
@@ -19,18 +17,15 @@ export function updateModel_Handguard() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Handguard: ${selected.id} -> ${modelID}`);
     }
   } else {
     // No selection, hide all variants
     hideAllHandguardVariants();
-    console.log('👁️‍🗨️ No Handguard selected - hiding all variants');
   }
 }
 
 // Handle Handguard selection from UI
 export function handleHandguardSelection(itemsID) {
-  console.log(`🎯 Handguard selection: ${itemsID}`);
   
   // Hide all handguard variants first
   hideAllHandguardVariants();
@@ -39,7 +34,6 @@ export function handleHandguardSelection(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Handguard: ${itemsID} -> ${modelID}`);
   } else {
     console.warn(`⚠️ Model ID not found for Handguard: ${itemsID}`);
   }

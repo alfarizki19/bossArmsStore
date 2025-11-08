@@ -3,11 +3,9 @@
 
 import { modelState, showModel, hideModel, getModelIDFromItemsID, objectShowHideSystem } from '../modelController_Core/sketchfabAPI.mjs';
 
-console.log('📋 Pistol Grip model controller loaded (implemented version)');
 
 // Update Pistol Grip model based on current selection
 export function updateModel_PistolGrip() {
-  console.log('🔧 Pistol Grip model update - checking current selection');
   
   // Get current selected pistol grip from dataController
   const selected = getSelectedPistolGrip();
@@ -19,18 +17,15 @@ export function updateModel_PistolGrip() {
       
       // Show selected variant
       showModel(modelID);
-      console.log(`✅ Showing Pistol Grip: ${selected.id} -> ${modelID}`);
     }
   } else {
     // No selection, hide all variants
     hideAllPistolGripVariants();
-    console.log('👁️‍🗨️ No Pistol Grip selected - hiding all variants');
   }
 }
 
 // Handle Pistol Grip selection from UI
 export function handlePistolGripSelection(itemsID) {
-  console.log(`🎯 Pistol Grip selection: ${itemsID}`);
   
   // Hide all pistol grip variants first
   hideAllPistolGripVariants();
@@ -39,7 +34,6 @@ export function handlePistolGripSelection(itemsID) {
   const modelID = getModelIDFromItemsID(itemsID);
   if (modelID) {
     showModel(modelID);
-    console.log(`✅ Showing Pistol Grip: ${itemsID} -> ${modelID}`);
   } else {
     console.warn(`⚠️ Model ID not found for Pistol Grip: ${itemsID}`);
   }
@@ -50,15 +44,12 @@ export function handlePistolGripSelection(itemsID) {
 
 // Handle Trigger Guard interaction based on pistol grip selection
 function handleTriggerGuardInteraction(itemsID) {
-  console.log(`🔧 Handling Trigger Guard interaction for: ${itemsID}`);
   
   if (itemsID.startsWith('pistolGrip001001')) {
     // Group 001001: NO TRIGGER GUARD needed (integrated trigger guard)
-    console.log('🚫 Pistol Grip 001001 - Hiding all trigger guard models');
     hideAllTriggerGuardVariants();
   } else if (itemsID.startsWith('pistolGrip002001')) {
     // Group 002001: TRIGGER GUARD needed (separate trigger guard)
-    console.log('✅ Pistol Grip 002001 - Showing default trigger guard');
     showDefaultTriggerGuard();
   }
 }
@@ -92,7 +83,6 @@ function showDefaultTriggerGuard() {
   // Show default trigger guard: triggerGuard00100101
   const defaultModelID = 'modelID_triggerGuard00100101';
   showModel(defaultModelID);
-  console.log(`✅ Showing default Trigger Guard: triggerGuard00100101 -> ${defaultModelID}`);
 }
 
 // Helper function to hide all pistol grip variants
